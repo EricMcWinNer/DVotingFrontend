@@ -2,6 +2,9 @@
 @import 'assets/sass/reusable'
 
 $heroUrl: 'assets/img/auth/login_hero.jpg'
+$emailUrl: 'assets/img/icons/email.png'
+$lockUrl: 'assets/img/icons/lock.png'
+
 
 *
   box-sizing: border-box
@@ -53,7 +56,7 @@ body
     top: 15%
 
 input
-  padding: 15px
+  padding: 15px 40px
   background:
     color: #F4F8F7
   border: none
@@ -62,6 +65,16 @@ input
   &:last-of-type
     margin:
       bottom: 20px
+  background:
+    repeat: no-repeat
+    size: 18px 18px
+    position: 12px 15px
+  &[name=email]
+    background:
+      image: url('~#{$emailUrl}')
+  &[name=password]
+    background:
+      image: url('~#{$lockUrl}')
 
 #signin-button
   margin: 30px auto
@@ -74,11 +87,13 @@ input
   color: white
   letter-spacing: 1px
   font-weight: bold
+  transition: 1s
+  &:hover
+    background:
+      color: #228151
 
 .forgotPassword
   text-decoration: underline
   font:
     size: 16px
   color: #333
-
-

@@ -1,12 +1,14 @@
 .vpHeight
   height: 100vh
   min-height: 100vh
-  max-height: 100vh
+  &.force
+    max-height: 100vh
 
 .vpWidth
   height: 100vw
   min-height: 100vw
-  max-height: 100vw
+  &.force
+    max-height: 100vw
 
 .text-overlay
   position: relative
@@ -36,8 +38,15 @@ p
 
 
   //TODO FIX THIS FOR LOOP
-//@for $var from 1 through 100
+@for $var from 1 through 100
    .l-#{$var}
-     width: #{$var}%
+     width: 0% + $var
+     min-width: 0% + $var
+     &.force
+      max-width: 0% + $var
    .b-#{$var}
-      height: #{$var}%
+      height: 0% + $var
+      min-height: 0% + $var
+      &.force
+        max-height: 0% + $var
+

@@ -18,7 +18,7 @@ function LoginView(props) {
         <Row>
           <Col
             id={"sideBar"}
-            className={"hidden-xs vpHeight hidden-sm hidden-md"}
+            className={"vpHeight d-none d-lg-block standard-padding"}
             lg={4}
           >
             <div className="text-overlay text-center d-flex flex-column h-100 justify-content-center align-items-center">
@@ -29,10 +29,10 @@ function LoginView(props) {
             </div>
           </Col>
           <Col
-            className={"vpHeight standard-padding"}
+            className={"vpHeight standard-padding standard-padding"}
             xs={12}
             sm={12}
-            md={{ offset: 3, span: 6 }}
+            md={{ offset: 1, span: 10 }}
             lg={{ span: 8, offset: 0 }}
           >
             <LogoWithText
@@ -67,7 +67,7 @@ function LoginView(props) {
                     name={"password"}
                   />
                   <Link
-                    class={"forgotPassword poppins"}
+                    className={"forgotPassword poppins"}
                     to={"/forgot-password"}
                   >
                     Forgot password?
