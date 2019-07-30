@@ -118,7 +118,9 @@ function RegisterView(props) {
           </Row>
           <Row className={"newLine"}>
             <Col md={4}>
-              <label htmlFor="lgaOfOrigin">LGA</label>
+              <label htmlFor="lgaOfOrigin" className={"required"}>
+                LGA
+              </label>
               <select
                 id={"lgaOfOrigin"}
                 className={"custom-select"}
