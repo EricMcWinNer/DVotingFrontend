@@ -1,0 +1,71 @@
+@import "assets/sass/fonts"
+@import "assets/sass/logowithtext"
+@import "assets/sass/reusable"
+
+$passwordIconURL: 'assets/img/icons/lock.png'
+$emailIconURL: 'assets/img/icons/email.png'
+$dobIconURL: 'assets/img/icons/calendar.png'
+$phoneIconURL: 'assets/img/icons/phone.png'
+$streetIconURL: 'assets/img/icons/street.png'
+$pinIconURL: 'assets/img/icons/number-pad.png'
+
+#registerForm
+  input, select
+    display: block
+    width: 90%
+    min-width: 150px
+    border: 1px solid #ddd
+    padding: 14px 15px
+    border-radius: 5px
+    @extend .cartogothic
+  select
+    height: 48px
+    font-size: 0.875rem
+    padding:
+      right: 25px
+  input
+    background:
+      repeat: no-repeat
+      size: 18px 18px
+      position: calc(100% - 12px) 15px
+    &[name=password], &[name=confirmPassword]
+      background-image: url('~#{$passwordIconURL}')
+    &[name=email]
+      background-image: url('~#{$emailIconURL}')
+    &[name=dob]
+      background-image: url('~#{$dobIconURL}')
+    &[name=phoneNumber]
+      background-image: url('~#{$phoneIconURL}')
+    &[name=address1], &[name=address2]
+      background-image: url('~#{$streetIconURL}')
+    &[name=confirmationPin]
+      background-image: url('~#{$pinIconURL}')
+  #submitButton
+    background-color: $themeColor
+    @extend .b-100
+    @extend .montserrat
+    border-radius: 9999px
+    padding: 15px 25px
+    font-size: 17px
+    border: none
+    color: white
+  #cancelButton
+    @extend #submitButton
+    background-color: #E4EBF1
+    color: #333
+  form
+    margin-top: 20px
+  .newLine
+    margin-top: 40px
+  label
+    font-weight: bold
+    margin-bottom: 10px
+    @extend .openSans
+    &.required::after
+      content: " *"
+      color: red
+      display: inline-block
+      margin-left: 5px
+      font-weight: bold
+
+

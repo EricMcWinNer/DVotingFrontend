@@ -1,13 +1,21 @@
 .vpHeight
-  height: 100vh
   min-height: 100vh
+
   &.force
+    height: 100vh
     max-height: 100vh
 
+$themeColor: #2CA86A
+
+*
+  box-sizing: border-box
+
+
 .vpWidth
-  height: 100vw
   min-height: 100vw
+
   &.force
+    height: 100vw
     max-height: 100vw
 
 .text-overlay
@@ -31,22 +39,17 @@ p
   max-height: 100%
 
 
-
-
-
-
-
-
-  //TODO FIX THIS FOR LOOP
 @for $var from 1 through 100
-   .l-#{$var}
-     width: 0% + $var
-     min-width: 0% + $var
-     &.force
+  .b-#{$var}
+    min-width: 0% + $var
+
+    &.force
+      width: 0% + $var
       max-width: 0% + $var
-   .b-#{$var}
+  .l-#{$var}
+    min-height: 0% + $var
+
+    &.force
       height: 0% + $var
-      min-height: 0% + $var
-      &.force
-        max-height: 0% + $var
+      max-height: 0% + $var
 

@@ -1,14 +1,17 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { default as Login } from "../forms/login";
 import CssBaseline from "@material-ui/core/CssBaseline";
+
+import Login from "routes/login";
+import Register from "routes/register";
 
 function App() {
   return (
     <Router>
       <CssBaseline />
       <Route path={"/login"} component={Login} />
+      <Route path={"/register"} component={Register} />
 
       {/*<div className="App">
       <header className="App-header">
