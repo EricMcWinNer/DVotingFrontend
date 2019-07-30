@@ -1,1 +1,1 @@
-export { default } from "./RegisterView";
+export { default } from "./RegisterController";

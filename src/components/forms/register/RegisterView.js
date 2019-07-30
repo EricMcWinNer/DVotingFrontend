@@ -39,8 +39,15 @@ function RegisterView(props) {
               <label htmlFor="gender" className={"required"}>
                 Gender
               </label>
-              <select id={"gender"} className={"custom-select"} name={"gender"}>
+              <select
+                id={"gender"}
+                name={"gender"}
+                className={"custom-select"}
+                name={"gender"}
+              >
                 <option value={""}>Select your gender</option>
+                <option value={0}>Male</option>
+                <option value={1}>Female</option>
               </select>
             </Col>
           </Row>
@@ -55,6 +62,10 @@ function RegisterView(props) {
                 name={"maritalStatus"}
               >
                 <option value={""}>Select your marital status</option>
+                <option value={0}>Single</option>
+                <option value={1}>Married</option>
+                <option value={2}>Divorced</option>
+                <option value={3}>Widowed</option>
               </select>
             </Col>
             <Col md={4}>
