@@ -44,28 +44,34 @@ class RegisterController extends Component {
   }
 
   componentDidMount() {
+    this._mounted = true;
     this.getStates();
   }
 
   getStates = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_PATH}/state/states`)
-      .then(res => {
-        this.setState({ states: res.data.states, statesLoading: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (this._mounted) {
+      axios
+        .get(`${process.env.REACT_APP_API_PATH}/state/states`)
+        .then(res => {
+          this.setState({ states: res.data.states, statesLoading: false });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    this._mounted = false;
+  }
 
   dismissImageAlert = () => {
-    this.setState({
-      fileNotImage: false
-    });
+    if (this._mounted)
+      this.setState({
+        fileNotImage: false
+      });
   };
 
   handleChange = e => {
@@ -77,76 +83,87 @@ class RegisterController extends Component {
       tagName.toLowerCase() === "select" ||
       type === "date"
     ) {
-      this.setState(
-        {
-          [name]: value
-        },
-        () => {
-          if (type === "email")
-            this.setState({ validEmail: validateEmail(value) });
-          else if (name === "lastName") {
-            let array = value.split(" ");
-            if (array.length !== 1) this.setState({ validLastName: false });
-            else this.setState({ validLastName: true });
-          } else if (name === "otherNames") {
-            let array = value.split(" ");
-            if (array.length < 2) this.setState({ validOtherNames: false });
-            else this.setState({ validOtherNames: true });
-          } else if (name === "phoneNumber") {
-            if (value.length < 1) this.setState({ validPhoneNumber: false });
-            else this.setState({ validPhoneNumber: true });
-          } else if (name === "password" || name === "confirmPassword") {
-            if (this.state.password !== this.state.confirmPassword) {
-              this.setState({ validPassword: false });
-            } else this.setState({ validPassword: true });
+      if (this._mounted)
+        this.setState(
+          {
+            [name]: value
+          },
+          () => {
+            if (type === "email")
+              this.setState({ validEmail: validateEmail(value) });
+            else if (name === "lastName") {
+              let array = value.split(" ");
+              if (array.length !== 1) this.setState({ validLastName: false });
+              else this.setState({ validLastName: true });
+            } else if (name === "otherNames") {
+              let array = value.split(" ");
+              if (array.length < 2) this.setState({ validOtherNames: false });
+              else this.setState({ validOtherNames: true });
+            } else if (name === "phoneNumber") {
+              if (value.length < 1) this.setState({ validPhoneNumber: false });
+              else this.setState({ validPhoneNumber: true });
+            } else if (name === "password" || name === "confirmPassword") {
+              if (this.state.password !== this.state.confirmPassword) {
+                this.setState({ validPassword: false });
+              } else this.setState({ validPassword: true });
+            }
           }
-        }
-      );
+        );
     }
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({ formIsSubmitting: true }, () => {
-      axios
-        .post(`${process.env.REACT_APP_API_PATH}/user/official/register`, {
-          lastName: this.state.lastName,
-          otherNames: this.state.otherNames,
-          gender: this.state.gender,
-          maritalStatus: this.state.maritalStatus,
-          email: this.state.email,
-          phoneNumber: this.state.phoneNumber,
-          dob: this.state.dob,
-          occupation: this.state.occupation,
-          stateOfOrigin: this.state.stateOfOrigin,
-          lgaOfOrigin: this.state.lgaOfOrigin,
-          address1: this.state.address1,
-          address2: this.state.address2,
-          password: this.state.password,
-          confirmPassword: this.state.confirmPassword,
-          confirmationPin: this.state.confirmationPin
-        })
-        .then(res => {
-          this.setState({ formIsSubmitting: false });
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({ formIsSubmitting: false });
-        });
-    });
+    if (this._mounted)
+      this.setState({ formIsSubmitting: true }, () => {
+        axios
+          .post(`${process.env.REACT_APP_API_PATH}/user/official/register`, {
+            lastName: this.state.lastName,
+            otherNames: this.state.otherNames,
+            gender: this.state.gender,
+            maritalStatus: this.state.maritalStatus,
+            email: this.state.email,
+            phoneNumber: this.state.phoneNumber,
+            dob: this.state.dob,
+            occupation: this.state.occupation,
+            stateOfOrigin: this.state.stateOfOrigin,
+            lgaOfOrigin: this.state.lgaOfOrigin,
+            address1: this.state.address1,
+            address2: this.state.address2,
+            password: this.state.password,
+            confirmPassword: this.state.confirmPassword,
+            confirmationPin: this.state.confirmationPin
+          })
+          .then(res => {
+            this.setState({ formIsSubmitting: false }, () => {
+              if (res.data.status === "error") {
+                if (res.data.message === "password")
+                  alert("The passwords you submitted do not match");
+                else
+                  alert(`The ${res.data.message} you submitted is not valid`);
+              } else {
+                this.props.signInRedirect();
+              }
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            this.setState({ formIsSubmitting: false });
+          });
+      });
   };
 
   handlePickedStateOfOrigin = e => {
     let { value } = e.target;
     if (value !== "")
-      this.setState({ stateOfOrigin: value, lgasLoading: true }, () => {
-        axios
-          .get(`${process.env.REACT_APP_API_PATH}/state/${value}/lgas`)
-          .then(res => {
-            this.setState({ lgas: res.data.lgas, lgasLoading: false });
-          });
-      });
+      if (this._mounted)
+        this.setState({ stateOfOrigin: value, lgasLoading: true }, () => {
+          axios
+            .get(`${process.env.REACT_APP_API_PATH}/state/${value}/lgas`)
+            .then(res => {
+              this.setState({ lgas: res.data.lgas, lgasLoading: false });
+            });
+        });
   };
 
   handleProfilePicture = e => {
@@ -155,26 +172,27 @@ class RegisterController extends Component {
 
   readURI(e) {
     const fileTypes = ["jpg", "jpeg", "png"];
-    if (e.target.files && e.target.files[0]) {
-      const extension = e.target.files[0].name
-          .split(".")
-          .pop()
-          .toLowerCase(), //file extension from input file
-        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
-      if (isSuccess) {
-        let reader = new FileReader();
-        //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
-        reader.onload = function(ev) {
-          this.setState({
-            profilePictureURL: ev.target.result,
-            fileNotImage: false
-          });
-        }.bind(this);
-        reader.readAsDataURL(e.target.files[0]);
-      } else {
-        this.setState({ fileNotImage: true, profilePictureURL: null });
+    if (this._mounted)
+      if (e.target.files && e.target.files[0]) {
+        const extension = e.target.files[0].name
+            .split(".")
+            .pop()
+            .toLowerCase(), //file extension from input file
+          isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
+        if (isSuccess) {
+          let reader = new FileReader();
+          //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
+          reader.onload = function(ev) {
+            this.setState({
+              profilePictureURL: ev.target.result,
+              fileNotImage: false
+            });
+          }.bind(this);
+          reader.readAsDataURL(e.target.files[0]);
+        } else {
+          this.setState({ fileNotImage: true, profilePictureURL: null });
+        }
       }
-    }
   }
 
   render() {
