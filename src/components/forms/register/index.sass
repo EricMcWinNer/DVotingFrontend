@@ -8,6 +8,7 @@ $dobIconURL: 'assets/img/icons/calendar.png'
 $phoneIconURL: 'assets/img/icons/phone.png'
 $streetIconURL: 'assets/img/icons/street.png'
 $pinIconURL: 'assets/img/icons/number-pad.png'
+$profilePictureURL: 'assets/img/icons/profile.png'
 
 #registerForm
   input, select
@@ -40,6 +41,8 @@ $pinIconURL: 'assets/img/icons/number-pad.png'
       background-image: url('~#{$streetIconURL}')
     &[name=confirmationPin]
       background-image: url('~#{$pinIconURL}')
+    &[name=profilePicture]
+      background-image: url('~#{$profilePictureURL}')
   #submitButton
     background-color: $themeColor
     @extend .b-100
