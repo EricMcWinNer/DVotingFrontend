@@ -37,6 +37,7 @@ function RegisterView(props) {
                 placeholder={"Last Name"}
                 className={props.validLastName ? "" : "error"}
                 onChange={e => props.handleChange(e)}
+                value={props.lastName}
               />
             </Col>
             <Col md={4}>
@@ -50,6 +51,7 @@ function RegisterView(props) {
                 placeholder={"Other Names"}
                 className={props.validOtherNames ? "" : "error"}
                 onChange={e => props.handleChange(e)}
+                value={props.otherNames}
               />
             </Col>
             <Col md={4}>
@@ -63,6 +65,7 @@ function RegisterView(props) {
                   props.validGender ? "custom-select" : "custom-select  error"
                 }
                 onChange={e => props.handleChange(e)}
+                value={props.gender}
               >
                 <option value={""}>Select your gender</option>
                 <option value={0}>Male</option>
@@ -77,11 +80,10 @@ function RegisterView(props) {
               </label>
               <select
                 id={"maritalStatus"}
-                className={`custom-select ${
-                  props.validMaritalStatus ? "" : "error"
-                }`}
+                className={`custom-select`}
                 name={"maritalStatus"}
                 onChange={e => props.handleChange(e)}
+                value={props.maritalStatus}
               >
                 <option value={""}>Select your marital status</option>
                 <option value={0}>Single</option>
@@ -101,6 +103,7 @@ function RegisterView(props) {
                 className={props.validEmail ? "" : "error"}
                 placeholder={"Email Address"}
                 onChange={e => props.handleChange(e)}
+                value={props.email}
               />
             </Col>
             <Col md={4}>
@@ -114,6 +117,7 @@ function RegisterView(props) {
                 placeholder={"Phone Number"}
                 className={props.validPhoneNumber ? "" : "error"}
                 onChange={e => props.handleChange(e)}
+                value={props.phoneNumber}
               />
             </Col>
           </Row>
@@ -128,6 +132,7 @@ function RegisterView(props) {
                 name={"dob"}
                 placeholder={"Date of birth"}
                 onChange={e => props.handleChange(e)}
+                value={props.dob}
               />
             </Col>
             <Col md={4}>
@@ -139,6 +144,8 @@ function RegisterView(props) {
                 type={"text"}
                 name={"occupation"}
                 placeholder={"Occupation"}
+                onChange={e => props.handleChange(e)}
+                value={props.occupation}
               />
             </Col>
             <Col md={4}>
@@ -152,6 +159,7 @@ function RegisterView(props) {
                 }`}
                 name={"stateOfOrigin"}
                 onChange={e => props.handlePickedStateOfOrigin(e)}
+                value={props.stateOfOrigin}
               >
                 <option value={""}>
                   {props.statesLoading
@@ -174,6 +182,7 @@ function RegisterView(props) {
                 }`}
                 name={"lgaOfOrigin"}
                 onChange={e => props.handleChange(e)}
+                value={props.lgaOfOrigin}
               >
                 <option value={""}>
                   {props.lgasLoading
@@ -193,6 +202,7 @@ function RegisterView(props) {
                 name={"address1"}
                 placeholder={"Address 1"}
                 onChange={e => props.handleChange(e)}
+                value={props.address1}
               />
             </Col>
             <Col md={4}>
@@ -203,6 +213,7 @@ function RegisterView(props) {
                 name={"address2"}
                 placeholder={"Address 2"}
                 onChange={e => props.handleChange(e)}
+                value={props.address2}
               />
             </Col>
           </Row>
@@ -218,6 +229,7 @@ function RegisterView(props) {
                 placeholder={"Password"}
                 className={props.validPassword ? "" : "error"}
                 onChange={e => props.handleChange(e)}
+                value={props.password}
               />
             </Col>
             <Col md={4}>
@@ -231,6 +243,7 @@ function RegisterView(props) {
                 placeholder={"Confirm Password"}
                 className={props.validPassword ? "" : "error"}
                 onChange={e => props.handleChange(e)}
+                value={props.confirmPassword}
               />
             </Col>
             <Col md={4}>
@@ -242,6 +255,7 @@ function RegisterView(props) {
                 id={"confirmationPin"}
                 name={"confirmationPin"}
                 onChange={e => props.handleChange(e)}
+                value={props.confirmationPin}
               />
             </Col>
           </Row>
@@ -277,8 +291,12 @@ function RegisterView(props) {
               </button>
             </Col>
             <Col md={{ span: 4 }}>
-              <button disabled id={"submitButton"}>
-                Submit
+              <button onClick={e => props.handleSubmit(e)} id={"submitButton"}>
+                {props.formIsSubmitting ? (
+                  <i className="fas fa-spinner fa-pulse" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </Col>
           </Row>

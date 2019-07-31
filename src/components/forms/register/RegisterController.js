@@ -38,7 +38,8 @@ class RegisterController extends Component {
       confirmationPin: "",
       profilePictureURL: null,
       fileNotImage: false,
-      aspectRatioError: false
+      aspectRatioError: false,
+      formIsSubmitting: false
     };
   }
 
@@ -68,12 +69,12 @@ class RegisterController extends Component {
   };
 
   handleChange = e => {
-    let { name, value, type } = e.target;
+    let { name, value, type, tagName } = e.target;
     if (
       type === "text" ||
       type === "password" ||
       type === "email" ||
-      type === "select" ||
+      tagName.toLowerCase() === "select" ||
       type === "date"
     ) {
       this.setState(
@@ -107,7 +108,32 @@ class RegisterController extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.setState({ formIsSubmitting: true }, () => {
-      setTimeout(() => this.setState({ formIsSubmitting: false }), 3500);
+      axios
+        .post(`${process.env.REACT_APP_API_PATH}/user/official/register`, {
+          lastName: this.state.lastName,
+          otherNames: this.state.otherNames,
+          gender: this.state.gender,
+          maritalStatus: this.state.maritalStatus,
+          email: this.state.email,
+          phoneNumber: this.state.phoneNumber,
+          dob: this.state.dob,
+          occupation: this.state.occupation,
+          stateOfOrigin: this.state.stateOfOrigin,
+          lgaOfOrigin: this.state.lgaOfOrigin,
+          address1: this.state.address1,
+          address2: this.state.address2,
+          password: this.state.password,
+          confirmPassword: this.state.confirmPassword,
+          confirmationPin: this.state.confirmationPin
+        })
+        .then(res => {
+          this.setState({ formIsSubmitting: false });
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ formIsSubmitting: false });
+        });
     });
   };
 
