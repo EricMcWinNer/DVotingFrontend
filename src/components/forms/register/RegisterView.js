@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 
-import "./index.sass";
+import "components/forms/register/register.sass";
 /*
   TODO - FIND A BETTER DATEPICKER
  */
 function RegisterView(props) {
+  const [show, setShow] = useState(props.fileNotImage);
   const states = props.states.map(state => (
     <option key={state.state_id} value={state.state_id}>
       {state.name}
@@ -160,7 +162,7 @@ function RegisterView(props) {
                     ? "Please wait...LGAs are loading..."
                     : "Select your local government area"}
                 </option>
-                {lgas}
+                {props.lgasLoading ? "" : lgas}
               </select>
             </Col>
             <Col md={4}>
@@ -223,11 +225,23 @@ function RegisterView(props) {
               <label htmlFor="profilePicture" className="required">
                 Profile Picture
               </label>
+              {props.profilePictureURL === null ? (
+                <div />
+              ) : (
+                <div id={"imagePreview"} className={"b-100"}>
+                  <img
+                    src={props.profilePictureURL}
+                    className={"b-100 force"}
+                    alt={"Preview Profile Picture"}
+                  />
+                </div>
+              )}
               <input
                 type={"file"}
                 id={"profilePicture"}
                 name={"profilePicture"}
                 placeholder={"Profile Picture"}
+                onChange={e => props.handleProfilePicture(e)}
               />
             </Col>
           </Row>
@@ -240,6 +254,26 @@ function RegisterView(props) {
             </Col>
           </Row>
         </form>
+        <div className={"fixed-top"}>
+          {props.fileNotImage ? (
+            <Alert
+              variant="danger"
+              onClose={() => {
+                setShow(false);
+                props.dismissImageAlert();
+              }}
+              dismissible
+            >
+              <Alert.Heading>Uploaded File is not an Image</Alert.Heading>
+              <p>
+                The profile picture uploaded is not an image, change the file
+                and try again
+              </p>
+            </Alert>
+          ) : (
+            <div />
+          )}
+        </div>
       </Col>
     </Row>
   );

@@ -26,7 +26,9 @@ class RegisterController extends Component {
       password: "",
       confirmPassword: "",
       confirmationPin: "",
-      profilePicture: ""
+      profilePictureURL: null,
+      fileNotImage: false,
+      aspectRatioError: false
     };
   }
 
@@ -48,6 +50,12 @@ class RegisterController extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
   componentWillUnmount() {}
+
+  dismissImageAlert = () => {
+    this.setState({
+      fileNotImage: false
+    });
+  };
 
   handleChange = e => {
     let { name, value, type } = e.target;
@@ -83,6 +91,34 @@ class RegisterController extends Component {
       });
   };
 
+  handleProfilePicture = e => {
+    this.readURI(e);
+  };
+
+  readURI(e) {
+    const fileTypes = ["jpg", "jpeg", "png"];
+    if (e.target.files && e.target.files[0]) {
+      const extension = e.target.files[0].name
+          .split(".")
+          .pop()
+          .toLowerCase(), //file extension from input file
+        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
+      if (isSuccess) {
+        let reader = new FileReader();
+        //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
+        reader.onload = function(ev) {
+          this.setState({
+            profilePictureURL: ev.target.result,
+            fileNotImage: false
+          });
+        }.bind(this);
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        this.setState({ fileNotImage: true, profilePictureURL: null });
+      }
+    }
+  }
+
   render() {
     return (
       <RegisterView
@@ -90,6 +126,8 @@ class RegisterController extends Component {
         handleSubmit={this.handleSubmit}
         handleChange={this.handleChange}
         handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
+        handleProfilePicture={this.handleProfilePicture}
+        dismissImageAlert={this.dismissImageAlert}
       />
     );
   }
