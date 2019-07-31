@@ -2,17 +2,24 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import RegisterView from "./RegisterView";
+import { validateEmail } from "utils/validate";
 
 class RegisterController extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lastName: "",
+      validLastName: true,
       otherNames: "",
+      validOtherNames: true,
       gender: "",
+      validGender: true,
       maritalStatus: "",
+      validMaritalStatus: true,
       email: "",
+      validEmail: true,
       phoneNumber: "",
+      validPhoneNumber: true,
       dob: "",
       states: [],
       statesLoading: true,
@@ -20,10 +27,13 @@ class RegisterController extends Component {
       lgas: [],
       occupation: "",
       stateOfOrigin: "",
+      validStateOfOrigin: true,
       lgaOfOrigin: "",
+      validLgaOfOrigin: true,
       address1: "",
       address2: "",
       password: "",
+      validPassword: true,
       confirmPassword: "",
       confirmationPin: "",
       profilePictureURL: null,
@@ -66,9 +76,31 @@ class RegisterController extends Component {
       type === "select" ||
       type === "date"
     ) {
-      this.setState({
-        [name]: value
-      });
+      this.setState(
+        {
+          [name]: value
+        },
+        () => {
+          if (type === "email")
+            this.setState({ validEmail: validateEmail(value) });
+          else if (name === "lastName") {
+            let array = value.split(" ");
+            if (array.length !== 1) this.setState({ validLastName: false });
+            else this.setState({ validLastName: true });
+          } else if (name === "otherNames") {
+            let array = value.split(" ");
+            if (array.length < 2) this.setState({ validOtherNames: false });
+            else this.setState({ validOtherNames: true });
+          } else if (name === "phoneNumber") {
+            if (value.length < 1) this.setState({ validPhoneNumber: false });
+            else this.setState({ validPhoneNumber: true });
+          } else if (name === "password" || name === "confirmPassword") {
+            if (this.state.password !== this.state.confirmPassword) {
+              this.setState({ validPassword: false });
+            } else this.setState({ validPassword: true });
+          }
+        }
+      );
     }
   };
 
