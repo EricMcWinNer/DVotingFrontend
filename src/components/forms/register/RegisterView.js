@@ -8,6 +8,16 @@ import "./index.sass";
   TODO - FIND A BETTER DATEPICKER
  */
 function RegisterView(props) {
+  const states = props.states.map(state => (
+    <option key={state.state_id} value={state.state_id}>
+      {state.name}
+    </option>
+  ));
+  const lgas = props.lgas.map(lga => (
+    <option key={lga.lga_id} value={lga.lga_id}>
+      {lga.name}
+    </option>
+  ));
   return (
     <Row id={"registerForm"}>
       <Col sm={12}>
@@ -43,7 +53,7 @@ function RegisterView(props) {
                 id={"gender"}
                 name={"gender"}
                 className={"custom-select"}
-                name={"gender"}
+                onChange={e => props.handleChange(e)}
               >
                 <option value={""}>Select your gender</option>
                 <option value={0}>Male</option>
@@ -60,6 +70,7 @@ function RegisterView(props) {
                 id={"maritalStatus"}
                 className={"custom-select"}
                 name={"maritalStatus"}
+                onChange={e => props.handleChange(e)}
               >
                 <option value={""}>Select your marital status</option>
                 <option value={0}>Single</option>
@@ -122,8 +133,14 @@ function RegisterView(props) {
                 id={"stateOfOrigin"}
                 className={"custom-select"}
                 name={"stateOfOrigin"}
+                onChange={e => props.handlePickedStateOfOrigin(e)}
               >
-                <option value={""}>Select your state of origin</option>
+                <option value={""}>
+                  {props.statesLoading
+                    ? "Please wait...states are loading..."
+                    : "Select your state of origin"}
+                </option>
+                {states}
               </select>
             </Col>
           </Row>
@@ -136,8 +153,14 @@ function RegisterView(props) {
                 id={"lgaOfOrigin"}
                 className={"custom-select"}
                 name={"lgaOfOrigin"}
+                onChange={e => props.handleChange(e)}
               >
-                <option value={""}>Select your lga of origin</option>
+                <option value={""}>
+                  {props.lgasLoading
+                    ? "Please wait...LGAs are loading..."
+                    : "Select your local government area"}
+                </option>
+                {lgas}
               </select>
             </Col>
             <Col md={4}>

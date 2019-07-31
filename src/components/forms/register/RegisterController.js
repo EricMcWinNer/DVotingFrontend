@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 import RegisterView from "./RegisterView";
 
@@ -13,6 +14,10 @@ class RegisterController extends Component {
       email: "",
       phoneNumber: "",
       dob: "",
+      states: [],
+      statesLoading: true,
+      lgasLoading: false,
+      lgas: [],
       occupation: "",
       stateOfOrigin: "",
       lgaOfOrigin: "",
@@ -25,7 +30,20 @@ class RegisterController extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getStates();
+  }
+
+  getStates = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_PATH}/state/states`)
+      .then(res => {
+        this.setState({ states: res.data.states, statesLoading: false });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
@@ -53,8 +71,27 @@ class RegisterController extends Component {
     });
   };
 
+  handlePickedStateOfOrigin = e => {
+    let { value } = e.target;
+    if (value !== "")
+      this.setState({ stateOfOrigin: value, lgasLoading: true }, () => {
+        axios
+          .get(`${process.env.REACT_APP_API_PATH}/state/${value}/lgas`)
+          .then(res => {
+            this.setState({ lgas: res.data.lgas, lgasLoading: false });
+          });
+      });
+  };
+
   render() {
-    return <RegisterView />;
+    return (
+      <RegisterView
+        {...this.state}
+        handleSubmit={this.handleSubmit}
+        handleChange={this.handleChange}
+        handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
+      />
+    );
   }
 }
 
