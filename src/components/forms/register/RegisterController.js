@@ -139,6 +139,12 @@ class RegisterController extends Component {
               if (res.data.status === "error") {
                 if (res.data.message === "password")
                   alert("The passwords you submitted do not match");
+                else if (res.data.message === "emailExists")
+                  alert(
+                    "The email address you submitted has already been used"
+                  );
+                else if (res.data.message === "confirmationPin")
+                  alert("The confirmation pin you entered is invalid");
                 else
                   alert(`The ${res.data.message} you submitted is not valid`);
               } else {
