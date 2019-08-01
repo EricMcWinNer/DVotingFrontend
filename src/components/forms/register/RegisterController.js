@@ -37,6 +37,7 @@ class RegisterController extends Component {
       confirmPassword: "",
       confirmationPin: "",
       profilePictureURL: null,
+      profilePictureFile: null,
       fileNotImage: false,
       aspectRatioError: false,
       formIsSubmitting: false
@@ -116,25 +117,34 @@ class RegisterController extends Component {
     e.preventDefault();
     if (this._mounted)
       this.setState({ formIsSubmitting: true }, () => {
-        axios
-          .post(`${process.env.REACT_APP_API_PATH}/user/official/register`, {
-            lastName: this.state.lastName,
-            otherNames: this.state.otherNames,
-            gender: this.state.gender,
-            maritalStatus: this.state.maritalStatus,
-            email: this.state.email,
-            phoneNumber: this.state.phoneNumber,
-            dob: this.state.dob,
-            occupation: this.state.occupation,
-            stateOfOrigin: this.state.stateOfOrigin,
-            lgaOfOrigin: this.state.lgaOfOrigin,
-            address1: this.state.address1,
-            address2: this.state.address2,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-            confirmationPin: this.state.confirmationPin
-          })
+        let userInfo = {
+          lastName: this.state.lastName,
+          otherNames: this.state.otherNames,
+          gender: this.state.gender,
+          maritalStatus: this.state.maritalStatus,
+          email: this.state.email,
+          phoneNumber: this.state.phoneNumber,
+          dob: this.state.dob,
+          occupation: this.state.occupation,
+          stateOfOrigin: this.state.stateOfOrigin,
+          lgaOfOrigin: this.state.lgaOfOrigin,
+          address1: this.state.address1,
+          address2: this.state.address2,
+          password: this.state.password,
+          confirmPassword: this.state.confirmPassword,
+          confirmationPin: this.state.confirmationPin
+        };
+        const json = JSON.stringify(userInfo);
+        const data = new FormData();
+        data.append("userInfo", json);
+        data.append("picture", this.state.profilePictureFile);
+        axios({
+          method: "post",
+          url: `${process.env.REACT_APP_API_PATH}/user/official/register`,
+          data: data
+        })
           .then(res => {
+            console.log(res);
             this.setState({ formIsSubmitting: false }, () => {
               if (res.data.status === "error") {
                 if (res.data.message === "password")
@@ -186,6 +196,7 @@ class RegisterController extends Component {
             .toLowerCase(), //file extension from input file
           isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
         if (isSuccess) {
+          this.setState({ profilePictureFile: e.target.files[0] });
           let reader = new FileReader();
           //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
           reader.onload = function(ev) {
