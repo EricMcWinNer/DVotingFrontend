@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import axios from "axios";
+import UserSession from "security/UserSession";
+
 import LoginView from "./LoginView";
 
 class LoginController extends Component {
@@ -9,10 +12,16 @@ class LoginController extends Component {
       password: "",
       formIsSubmitting: false
     };
+    console.log(new UserSession().jwt);
   }
-  componentDidMount() {}
 
-  componentWillUnmount() {}
+  componentDidMount() {
+    this._mounted = true;
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
 
   handleChange = e => {
     let { name, value, type } = e.target;
@@ -24,10 +33,22 @@ class LoginController extends Component {
   };
 
   handleSubmit = e => {
-    e.preventDefault();
-    this.setState({ formIsSubmitting: true }, () => {
-      setTimeout(() => this.setState({ formIsSubmitting: false }), 3500);
-    });
+    if (this._mounted) {
+      e.preventDefault();
+      this.setState({ formIsSubmitting: true }, () => {
+        axios
+          .post(`${process.env.REACT_APP_API_PATH}/login`, {
+            email: this.state.email,
+            password: this.state.password
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+    }
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {}

@@ -1,0 +1,58 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+@import assets/sass/logowithtext
+
+#navbar
+  width: 100%
+  background-color: white
+  box-shadow: -4px 0 4px 7px rgba(0, 0, 0, 0.45)
+  height: 78px
+  padding: 10px
+    top: 15px
+    bottom: 0
+  margin: 0
+  clear: both
+  overflow: auto
+
+  .logoContainer
+    display: inline-block
+
+  #brand
+    margin-top: 8px
+    a
+      color: #333
+
+  .navbarIcons
+    font:
+      size: 19px
+    color: #333
+
+  .iconsList
+    margin-right: 10px
+
+  ul
+    list-style: none
+    display: inline-block
+
+    li
+      display: inline-block
+      max-width: 150px
+      height: 100%
+      margin:
+        left: 15px
+        right: 15px
+      span.helper
+        vertical-align: middle
+        width: 0
+        height: 100%
+      a
+        vertical-align: middle
+
+      p
+        font-size: 14px
+        margin:
+          top: 5px
+        @extend .openSans
+
+      img
+        width: 30px
