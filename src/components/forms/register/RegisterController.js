@@ -52,7 +52,7 @@ class RegisterController extends Component {
   getStates = () => {
     if (this._mounted) {
       axios
-        .get(`${process.env.REACT_APP_API_PATH}/state/states`)
+        .get(`${process.env.REACT_APP_API_PATH}/api/states`)
         .then(res => {
           this.setState({ states: res.data.states, statesLoading: false });
         })
@@ -140,23 +140,22 @@ class RegisterController extends Component {
         data.append("picture", this.state.profilePictureFile);
         axios({
           method: "post",
-          url: `${process.env.REACT_APP_API_PATH}/user/official/register`,
+          url: `${process.env.REACT_APP_API_PATH}/api/official/register`,
           data: data
         })
           .then(res => {
             console.log(res);
             this.setState({ formIsSubmitting: false }, () => {
-              if (res.data.status === "error") {
-                if (res.data.message === "password")
+              if (res.data.isValid == false) {
+                if (res.data.field === "password")
                   alert("The passwords you submitted do not match");
-                else if (res.data.message === "emailExists")
+                else if (res.data.field === "emailExists")
                   alert(
                     "The email address you submitted has already been used"
                   );
-                else if (res.data.message === "confirmationPin")
+                else if (res.data.field === "confirmationPin")
                   alert("The confirmation pin you entered is invalid");
-                else
-                  alert(`The ${res.data.message} you submitted is not valid`);
+                else alert(`The ${res.data.field} you submitted is not valid`);
               } else {
                 this.props.signInRedirect();
               }
@@ -175,7 +174,7 @@ class RegisterController extends Component {
       if (this._mounted)
         this.setState({ stateOfOrigin: value, lgasLoading: true }, () => {
           axios
-            .get(`${process.env.REACT_APP_API_PATH}/state/${value}/lgas`)
+            .get(`${process.env.REACT_APP_API_PATH}/api/state/${value}/lgas`)
             .then(res => {
               this.setState({ lgas: res.data.lgas, lgasLoading: false });
             });
