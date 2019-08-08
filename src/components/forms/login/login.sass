@@ -1,0 +1,47 @@
+$emailUrl: 'assets/img/icons/email.png'
+$lockUrl: 'assets/img/icons/lock.png'
+
+#loginForm
+  input
+    padding: 15px 40px
+    font-weight: bold
+    background:
+      color: #F4F8F7
+    border: none
+    margin:
+      top: 15px
+    &:last-of-type
+      margin:
+        bottom: 20px
+    background:
+      repeat: no-repeat
+      size: 18px 18px
+      position: 12px 15px
+    &[name=email]
+      background:
+        image: url('~#{$emailUrl}')
+    &[name=password]
+      background:
+        image: url('~#{$lockUrl}')
+
+  #signin-button
+    margin: 30px auto
+    display: block
+    border: none
+    border-radius: 9999px
+    padding: 15px 20px
+    min-width: 150px
+    background-color: #2CA86A
+    color: white
+    letter-spacing: 1px
+    font-weight: bold
+    transition: 1s
+    &:hover
+      background:
+        color: #228151
+
+  .forgotPassword
+    text-decoration: underline
+    font:
+      size: 16px
+    color: #333
