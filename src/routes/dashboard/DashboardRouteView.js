@@ -6,13 +6,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import "./index.sass";
+import { Route } from "react-router-dom";
+
+import FullScreenLoader from "components/loaders/fullscreen";
 import SideBar from "components/dashboard/sidebar";
 import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
-import { Route } from "react-router-dom";
 
 function DashBoardRouteView(props) {
-  return (
+  return props.componentIsLoading ? (
+    <FullScreenLoader />
+  ) : (
     <Container className={"vpHeight"} fluid>
       <div id={"dashBoardView"}>
         <Helmet>

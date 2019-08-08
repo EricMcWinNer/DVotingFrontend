@@ -8,7 +8,8 @@ class LoginRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      componentIsLoading: true
     };
   }
 
@@ -21,6 +22,7 @@ class LoginRoute extends Component {
         },
         () => {
           if (res.data.isValid == "true") this.props.history.push("/dashboard");
+          else this.setState({ componentIsLoading: false });
         }
       );
     });
@@ -35,7 +37,12 @@ class LoginRoute extends Component {
   };
 
   render() {
-    return <LoginRouteView redirectSignedInUser={this.redirectSignedInUser} />;
+    return (
+      <LoginRouteView
+        componentIsLoading={this.state.componentIsLoading}
+        redirectSignedInUser={this.redirectSignedInUser}
+      />
+    );
   }
 }
 

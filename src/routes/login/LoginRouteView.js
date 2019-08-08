@@ -7,9 +7,12 @@ import Col from "react-bootstrap/Col";
 import "./index.sass";
 import LogoWithText from "components/logo/withtext";
 import LoginForm from "components/forms/login";
+import FullScreenLoader from "components/loaders/fullscreen";
 
 function LoginRouteView(props) {
-  return (
+  return props.componentIsLoading ? (
+    <FullScreenLoader />
+  ) : (
     <div id={"loginRoute"} className="body-top-border-theme">
       <Helmet>
         <title>{process.env.REACT_APP_NAME} | Login</title>

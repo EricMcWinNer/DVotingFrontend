@@ -9,7 +9,8 @@ class DashboardRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      componentIsLoading: true
     };
   }
 
@@ -22,6 +23,7 @@ class DashboardRoute extends Component {
         },
         () => {
           if (res.data.isValid == "false") this.props.history.push("/login");
+          else this.setState({ componentIsLoading: false });
         }
       );
     });
@@ -44,7 +46,13 @@ class DashboardRoute extends Component {
   };
 
   render() {
-    return <DashboardRouteView logOut={this.logOut} {...this.props} />;
+    return (
+      <DashboardRouteView
+        componentIsLoading={this.state.componentIsLoading}
+        logOut={this.logOut}
+        {...this.props}
+      />
+    );
   }
 }
 
