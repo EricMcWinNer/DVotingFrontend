@@ -141,7 +141,8 @@ class RegisterController extends Component {
         axios({
           method: "post",
           url: `${process.env.REACT_APP_API_PATH}/api/official/register`,
-          data: data
+          data: data,
+          withCredentials: true
         })
           .then(res => {
             console.log(res);

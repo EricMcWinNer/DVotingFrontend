@@ -12,9 +12,9 @@ function NavbarView(props) {
       <div>
         <ul>
           <li id={"brand"}>
-            <span className={"helper"}/>
+            <span className={"helper"} />
             <Link to={"/home"}>
-              <LogoWithText/>
+              <LogoWithText />
             </Link>
           </li>
         </ul>
@@ -22,14 +22,14 @@ function NavbarView(props) {
           <li className={"text-center"}>
             <Link to={"#"}>
               {/*<img src={ring} className={"navbarIcons text-muted"} alt={"Notifications"}/>*/}
-              <i className="fas navbarIcons fa-bell"/>
+              <i className="fas navbarIcons fa-bell" />
               <p className="mb-0 text-muted">Notifications</p>
             </Link>
           </li>
           <li className={"text-center"}>
-            <Link to={"/logout"}>
+            <Link to={"/logout"} onClick={e => props.logOut(e)}>
               {/*<img src={exit} className={"navbarIcons"} alt={"Log out"}/>*/}
-              <i className="fas navbarIcons fa-sign-out-alt"/>
+              <i className="fas navbarIcons fa-sign-out-alt" />
               <p className="mb-0 text-muted">Logout</p>
             </Link>
           </li>

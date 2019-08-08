@@ -19,14 +19,17 @@ function DashBoardRouteView(props) {
           <title>{process.env.REACT_APP_NAME} | Dashboard</title>
         </Helmet>
         <div className="main">
-          <SideBar/>
+          <SideBar />
           <div className={"mainContent"}>
-            <NavBar className={"sticky-top"}/>
+            <NavBar logOut={props.logOut} className={"sticky-top"} />
             <div className="dashboardContent">
-              <Route path={`${props.match.path}`} exact component={DashboardHome}/>
-            
+              <Route
+                path={`${props.match.path}`}
+                exact
+                component={DashboardHome}
+              />
             </div>
-            <div/>
+            <div />
           </div>
         </div>
       </div>
