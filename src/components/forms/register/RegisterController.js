@@ -156,6 +156,8 @@ class RegisterController extends Component {
                   );
                 else if (res.data.field === "confirmationPin")
                   alert("The confirmation pin you entered is invalid");
+                else if (res.data.field === "tooYoung")
+                  alert("You must be at least 18 years old to be an official");
                 else alert(`The ${res.data.field} you submitted is not valid`);
               } else {
                 this.props.signInRedirect();

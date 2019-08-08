@@ -50,7 +50,7 @@ class LoginController extends Component {
             } else {
               //DO NOTHING
             }
-            this.setState({ formIsSubmitting: false });
+            if (this._mounted) this.setState({ formIsSubmitting: false });
           })
           .catch(err => {
             console.log(err);

@@ -14,16 +14,22 @@ import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
 
 function DashBoardRouteView(props) {
+  const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
+  const lastName = nameArray[0];
+  const firstName = nameArray[1];
+  const lastAndFirstName = nameArray[0] + " " + nameArray[1];
   return props.componentIsLoading ? (
     <FullScreenLoader />
   ) : (
     <Container className={"vpHeight"} fluid>
       <div id={"dashBoardView"}>
         <Helmet>
-          <title>{process.env.REACT_APP_NAME} | Dashboard</title>
+          <title>
+            {process.env.REACT_APP_NAME} | {firstName}'s Dashboard
+          </title>
         </Helmet>
         <div className="main">
-          <SideBar />
+          <SideBar name={lastAndFirstName} user={props.user} />
           <div className={"mainContent"}>
             <NavBar logOut={props.logOut} className={"sticky-top"} />
             <div className="dashboardContent">

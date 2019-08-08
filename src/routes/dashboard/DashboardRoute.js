@@ -10,22 +10,24 @@ class DashboardRoute extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      componentIsLoading: true
+      componentIsLoading: true,
+      user: {}
     };
   }
 
   componentDidMount() {
     this._mounted = true;
-    SessionManager.isUserSignedIn().then(res => {
-      this.setState(
-        {
-          loggedIn: res.data.isValid == "true"
-        },
-        () => {
-          if (res.data.isValid == "false") this.props.history.push("/login");
-          else this.setState({ componentIsLoading: false });
-        }
-      );
+    axios.defaults.withCredentials = true;
+    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/user`, {
+      method: "get"
+    }).then(res => {
+      if (res.data.isSessionValid == "true") {
+        this.setState({
+          loggedIn: res.data.isSessionValid == "true",
+          user: res.data.user,
+          componentIsLoading: false
+        });
+      } else this.props.history.push("/login");
     });
   }
 
@@ -49,6 +51,7 @@ class DashboardRoute extends Component {
     return (
       <DashboardRouteView
         componentIsLoading={this.state.componentIsLoading}
+        user={this.state.user}
         logOut={this.logOut}
         {...this.props}
       />
