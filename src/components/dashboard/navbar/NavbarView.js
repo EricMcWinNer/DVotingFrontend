@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./navbar.sass";
-import exit from "assets/img/icons/exit.png";
-import ring from "assets/img/icons/ring.png";
 import LogoWithText from "components/logo/withtext";
 
 function NavbarView(props) {

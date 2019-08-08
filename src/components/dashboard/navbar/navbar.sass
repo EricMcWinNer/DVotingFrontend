@@ -47,6 +47,13 @@
         height: 100%
       a
         vertical-align: middle
+        transition:
+          property: color
+          duration: 1s
+        &:hover
+          text-decoration: none
+          i, p
+            color: $themeColor
 
       p
         font-size: 14px
