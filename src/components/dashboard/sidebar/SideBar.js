@@ -46,8 +46,12 @@ function SideBar(props) {
                 Manage Election
               </Link>
             </li>
-            <li>
-              <Link to={"/parties"}>
+            <li
+              className={
+                contains(props.location, "/dashboard/party") ? "selected" : ""
+              }
+            >
+              <Link to={"/dashboard/party"}>
                 <img
                   src={parties}
                   alt={"Manage Political Parties"}

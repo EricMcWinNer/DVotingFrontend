@@ -1,4 +1,5 @@
 @import assets/sass/reusable
+@import assets/sass/fonts
 
 .baseCard
   width: 100%
@@ -8,10 +9,44 @@
     color: white
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14)
 
+  .title
+    font:
+      size: 21px
+
+  .subtitle
+    font:
+      size: 14px
+    color: #555
+
+  label
+    display: block
+
+  .inputGroup
+    margin:
+      bottom: 16px
+
+  .submitForm
+    background-color: $themeColor
+    color: white
+    padding: 14px 28px
+    @extend .cartogothic
+    border: none
+      radius: 4px
+
+  .iconContainer
+    margin:
+      right: 25px
+
+  .nullCardTitle
+    @extend .poppins
+    font:
+      weight: 500
+
   div.title
     img
       margin:
         right: 15px
+
       &.small
         width: 37px
 
@@ -27,6 +62,7 @@
   .detail
     margin:
       bottom: 25px
+
     p
       font:
         size: 14px
