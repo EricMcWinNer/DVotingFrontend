@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-
-import DashboardHomeView from "routes/dashboard-home/DashboardHomeView";
 import axios from "axios";
 
-class DashboardHome extends Component {
+import CreateElectionForm from "components/forms/election/create";
+
+class CreateElectionRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +15,11 @@ class DashboardHome extends Component {
   componentDidMount() {
     this._mounted = true;
     axios.defaults.withCredentials = true;
-    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/home`, {
+    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
       method: "get"
     }).then(res => {
       if (res.data.isSessionValid == "true") {
         this.setState({
-          loggedIn: res.data.isSessionValid == "true",
           election: res.data.election,
           componentIsLoading: false
         });
@@ -33,8 +32,8 @@ class DashboardHome extends Component {
   }
 
   render() {
-    return <DashboardHomeView {...this.state} />;
+    return <CreateElectionForm {...this.state} {...this.props} />;
   }
 }
 
-export default DashboardHome;
+export default CreateElectionRoute;

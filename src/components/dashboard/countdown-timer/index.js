@@ -1,1 +1,1 @@
-export { default } from "./CountdownTimer";
+export { default } from "components/dashboard/countdown-timer/CountdownTimer";

@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./userinfo.sass";
-import testImg from "assets/img/tests/test.jpg";
 
 function UserInfo(props) {
   return (

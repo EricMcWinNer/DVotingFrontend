@@ -11,6 +11,7 @@ import official from "assets/img/icons/official.png";
 import officer from "assets/img/icons/officer.png";
 import voter from "assets/img/icons/voter.png";
 import UserInfo from "./userinfo";
+import { contains } from "utils/helpers";
 
 function SideBar(props) {
   return (
@@ -19,7 +20,7 @@ function SideBar(props) {
         <UserInfo name={props.name} user={props.user} />
         <div>
           <ul>
-            <li className={"selected"}>
+            <li className={props.location === "/dashboard" ? "selected" : ""}>
               <Link to={"/dashboard"}>
                 <img
                   src={speedometer}
@@ -29,24 +30,20 @@ function SideBar(props) {
                 Dashboard home
               </Link>
             </li>
-            <li>
-              <Link to={"/election"}>
+            <li
+              className={
+                contains(props.location, "/dashboard/election")
+                  ? "selected"
+                  : ""
+              }
+            >
+              <Link to={"/dashboard/election"}>
                 <img
                   src={election}
                   alt={"Manage Election"}
                   className={"sidebarIcon"}
                 />
                 Manage Election
-              </Link>
-            </li>
-            <li>
-              <Link to={"/polls"}>
-                <img
-                  src={voter}
-                  alt={"View Voters"}
-                  className={"sidebarIcon"}
-                />
-                View Voters
               </Link>
             </li>
             <li>
@@ -57,6 +54,16 @@ function SideBar(props) {
                   className={"sidebarIcon"}
                 />
                 Manage Political Parties
+              </Link>
+            </li>
+            <li>
+              <Link to={"/polls"}>
+                <img
+                  src={voter}
+                  alt={"View Voters"}
+                  className={"sidebarIcon"}
+                />
+                View Voters
               </Link>
             </li>
             <li>

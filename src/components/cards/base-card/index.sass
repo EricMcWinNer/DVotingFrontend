@@ -1,0 +1,41 @@
+@import assets/sass/reusable
+
+.baseCard
+  width: 100%
+  padding: 25px
+  border-radius: 9px
+  background:
+    color: white
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14)
+
+  div.title
+    img
+      margin:
+        right: 15px
+      &.small
+        width: 37px
+
+  p.title
+    font:
+      size: 21px
+
+  .subtitle
+    font:
+      size: 14px
+    color: #555
+
+  .detail
+    margin:
+      bottom: 25px
+    p
+      font:
+        size: 14px
+
+    p.detailTitle
+      font:
+        size: 15px
+      color: $themeColor
+      margin:
+        right: 10px
+        bottom: 5px
+      @extend .mb0

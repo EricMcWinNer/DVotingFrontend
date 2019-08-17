@@ -6,12 +6,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import "./index.sass";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import FullScreenLoader from "components/loaders/fullscreen";
 import SideBar from "components/dashboard/sidebar";
 import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
+import ElectionHomeRoute from "routes/dashboard-election";
 
 function DashBoardRouteView(props) {
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
@@ -29,15 +30,25 @@ function DashBoardRouteView(props) {
           </title>
         </Helmet>
         <div className="main">
-          <SideBar name={lastAndFirstName} user={props.user} />
+          <SideBar
+            name={lastAndFirstName}
+            location={props.location.pathname}
+            user={props.user}
+          />
           <div className={"mainContent"}>
             <NavBar logOut={props.logOut} className={"sticky-top"} />
             <div className="dashboardContent">
-              <Route
-                path={`${props.match.path}`}
-                exact
-                component={DashboardHome}
-              />
+              <Switch>
+                <Route
+                  path={`${props.match.path}`}
+                  exact
+                  component={DashboardHome}
+                />
+                <Route
+                  path={`${props.match.path}/election`}
+                  component={ElectionHomeRoute}
+                />
+              </Switch>
             </div>
             <div />
           </div>

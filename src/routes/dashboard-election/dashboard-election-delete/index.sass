@@ -1,0 +1,23 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+#deleteElection
+  .button
+    @extend .cartogothic
+    padding: 14px 30px
+    border:
+      radius: 5px
+    display: inline-block
+    margin: 10px
+    text-align: center
+    color: white
+
+    &#delete-election-button
+      background-color: $themeColor
+
+    &#dontdelete-election-button
+      background-color: #ff0033
+
+    &:hover
+      text-decoration: none
+

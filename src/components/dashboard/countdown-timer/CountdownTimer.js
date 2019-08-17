@@ -1,14 +1,16 @@
 import React from "react";
 import Countdown from "react-countdown-now";
 
-import "./index.sass";
+import "components/dashboard/countdown-timer/index.sass";
 import { pad } from "utils/helpers";
+
+//TODO - CONDITIONALLY RENDER A LINK TO CREATE AN ELECTION AND A COUNTDOWN FOR ELECTION FINISHING OR THAT NO ELECTION EXISTS IF THE PERSON IS NOT AN OFFICIAL
 
 function CountdownTimer() {
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
-      return <div/>;
+      return <div />;
     } else {
       // Render a countdown
       return (
@@ -33,13 +35,19 @@ function CountdownTimer() {
               </li>
             </ul>
           </div>
-          <p className={"mt-3 mb-0 countdown-title"}>Countdown to Next Election</p>
+          <p className={"mt-3 mb-0 countdown-title"}>
+            Countdown to Next Election
+          </p>
         </div>
       );
     }
   };
   return (
-    <Countdown zeroPadTime={2} date={Date.now() + (48 * 60 * 60 * 1000)} renderer={renderer}/>
+    <Countdown
+      zeroPadTime={2}
+      date={Date.now() + 48 * 60 * 60 * 1000}
+      renderer={renderer}
+    />
   );
 }
 

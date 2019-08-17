@@ -1,1 +1,1 @@
-export {default} from "./DashboardHome"
+export { default } from "routes/dashboard-home/DashboardHome";

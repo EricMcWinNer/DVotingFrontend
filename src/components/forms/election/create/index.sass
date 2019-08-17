@@ -1,0 +1,77 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+
+#createElectionForm
+  .title
+    font:
+      size: 21px
+
+  .subtitle
+    font:
+      size: 14px
+    color: #555
+
+  label
+    display: block
+
+  input[name=electionName]
+    display: inline-block
+    border: 1px solid #ddd
+      radius: 4px
+    padding: 14px
+      left: 15px
+    width: 350px
+    @extend .cartogothic
+
+  .election-icon
+    width: 40px
+
+  .inputGroup
+    margin:
+      bottom: 16px
+
+  .submitForm
+    background-color: $themeColor
+    color: white
+    padding: 14px 28px
+    @extend .cartogothic
+    border: none
+      radius: 4px
+
+  .react-datetime-picker__wrapper
+    border: 1px solid #ddd
+      radius: 4px
+    padding: 14px
+      left: 15px
+    width: 350px
+
+  .iconContainer
+    margin:
+      right: 25px
+
+  .nullCardTitle
+    @extend .poppins
+    font:
+      weight: 500
+
+  #nullCard
+    p
+      @extend .poppins
+      line-height: 180%
+
+    #manage-election-button
+      @extend .montserrat
+      color: white
+      display: inline-block
+      background-color: #7570d6
+      padding: 14px
+        left: 24px
+        right: 24px
+      margin-top: 10px
+      border-radius: 6px
+
+      &:hover
+        text-decoration: none
+
+

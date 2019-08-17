@@ -1,6 +1,6 @@
-@import assets/sass/reusable
-@import assets/sass/logowithtext
-@import assets/sass/fonts
+@import ../../../assets/sass/reusable
+@import ../../../assets/sass/logowithtext
+@import ../../../assets/sass/fonts
 
 .analyticCard
   background-color: white
@@ -8,16 +8,24 @@
     top: 25px
   margin: 0
   border-radius: 7px
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14)
+
   .footerContainer
     p
-      font-size: 15px
+      font-size: 14px
+
   .title
     margin-top: 5px
     font-size: 16px
+
+  .text-container
+    max-width: calc(100% - 43px)
+
   .numbers
     @extend .montserrat
     font:
       weight: 700
+
   .analyticsIcon
     width: 41px
     margin:
