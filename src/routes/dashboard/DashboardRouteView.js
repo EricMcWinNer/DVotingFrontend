@@ -12,7 +12,8 @@ import FullScreenLoader from "components/loaders/fullscreen";
 import SideBar from "components/dashboard/sidebar";
 import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
-import ElectionHomeRoute from "routes/dashboard-election";
+import ElectionRouteContainer from "routes/dashboard-election";
+import PartyRouteContainer from "routes/dashboard-party";
 
 function DashBoardRouteView(props) {
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
@@ -46,7 +47,11 @@ function DashBoardRouteView(props) {
                 />
                 <Route
                   path={`${props.match.path}/election`}
-                  component={ElectionHomeRoute}
+                  component={ElectionRouteContainer}
+                />
+                <Route
+                  path={`${props.match.path}/party`}
+                  component={PartyRouteContainer}
                 />
               </Switch>
             </div>
