@@ -8,7 +8,6 @@ import BaseCard from "components/cards/base-card";
 import noResults from "assets/img/icons/db-error.png";
 import LinkButton from "components/buttons/react-router-link-button";
 import DataTable from "react-data-table-component";
-import deleteIcon from "assets/img/icons/delete.png";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
 
@@ -48,6 +47,7 @@ function DashboardPartyHomeRouteView(props) {
                 className={"confirm-background"}
                 to={`/dashboard/party/create`}
               >
+                <i className="far fa-plus-square" />
                 Create
               </LinkButton>
             </li>
@@ -91,7 +91,7 @@ function DashboardPartyHomeRouteView(props) {
                 className={"logo-background"}
                 to={`/dashboard/party/create`}
               >
-                <i className="far fa-plus-square"></i>
+                <i className="far fa-plus-square" />
                 Create
               </LinkButton>
             </li>
