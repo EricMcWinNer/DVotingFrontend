@@ -6,7 +6,16 @@ import { pad } from "utils/helpers";
 
 //TODO - CONDITIONALLY RENDER A LINK TO CREATE AN ELECTION AND A COUNTDOWN FOR ELECTION FINISHING OR THAT NO ELECTION EXISTS IF THE PERSON IS NOT AN OFFICIAL
 
-function CountdownTimer() {
+function CountdownTimer(props) {
+  const { start_date, end_date, status } = props.election;
+  let countDownDate, countDownText;
+  if (status === "pending") {
+    countDownDate = new Date(start_date);
+    countDownText = "Countdown to Next Election";
+  } else if (status === "ongoing") {
+    countDownDate = new Date(end_date);
+    countDownText = "Countdown to end of Election";
+  } else countDownDate = new Date(end_date);
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
@@ -35,20 +44,12 @@ function CountdownTimer() {
               </li>
             </ul>
           </div>
-          <p className={"mt-3 mb-0 countdown-title"}>
-            Countdown to Next Election
-          </p>
+          <p className={"mt-3 mb-0 countdown-title"}>{countDownText}</p>
         </div>
       );
     }
   };
-  return (
-    <Countdown
-      zeroPadTime={2}
-      date={Date.now() + 48 * 60 * 60 * 1000}
-      renderer={renderer}
-    />
-  );
+  return <Countdown zeroPadTime={2} date={countDownDate} renderer={renderer} />;
 }
 
 export default CountdownTimer;

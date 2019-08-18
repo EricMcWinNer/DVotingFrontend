@@ -280,6 +280,7 @@ function RegisterView(props) {
                 id={"profilePicture"}
                 name={"profilePicture"}
                 placeholder={"Profile Picture"}
+                accept="image/*"
                 onChange={e => props.handleProfilePicture(e)}
               />
             </Col>

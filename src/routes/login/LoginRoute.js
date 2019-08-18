@@ -18,10 +18,11 @@ class LoginRoute extends Component {
     SessionManager.isUserSignedIn().then(res => {
       this.setState(
         {
-          loggedIn: res.data.isValid == "true"
+          loggedIn: res.data.isSessionValid == "true"
         },
         () => {
-          if (res.data.isValid == "true") this.props.history.push("/dashboard");
+          if (res.data.isSessionValid == "true")
+            this.props.history.push("/dashboard");
           else this.setState({ componentIsLoading: false });
         }
       );

@@ -18,11 +18,13 @@
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
     "react-countdown-now": "^2.1.1",
+    "react-data-table-component": "^3.1.0",
     "react-datetime-picker": "^2.7.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "styled-components": "^4.3.2",
     "typeface-open-sans": "0.0.75",
     "typeface-roboto": "0.0.75"
   },

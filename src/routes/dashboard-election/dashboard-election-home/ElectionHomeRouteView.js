@@ -91,14 +91,32 @@ function ElectionHomeRouteView(props) {
           <ul
             className={"no-style m-0 mt-4 o-auto fullWidth clearfix p-0 h-menu"}
           >
-            <li className={"mr-3 float-left"}>
-              <LinkButton
-                className={"confirm-background"}
-                to={"/dashboard/election/edit"}
-              >
-                <i className="far fa-edit" /> Edit
-              </LinkButton>
-            </li>
+            {props.election.status === "completed" ? (
+              <li className={"mr-3 float-left"}>
+                <LinkButton
+                  className={"logo-background"}
+                  onClick={props.finalizeElection}
+                  to={"#"}
+                >
+                  {props.finalizing ? (
+                    <i className="fas fa-spinner fa-pulse" />
+                  ) : (
+                    <>
+                      <i className="fas fa-check" /> Finalize
+                    </>
+                  )}
+                </LinkButton>
+              </li>
+            ) : (
+              <li className={"mr-3 float-left"}>
+                <LinkButton
+                  className={"confirm-background"}
+                  to={"/dashboard/election/edit"}
+                >
+                  <i className="far fa-edit" /> Edit
+                </LinkButton>
+              </li>
+            )}
             <li className={"float-right"}>
               <LinkButton
                 className={"reject-background"}
