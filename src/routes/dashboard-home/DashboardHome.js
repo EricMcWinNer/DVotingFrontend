@@ -21,7 +21,7 @@ class DashboardHome extends Component {
       if (res.data.isSessionValid == "true") {
         this.setState({
           loggedIn: res.data.isSessionValid == "true",
-          election: res.data.election,
+          election: res.data.election.original.election,
           componentIsLoading: false
         });
       } else this.props.history.push("/login");

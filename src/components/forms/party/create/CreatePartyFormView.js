@@ -9,6 +9,7 @@ import DateTimePicker from "react-datetime-picker";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
+import { capitalizeWords } from "utils/helpers";
 
 function CreatePartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);
@@ -35,7 +36,7 @@ function CreatePartyFormView(props) {
               Please fill in the form below to create a political party
             </p>
             <form
-              id={"electionCreationForm"}
+              id={"createPartyForm"}
               onSubmit={e => props.handleSubmit(e)}
               className={"poppins"}
             >
@@ -45,7 +46,7 @@ function CreatePartyFormView(props) {
                   id={"partyName"}
                   type="text"
                   name={"partyName"}
-                  value={props.partyName}
+                  value={capitalizeWords(props.partyName)}
                   onChange={props.onChange}
                   placeholder={"e.g People's Democratic Party"}
                 />

@@ -10,11 +10,13 @@ class EditPartyFormController extends Component {
     super(props);
     this.state = {
       componentIsLoading: true,
+      party: null,
       partyName: "",
       acronym: "",
       partyLogoURL: null,
       partyLogoFile: null,
-      fileNotImage: false
+      fileNotImage: false,
+      formIsSubmitting: false
     };
   }
 
@@ -22,15 +24,30 @@ class EditPartyFormController extends Component {
     this._mounted = true;
     //TODO UPDATE THIS CODE TO HANDLE PROPER USER VALIDATION
     axios.defaults.withCredentials = true;
-    axios(`${process.env.REACT_APP_API_PATH}/api/validate-web-app-session`, {
-      method: "get"
-    }).then(res => {
-      if (res.data.isSessionValid == "true") {
+    axios(
+      `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${this.props.match.params.id}`,
+      {
+        method: "get"
+      }
+    ).then(res => {
+      if (res.data.isSessionValid == "false") {
+        this.props.history.push("/login");
+      } else {
         this.setState({
-          componentIsLoading: false
+          componentIsLoading: false,
+          party: res.data.party
         });
-      } else this.props.history.push("/login");
+      }
     });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.party !== null && prevState.party === null)
+      this.setState({
+        partyName: this.state.party.name,
+        acronym: this.state.party.acronym,
+        partyLogoURL: `${process.env.REACT_APP_API_PATH}/storage/${this.state.party.logo}`
+      });
   }
 
   componentWillUnmount() {
@@ -89,11 +106,43 @@ class EditPartyFormController extends Component {
       }
   }
 
+  handleSubmit = e => {
+    if (this._mounted) {
+      e.preventDefault();
+      this.setState({ formIsSubmitting: true });
+      axios.defaults.withCredentials = true;
+      let formData = new FormData();
+      formData.append("partyName", this.state.partyName);
+      formData.append("acronym", this.state.acronym);
+      formData.append("partyLogo", this.state.partyLogoFile);
+      axios(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${this.props.match.params.id}/edit`,
+        {
+          method: "post",
+          data: formData
+        }
+      ).then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            formIsSubmitting: false
+          });
+          if (res.data.completed === true) {
+            alert("Political party updated successfully");
+            this.props.history.push("/dashboard/party");
+          }
+        }
+      });
+    }
+  };
+
   render() {
     return (
       <EditPartyFormView
         handlePartyLogo={this.handlePartyLogo}
         onChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
         {...this.state}
         {...this.props}
       />

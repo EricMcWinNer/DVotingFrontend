@@ -7,6 +7,7 @@ import createIcon from "assets/img/icons/create.png";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import Alert from "react-bootstrap/Alert";
 import BrokenLink from "components/cards/broken-link-card";
+import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
 
 function EditPartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);
@@ -14,6 +15,10 @@ function EditPartyFormView(props) {
     <Row id={"createPartyForm"}>
       {props.componentIsLoading ? (
         <SubRouteLoader />
+      ) : props.party === null ? (
+        <Col md={{ span: 8, offset: 1 }}>
+          <BrokenLinkCard />
+        </Col>
       ) : (
         <Col md={{ span: 8, offset: 1 }}>
           <BaseCard>

@@ -88,10 +88,55 @@ class CreatePartyFormController extends Component {
       }
   }
 
+  handleSubmit = e => {
+    e.preventDefault();
+    if (this._mounted) {
+      this.setState({ formIsSubmitting: true }, () => {
+        axios.defaults.withCredentials = true;
+        let form = new FormData();
+        form.append("partyName", this.state.partyName);
+        form.append("acronym", this.state.acronym);
+        form.append("partyLogo", this.state.partyLogoFile);
+        axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/party`, {
+          method: "post",
+          data: form
+        }).then(res => {
+          if (res.data.isSessionValid == "false")
+            this.props.history.push("/login");
+          else {
+            this.setState({
+              formIsSubmitting: false
+            });
+            if (res.data.isValid === false) {
+              if (res.data.field === "partyLogo")
+                alert("The party logo you entered is invalid");
+              else if (res.data.field === "partyName")
+                alert(
+                  "The party name you entered is invalid. Please enter one less than 256 characters long"
+                );
+              else if (res.data.field === "acronym")
+                alert(
+                  "The acronym you entered is invalid. Please enter one less than 7 characters long"
+                );
+              else if (res.data.field === "duplicateName")
+                alert(
+                  "A political party with this name already exists. Political parties must have unique names."
+                );
+            } else if (res.data.completed === true) {
+              alert("Political party created successfully");
+              this.props.history.push("/dashboard/party");
+            }
+          }
+        });
+      });
+    }
+  };
+
   render() {
     return (
       <CreatePartyFormView
         handlePartyLogo={this.handlePartyLogo}
+        handleSubmit={this.handleSubmit}
         onChange={this.handleChange}
         {...this.state}
         {...this.props}

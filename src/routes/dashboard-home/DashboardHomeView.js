@@ -55,7 +55,7 @@ function DashboardHomeView(props) {
           </Row>
           <Row className={"rowMargin"}>
             <Col md={6}>
-              <CountdownTimer />
+              <CountdownTimer election={props.election} />
             </Col>
           </Row>
         </Container>

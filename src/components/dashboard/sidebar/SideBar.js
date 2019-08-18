@@ -77,7 +77,7 @@ function SideBar(props) {
                   alt={"Manage Candidates"}
                   className={"sidebarIcon"}
                 />
-                Mange Candidates
+                Manage Candidates
               </Link>
             </li>
             <li>
