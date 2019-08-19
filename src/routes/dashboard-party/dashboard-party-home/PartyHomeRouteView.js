@@ -10,6 +10,7 @@ import LinkButton from "components/buttons/react-router-link-button";
 import DataTable from "react-data-table-component";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function PartyHomeRouteView(props) {
   let partiesData;
@@ -26,6 +27,9 @@ function PartyHomeRouteView(props) {
     <SubRouteLoader />
   ) : props.parties === null ? (
     <Row id={"partiesHome"}>
+      <Helmet>
+        <title>{process.env.REACT_APP_NAME} | No parties found</title>
+      </Helmet>
       <Col md={{ span: 10, offset: 1 }}>
         <BaseCard id={"nullCard"}>
           <div className="title clearfix o-auto">
@@ -62,6 +66,9 @@ function PartyHomeRouteView(props) {
   ) : (
     <Row id={"partiesHome"}>
       <Col md={12}>
+        <Helmet>
+          <title>{process.env.REACT_APP_NAME} | Parties List</title>
+        </Helmet>
         <BaseCard id={"nullCard"}>
           <div className="title clearfix o-auto">
             <div className="float-left">

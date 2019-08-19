@@ -62,6 +62,7 @@ function DashBoardRouteView(props) {
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/voters`}
+                  isAuthorized={props.user.roles.includes("official")}
                   render={props => (
                     <VotersRouteContainer user={user} {...props} />
                   )}

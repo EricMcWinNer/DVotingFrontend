@@ -3,6 +3,7 @@ import DateTimePicker from "react-datetime-picker";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
+import Helmet from "react-helmet/";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
@@ -17,6 +18,9 @@ function EditElectionFormView(props) {
         <SubRouteLoader />
       ) : (
         <Col md={{ span: 8, offset: 1 }}>
+          <Helmet>
+            <title> {process.env.REACT_APP_NAME} | Edit Election</title>
+          </Helmet>
           {props.election !== null ? (
             <BaseCard>
               <p className="title poppins">Edit Election</p>
@@ -75,6 +79,11 @@ function EditElectionFormView(props) {
             </BaseCard>
           ) : (
             <BaseCard id={"nullCard"}>
+              <Helmet>
+                <title>
+                  {process.env.REACT_APP_NAME} | No Configured Election
+                </title>
+              </Helmet>
               <div className="clearfix">
                 <div className="float-left iconContainer">
                   <img

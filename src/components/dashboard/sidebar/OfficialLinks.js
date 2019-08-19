@@ -39,8 +39,12 @@ function OfficialLinks(props) {
           Manage Political Parties
         </Link>
       </li>
-      <li>
-        <Link to={"/polls"}>
+      <li
+        className={
+          contains(props.location, "/dashboard/voters") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/voters"}>
           <img src={voter} alt={"View Voters"} className={"sidebarIcon"} />
           View Voters
         </Link>

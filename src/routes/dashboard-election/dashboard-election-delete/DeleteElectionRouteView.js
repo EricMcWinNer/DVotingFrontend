@@ -8,12 +8,16 @@ import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import BaseCard from "components/cards/base-card";
 import warningIcon from "assets/img/icons/warning.png";
 import deleteIcon from "assets/img/icons/delete.png";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function DeleteElectionRouteView(props) {
   return props.componentIsLoading ? (
     <SubRouteLoader />
   ) : props.election !== null ? (
     <Row id={"deleteElection"}>
+      <Helmet>
+        <title>{process.env.REACT_APP_NAME} | Delete Election</title>
+      </Helmet>
       <Col md={{ span: 8, offset: 1 }}>
         <BaseCard>
           <div className="title clearfix o-auto">
@@ -61,6 +65,9 @@ function DeleteElectionRouteView(props) {
     </Row>
   ) : (
     <BaseCard id={"nullCard"}>
+      <Helmet>
+        <title>{process.env.REACT_APP_NAME} | No Configured Election</title>
+      </Helmet>
       <div className="clearfix poppins">
         <div className="float-left mr-4 iconContainer">
           <img src={warningIcon} alt={"Warning: No Election Configured"} />

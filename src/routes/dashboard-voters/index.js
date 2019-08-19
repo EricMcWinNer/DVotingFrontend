@@ -1,1 +1,1 @@
-export { default } from "./VotersContainer";
+export { default } from "./VotersRoute";

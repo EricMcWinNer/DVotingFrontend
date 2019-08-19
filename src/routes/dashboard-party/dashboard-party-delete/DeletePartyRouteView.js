@@ -6,6 +6,7 @@ import BaseCard from "components/cards/base-card";
 import deleteIcon from "assets/img/icons/delete.png";
 import { Link } from "react-router-dom";
 import BrokenLinkCard from "components/cards/broken-link-card";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function DeletePartyRouteView(props) {
   return props.componentIsLoading ? (
@@ -19,6 +20,11 @@ function DeletePartyRouteView(props) {
   ) : (
     <Row id={"deleteElection"}>
       <Col md={{ span: 8, offset: 1 }}>
+        <Helmet>
+          <title>
+            {process.env.REACT_APP_NAME} | Delete {props.party.acronym}
+          </title>
+        </Helmet>
         <BaseCard>
           <div className="title clearfix o-auto">
             <div className="float-left">

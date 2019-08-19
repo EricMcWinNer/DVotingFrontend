@@ -6,10 +6,14 @@ import BaseCard from "components/cards/base-card";
 import deleteIcon from "assets/img/icons/delete.png";
 import { Link } from "react-router-dom";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function BrokenLink(props) {
   return (
     <BaseCard>
+      <Helmet>
+        <title>{process.env.REACT_APP_NAME} | 403 Forbidden</title>
+      </Helmet>
       <div className="title clearfix o-auto">
         <div className="float-left">
           <img

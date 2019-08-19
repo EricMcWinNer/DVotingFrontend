@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import CreatePartyFormView from "components/forms/party/create";
+import CreatePartyForm from "components/forms/party/create";
 
 class CreatePartyRoute extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class CreatePartyRoute extends Component {
   }
 
   render() {
-    return <CreatePartyFormView {...this.props} />;
+    return <CreatePartyForm {...this.props} />;
   }
 }
 

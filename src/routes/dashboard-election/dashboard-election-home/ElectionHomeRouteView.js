@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Helmet from "react-helmet";
 
 import "./election.sass";
 import "routes/dashboard-election/dashboard-election-home/election.sass";
@@ -17,6 +18,9 @@ function ElectionHomeRouteView(props) {
     <SubRouteLoader />
   ) : props.election === null ? (
     <Row id={"electionHome"}>
+      <Helmet>
+        <title>{process.env.REACT_APP_NAME} | No Configured Election</title>
+      </Helmet>
       <Col md={{ span: 10, offset: 1 }}>
         <BaseCard id={"nullCard"}>
           <div className="clearfix">
@@ -48,6 +52,12 @@ function ElectionHomeRouteView(props) {
     </Row>
   ) : (
     <Row id={"electionHome"}>
+      <Helmet>
+        <title>
+          {process.env.REACT_APP_NAME} |
+          {props.user.roles.includes("official") ? "Manage" : "View"} Election
+        </title>
+      </Helmet>
       <Col md={{ span: 7 }}>
         <BaseCard id={"manageElection"} className={"poppins"}>
           <div className="title clearfix o-auto">

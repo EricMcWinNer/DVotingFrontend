@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import "./index.sass";
+import VotersRouteView from "./VotersRouteView";
 
-class VotersRoutes extends Component {
+class VotersRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,9 @@ class VotersRoutes extends Component {
     this._mounted = false;
   }
 
-  render() {}
+  render() {
+    return <VotersRouteView {...this.state} />;
+  }
 }
 
-export default VotersRoutes;
+export default VotersRoute;

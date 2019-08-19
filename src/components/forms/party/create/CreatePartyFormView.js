@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import { capitalizeWords } from "utils/helpers";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function CreatePartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);
@@ -20,6 +21,9 @@ function CreatePartyFormView(props) {
       ) : (
         <Col md={{ span: 8, offset: 1 }}>
           <BaseCard>
+            <Helmet>
+              <title>{process.env.REACT_APP_NAME} | Create Party</title>
+            </Helmet>
             <div className="title clearfix o-auto">
               <div className="float-left">
                 <img

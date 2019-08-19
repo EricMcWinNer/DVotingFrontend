@@ -9,6 +9,7 @@ import warningIcon from "assets/img/icons/warning.png";
 import createIcon from "assets/img/icons/create.png";
 import { Link } from "react-router-dom";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 /* TODO - FIX THE FUCKED UP FLOAT HERE */
 
@@ -21,6 +22,9 @@ function CreateElectionForm(props) {
         <Col md={{ span: 8, offset: 1 }}>
           {props.election === null ? (
             <BaseCard>
+              <Helmet>
+                <title>{process.env.REACT_APP_NAME} | Create Election</title>
+              </Helmet>
               <div className="title clearfix o-auto">
                 <div className="float-left">
                   <img
@@ -84,6 +88,11 @@ function CreateElectionForm(props) {
             </BaseCard>
           ) : (
             <BaseCard id={"nullCard"}>
+              <Helmet>
+                <title>
+                  {process.env.REACT_APP_NAME} | Election already exists
+                </title>
+              </Helmet>
               <div className="clearfix o-auto">
                 <div className="float-left iconContainer">
                   <img

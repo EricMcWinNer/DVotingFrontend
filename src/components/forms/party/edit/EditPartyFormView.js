@@ -8,6 +8,7 @@ import LinkButton from "components/buttons/react-router-link-button/ReactRouterL
 import Alert from "react-bootstrap/Alert";
 import BrokenLink from "components/cards/broken-link-card";
 import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
+import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function EditPartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);
@@ -22,6 +23,12 @@ function EditPartyFormView(props) {
       ) : (
         <Col md={{ span: 8, offset: 1 }}>
           <BaseCard>
+            <Helmet>
+              <title>
+                {process.env.REACT_APP_NAME} | Edit{" "}
+                {props.acronym.toUpperCase()}
+              </title>
+            </Helmet>
             <div className="title clearfix o-auto">
               <div className="float-left">
                 <img
