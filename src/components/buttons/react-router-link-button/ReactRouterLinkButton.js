@@ -11,9 +11,9 @@ function ReactRouterLinkButton(props) {
     <Link
       to={props.to}
       style={styles}
-      className={`${props.small ? "small" : ""} react-router-link-button ${
-        props.className
-      }`}
+      className={`${props.small ? "small" : ""} ${
+        props.medium ? "medium" : ""
+      } react-router-link-button ${props.className}`}
       onClick={props.onClick === undefined ? () => {} : e => props.onClick(e)}
       id={props.id}
     >

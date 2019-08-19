@@ -48,7 +48,7 @@ function ElectionHomeRouteView(props) {
     </Row>
   ) : (
     <Row id={"electionHome"}>
-      <Col md={{ span: 7, offset: 1 }}>
+      <Col md={{ span: 7 }}>
         <BaseCard id={"manageElection"} className={"poppins"}>
           <div className="title clearfix o-auto">
             <div className="float-left">
@@ -59,11 +59,16 @@ function ElectionHomeRouteView(props) {
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Manage Election</p>
+              <p className={"title"}>
+                {props.user.roles.includes("official") ? "Manage" : "View"}{" "}
+                Election
+              </p>
             </div>
           </div>
           <p className={"subtitle mt-2"}>
-            In this section you can manage the current election
+            In this section you can{" "}
+            {props.user.roles.includes("official") ? "manage" : "view"} the
+            details of the current election
           </p>
           <div className={"detail mt-3"}>
             <p className="detailTitle">Election Name:</p>
@@ -81,51 +86,66 @@ function ElectionHomeRouteView(props) {
             <p className="detailTitle">Status:</p>
             <p>{capitalize(props.election.status)}</p>
           </div>
-          <div className={"detail mb-4"}>
-            <p className="detailTitle">Created By:</p>
-            <p>
-              {props.created_by.name}
-              <span className={"email"}> &lt;{props.created_by.email}&gt;</span>
-            </p>
-          </div>
+          {props.user.roles.includes("official") && (
+            <div className={"detail mb-4"}>
+              <p className="detailTitle">Created By:</p>
+              <p>
+                {props.created_by.name}
+                <span className={"email"}>
+                  {" "}
+                  &lt;{props.created_by.email}&gt;
+                </span>
+              </p>
+            </div>
+          )}
           <ul
             className={"no-style m-0 mt-4 o-auto fullWidth clearfix p-0 h-menu"}
           >
-            {props.election.status === "completed" ? (
-              <li className={"mr-3 float-left"}>
-                <LinkButton
-                  className={"logo-background"}
-                  onClick={props.finalizeElection}
-                  to={"#"}
-                >
-                  {props.finalizing ? (
-                    <i className="fas fa-spinner fa-pulse" />
-                  ) : (
-                    <>
-                      <i className="fas fa-check" /> Finalize
-                    </>
-                  )}
-                </LinkButton>
-              </li>
+            {props.user.roles.includes("official") ? (
+              <>
+                {props.election.status === "completed" ? (
+                  <li className={"mr-3 float-left"}>
+                    <LinkButton
+                      className={"logo-background"}
+                      onClick={props.finalizeElection}
+                      to={"#"}
+                    >
+                      {props.finalizing ? (
+                        <i className="fas fa-spinner fa-pulse" />
+                      ) : (
+                        <>
+                          <i className="fas fa-check" /> Finalize
+                        </>
+                      )}
+                    </LinkButton>
+                  </li>
+                ) : (
+                  <li className={"mr-3 float-left"}>
+                    <LinkButton
+                      className={"confirm-background"}
+                      to={"/dashboard/election/edit"}
+                    >
+                      <i className="far fa-edit" /> Edit
+                    </LinkButton>
+                  </li>
+                )}
+                <li className={"float-right"}>
+                  <LinkButton
+                    className={"reject-background"}
+                    to={"/dashboard/election/delete"}
+                  >
+                    <i className="far fa-trash-alt" />
+                    Delete
+                  </LinkButton>
+                </li>
+              </>
             ) : (
               <li className={"mr-3 float-left"}>
-                <LinkButton
-                  className={"confirm-background"}
-                  to={"/dashboard/election/edit"}
-                >
-                  <i className="far fa-edit" /> Edit
+                <LinkButton className={"confirm-background"} to={"/dashboard"}>
+                  <i className="fas fa-chevron-left" /> Back to home
                 </LinkButton>
               </li>
             )}
-            <li className={"float-right"}>
-              <LinkButton
-                className={"reject-background"}
-                to={"/dashboard/election/delete"}
-              >
-                <i className="far fa-trash-alt" />
-                Delete
-              </LinkButton>
-            </li>
           </ul>
         </BaseCard>
       </Col>

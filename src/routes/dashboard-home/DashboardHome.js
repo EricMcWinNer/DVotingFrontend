@@ -8,6 +8,8 @@ class DashboardHome extends Component {
     super(props);
     this.state = {
       election: null,
+      voters: null,
+      parties: null,
       componentIsLoading: true
     };
   }
@@ -22,6 +24,8 @@ class DashboardHome extends Component {
         this.setState({
           loggedIn: res.data.isSessionValid == "true",
           election: res.data.election.original.election,
+          voters: res.data.voters,
+          parties: res.data.parties,
           componentIsLoading: false
         });
       } else this.props.history.push("/login");

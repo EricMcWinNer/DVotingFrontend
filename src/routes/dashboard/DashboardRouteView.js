@@ -20,6 +20,7 @@ function DashBoardRouteView(props) {
   const lastName = nameArray[0];
   const firstName = nameArray[1];
   const lastAndFirstName = nameArray[0] + " " + nameArray[1];
+  const user = props.user;
   return props.componentIsLoading ? (
     <FullScreenLoader />
   ) : (
@@ -43,15 +44,19 @@ function DashBoardRouteView(props) {
                 <Route
                   path={`${props.match.path}`}
                   exact
-                  component={DashboardHome}
+                  render={props => <DashboardHome user={user} {...props} />}
                 />
                 <Route
                   path={`${props.match.path}/election`}
-                  component={ElectionRouteContainer}
+                  render={props => (
+                    <ElectionRouteContainer user={user} {...props} />
+                  )}
                 />
                 <Route
                   path={`${props.match.path}/party`}
-                  component={PartyRouteContainer}
+                  render={props => (
+                    <PartyRouteContainer user={user} {...props} />
+                  )}
                 />
               </Switch>
             </div>

@@ -13,11 +13,15 @@ import { politicalPartiesModel } from "utils/tablemodels";
 
 function DashboardPartyHomeRouteView(props) {
   let partiesData;
-  if (!props.componentIsLoading)
+  if (!props.componentIsLoading) {
     partiesData = props.parties.map((datum, index) => ({
       serial: index + 1,
       ...datum
     }));
+    if (!props.user.roles.includes("official")) {
+      politicalPartiesModel.splice(1, 1);
+    }
+  }
   return props.componentIsLoading ? (
     <SubRouteLoader />
   ) : props.parties === null ? (
@@ -73,8 +77,10 @@ function DashboardPartyHomeRouteView(props) {
           </div>
           <p className="subtitle poppins">
             Below is a list of all political parties registered in the
-            application. You can create more parties using the link provided
-            below.
+            application.
+            {props.user.roles.includes("official") && (
+              <>You can create more parties using the link provided below.</>
+            )}
           </p>
           <div className={"DataTableContainer"}>
             <DataTable
@@ -85,16 +91,18 @@ function DashboardPartyHomeRouteView(props) {
             />
           </div>
           <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
-            <li>
-              <LinkButton
-                id={"manage-election-button"}
-                className={"logo-background"}
-                to={`/dashboard/party/create`}
-              >
-                <i className="far fa-plus-square" />
-                Create
-              </LinkButton>
-            </li>
+            {props.user.roles.includes("official") && (
+              <li>
+                <LinkButton
+                  id={"manage-election-button"}
+                  className={"logo-background"}
+                  to={`/dashboard/party/create`}
+                >
+                  <i className="far fa-plus-square" />
+                  Create
+                </LinkButton>
+              </li>
+            )}
           </ul>
         </BaseCard>
       </Col>

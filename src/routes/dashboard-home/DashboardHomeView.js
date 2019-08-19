@@ -24,8 +24,8 @@ function DashboardHomeView(props) {
               <AnalyticCard
                 icon={totalVoters}
                 title={"Total Voters"}
-                number={"194K"}
-                subtitle={"Last Created 14:00"}
+                number={props.voters.count}
+                subtitle={`Last Created ${props.voters.lastCreated}`}
               />
             </Col>
             <Col md={3}>
@@ -40,8 +40,8 @@ function DashboardHomeView(props) {
               <AnalyticCard
                 icon={totalParties}
                 title={"Total Parties"}
-                number={"59"}
-                subtitle={"Last Created 14:00"}
+                number={props.parties.count}
+                subtitle={`Last Created ${props.parties.lastCreated}`}
               />
             </Col>
             <Col md={3}>
