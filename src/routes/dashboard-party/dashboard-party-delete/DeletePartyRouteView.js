@@ -6,7 +6,7 @@ import BaseCard from "components/cards/base-card";
 import deleteIcon from "assets/img/icons/delete.png";
 import { Link } from "react-router-dom";
 import BrokenLinkCard from "components/cards/broken-link-card";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 function DeletePartyRouteView(props) {
   return props.componentIsLoading ? (

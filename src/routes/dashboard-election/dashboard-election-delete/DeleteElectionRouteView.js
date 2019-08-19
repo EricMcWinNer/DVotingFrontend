@@ -8,7 +8,7 @@ import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import BaseCard from "components/cards/base-card";
 import warningIcon from "assets/img/icons/warning.png";
 import deleteIcon from "assets/img/icons/delete.png";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 function DeleteElectionRouteView(props) {
   return props.componentIsLoading ? (

@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import { capitalizeWords } from "utils/helpers";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 function CreatePartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);

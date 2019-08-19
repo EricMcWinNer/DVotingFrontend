@@ -9,7 +9,7 @@ import warningIcon from "assets/img/icons/warning.png";
 import createIcon from "assets/img/icons/create.png";
 import { Link } from "react-router-dom";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 /* TODO - FIX THE FUCKED UP FLOAT HERE */
 

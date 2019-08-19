@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import LinkButton from "components/buttons/react-router-link-button";
 import PartyHomeRouteView from "./PartyHomeRouteView";
 
 class PartyHomeRoute extends Component {

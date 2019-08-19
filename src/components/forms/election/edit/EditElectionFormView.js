@@ -3,7 +3,7 @@ import DateTimePicker from "react-datetime-picker";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
-import Helmet from "react-helmet/";
+import Helmet from "react-helmet";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";

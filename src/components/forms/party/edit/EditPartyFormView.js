@@ -8,12 +8,12 @@ import LinkButton from "components/buttons/react-router-link-button/ReactRouterL
 import Alert from "react-bootstrap/Alert";
 import BrokenLink from "components/cards/broken-link-card";
 import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 function EditPartyFormView(props) {
   const [show, setShow] = useState(props.fileNotImage);
   return (
-    <Row id={"createPartyForm"}>
+    <Row id={"editPartyForm"}>
       {props.componentIsLoading ? (
         <SubRouteLoader />
       ) : props.party === null ? (

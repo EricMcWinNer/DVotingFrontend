@@ -10,7 +10,7 @@ import LinkButton from "components/buttons/react-router-link-button";
 import DataTable from "react-data-table-component";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
+import Helmet from "react-helmet";
 
 function PartyHomeRouteView(props) {
   let partiesData;
