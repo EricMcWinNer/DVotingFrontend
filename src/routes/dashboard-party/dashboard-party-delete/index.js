@@ -1,1 +1,1 @@
-export { default } from "./DashboardPartyDeleteRoute";
+export { default } from "./DeletePartyRoute";

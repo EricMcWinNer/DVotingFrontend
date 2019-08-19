@@ -1,1 +1,1 @@
-export { default } from "./DashboardPartyCreateRoute";
+export { default } from "./CreatePartyRoute";

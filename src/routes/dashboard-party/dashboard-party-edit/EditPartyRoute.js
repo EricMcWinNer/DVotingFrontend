@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import EditPartyFormView from "components/forms/party/edit";
 
-class DashboardPartyEditRoute extends Component {
+class EditPartyRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,4 +23,4 @@ class DashboardPartyEditRoute extends Component {
   }
 }
 
-export default DashboardPartyEditRoute;
+export default EditPartyRoute;

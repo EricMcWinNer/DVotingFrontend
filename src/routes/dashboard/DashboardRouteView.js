@@ -14,6 +14,8 @@ import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
 import ElectionRouteContainer from "routes/dashboard-election";
 import PartyRouteContainer from "routes/dashboard-party";
+import VotersRouteContainer from "routes/dashboard-voters";
+import RestrictedRoute from "components/routes/restricted-route";
 
 function DashBoardRouteView(props) {
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
@@ -56,6 +58,12 @@ function DashBoardRouteView(props) {
                   path={`${props.match.path}/party`}
                   render={props => (
                     <PartyRouteContainer user={user} {...props} />
+                  )}
+                />
+                <RestrictedRoute
+                  path={`${props.match.path}/voters`}
+                  render={props => (
+                    <VotersRouteContainer user={user} {...props} />
                   )}
                 />
               </Switch>

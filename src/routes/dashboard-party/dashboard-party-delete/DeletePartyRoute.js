@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "./index.sass";
-import PartyDeleteView from "./DashboardPartyDeleteRouteView";
+import DeletePartyRouteView from "./DeletePartyRouteView";
 
-class DashboardPartyDeleteRoute extends Component {
+class DeletePartyRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +65,7 @@ class DashboardPartyDeleteRoute extends Component {
 
   render() {
     return (
-      <PartyDeleteView
+      <DeletePartyRouteView
         handleDelete={this.handleDelete}
         {...this.state}
         {...this.props}
@@ -74,4 +74,4 @@ class DashboardPartyDeleteRoute extends Component {
   }
 }
 
-export default DashboardPartyDeleteRoute;
+export default DeletePartyRoute;

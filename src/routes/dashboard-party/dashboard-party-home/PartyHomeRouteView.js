@@ -11,7 +11,7 @@ import DataTable from "react-data-table-component";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
 
-function DashboardPartyHomeRouteView(props) {
+function PartyHomeRouteView(props) {
   let partiesData;
   if (!props.componentIsLoading) {
     partiesData = props.parties.map((datum, index) => ({
@@ -110,4 +110,4 @@ function DashboardPartyHomeRouteView(props) {
   );
 }
 
-export default DashboardPartyHomeRouteView;
+export default PartyHomeRouteView;

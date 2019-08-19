@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import axios from "axios";
 
-import DashboardPartyRouteView from "./DashboardPartyRouteView";
+import "./index.sass";
 
-class DashboardPartyRoute extends Component {
+class VotersRoutes extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +19,7 @@ class DashboardPartyRoute extends Component {
     this._mounted = false;
   }
 
-  render() {
-    return <DashboardPartyRouteView {...this.state} {...this.props} />;
-  }
+  render() {}
 }
 
-export default DashboardPartyRoute;
+export default VotersRoutes;

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import LinkButton from "components/buttons/react-router-link-button";
-import DashboardPartyHomeRouteView from "./DashboardPartyHomeRouteView";
+import PartyHomeRouteView from "./PartyHomeRouteView";
 
-class DashboardPartyHomeRoute extends Component {
+class PartyHomeRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,8 +35,8 @@ class DashboardPartyHomeRoute extends Component {
   }
 
   render() {
-    return <DashboardPartyHomeRouteView {...this.state} {...this.props} />;
+    return <PartyHomeRouteView {...this.state} {...this.props} />;
   }
 }
 
-export default DashboardPartyHomeRoute;
+export default PartyHomeRoute;

@@ -1,1 +1,1 @@
-export { default } from "./DashboardPartyHomeRoute";
+export { default } from "./PartyHomeRoute";

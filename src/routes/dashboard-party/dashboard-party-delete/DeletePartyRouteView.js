@@ -4,11 +4,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card";
 import deleteIcon from "assets/img/icons/delete.png";
-import brokenLink from "assets/img/icons/broken-link.png";
 import { Link } from "react-router-dom";
 import BrokenLinkCard from "components/cards/broken-link-card";
 
-function DashboardPartyDeleteRouteView(props) {
+function DeletePartyRouteView(props) {
   return props.componentIsLoading ? (
     <SubRouteLoader />
   ) : props.party === null ? (
@@ -71,4 +70,4 @@ function DashboardPartyDeleteRouteView(props) {
   );
 }
 
-export default DashboardPartyDeleteRouteView;
+export default DeletePartyRouteView;
