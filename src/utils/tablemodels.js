@@ -68,6 +68,21 @@ export const votersModel = [
     maxWidth: "22px"
   },
   {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"confirm-background mr-2"}
+        to={`/dashboard/voters/${row.id}`}
+      >
+        <i className="fas fa-info-circle" />
+        Full info
+      </LinkButton>
+    ),
+    minWidth: "130px"
+  },
+  {
     name: "Picture",
     sortable: false,
     cell: row => (
@@ -121,7 +136,7 @@ export const votersModel = [
     name: "Date of Birth",
     sortable: true,
     selector: "age.dob_string",
-    maxWidth: "150px"
+    maxWidth: "220px"
   },
   {
     name: "Age",

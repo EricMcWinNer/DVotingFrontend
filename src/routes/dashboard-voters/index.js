@@ -1,1 +1,1 @@
-export { default } from "./VotersRoute";
+export { default } from "./VoterRoutes.js";

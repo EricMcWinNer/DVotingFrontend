@@ -10,7 +10,7 @@ import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubR
 import { votersModel } from "utils/tablemodels";
 import voters from "assets/img/icons/voter.png";
 
-function VotersView(props) {
+function VoterHomeRouteView(props) {
   const handleKeyUp = e => {
     if (e.keyCode === 13)
       props.getSearchResults(props.searchNeedle.current.value);
@@ -133,4 +133,4 @@ function VotersView(props) {
   );
 }
 
-export default VotersView;
+export default VoterHomeRouteView;

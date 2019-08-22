@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import VotersRouteView from "./VotersRouteView";
+import VoterHomeRouteView from "./VoterHomeRouteView";
 
-class VotersRoute extends Component {
+class VoterHomeRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -212,7 +212,7 @@ class VotersRoute extends Component {
 
   render() {
     return (
-      <VotersRouteView
+      <VoterHomeRouteView
         clearSearch={this.clearSearch}
         changePage={this.changePage}
         changeRowsPerPage={this.changeRowsPerPage}
@@ -227,4 +227,4 @@ class VotersRoute extends Component {
   }
 }
 
-export default VotersRoute;
+export default VoterHomeRoute;
