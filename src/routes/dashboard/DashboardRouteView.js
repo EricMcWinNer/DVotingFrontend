@@ -1,13 +1,9 @@
 import React from "react";
-import LogoWithText from "components/logo/withtext/logo";
 import Helmet from "react-helmet";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
-import "./index.sass";
 import { Route, Switch } from "react-router-dom";
 
+import "./index.sass";
 import FullScreenLoader from "components/loaders/fullscreen";
 import SideBar from "components/dashboard/sidebar";
 import NavBar from "components/dashboard/navbar";

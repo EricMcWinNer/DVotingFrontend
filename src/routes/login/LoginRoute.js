@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import SessionManager from "security/SessionManager";
 import LoginRouteView from "./LoginRouteView";
