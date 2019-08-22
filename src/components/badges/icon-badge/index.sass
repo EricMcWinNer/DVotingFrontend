@@ -1,0 +1,28 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+.IconBadge
+  display: inline-block
+  @extend .cartogothic
+  padding: 4px 8px
+  font:
+    size: 12px !important
+  color: white !important
+  border-radius: 3px
+  margin-right: 5px
+  text-align: center
+
+  i
+    margin-right: 4px
+
+  &.voter, &.single
+    @extend .confirm-background
+
+  &.official, &.married
+    background-color: #6F42C1
+
+  &.female, &.widowed
+    background-color: #FF1695
+
+  &.male, &.divorced
+    background-color: #010080

@@ -1,0 +1,95 @@
+@import ../../../assets/sass/reusable
+@import ../../../assets/sass/fonts
+
+#voters
+  .DataTableContainer
+    position: relative
+    width: 100%
+
+  .rdt_TableHead
+    border-bottom: 1px solid #ddd
+
+  .rdt_TableBody
+    max-height: 60vh
+    overflow-y: scroll
+
+  .rdt_TableCell
+    @extend .cartogothic
+
+    div
+      font-size: 14px
+      font-weight: 400
+      color: #444
+
+  .rdt_TableHead
+    @extend .cartogothic
+
+    div
+      font-size: 14px
+      font-weight: 400
+      color: #444
+
+  .DataTableLoader
+    position: absolute
+    width: 100%
+    height: calc(100% - 103px)
+    top: 48px
+    left: 0
+    bottom: 55px
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 15
+    background:
+      color: rgba(255, 255, 255, 0.85)
+
+
+  .searchVoter
+    padding: 8px 16px
+      right: 40px
+    height: 40px
+    border: 1px solid #ddd
+      radius: 3px
+    min-width: 250px
+    @extend .cartogothic
+
+    & + .closeSearch
+      background-color: transparent
+      border: none
+      position: relative
+      font-size: 18px
+      padding: 0
+      display: inline-flex
+      justify-content: center
+      align-items: center
+      left: -40px
+      height: 40px
+      width: 40px
+      @extend .cartogothic
+
+
+  .searchTools
+    select
+      height: 40px
+      min-width: 200px
+      border: 1px solid #ddd
+      @extend .cartogothic
+      display: inline-block !important
+      font-size: 0.875rem
+      padding:
+        right: 25px
+
+    label
+      @extend .cartogothic
+      color: #444
+
+    ul
+      margin: 0
+      padding: 0
+      list-style: none
+
+      li
+        display: inline-block
+
+        &:not(.float-right)
+          margin-right: 10px

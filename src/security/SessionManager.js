@@ -1,5 +1,3 @@
-import jwt from "jsonwebtoken";
-import getCookie, { checkCookie } from "utils/cookie";
 import axios from "axios";
 //TODO WRITE A CLEAN METHOD FOR HANDLING AUTHENTICATED REQUESTS
 class SessionManager {
