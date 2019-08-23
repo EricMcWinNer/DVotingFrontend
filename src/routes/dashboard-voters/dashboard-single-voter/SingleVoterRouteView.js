@@ -10,6 +10,7 @@ import BrokenLink from "components/cards/broken-link-card";
 import LinkButton from "components/buttons/react-router-link-button";
 import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
+import voters from "assets/img/icons/voter.png";
 
 function SingleVoterRouteView(props) {
   let rolesView;
@@ -38,9 +39,24 @@ function SingleVoterRouteView(props) {
               {process.env.REACT_APP_NAME} | {props.voter.name}
             </title>
           </Helmet>
+          <div className="title clearfix o-auto">
+            <div className="float-left">
+              <img
+                src={voters}
+                alt="No parties found"
+                className={"title-icon small"}
+              />
+            </div>
+            <div className="float-left">
+              <p className={"title"}>Voter Information</p>
+            </div>
+          </div>
+          <p className="subtitle poppins">
+            Below you can see the complete details of {props.voter.name}
+          </p>
           <div className="text">
             <Row>
-              <Col md={{ span: 4, offset: 4 }}>
+              <Col md={{ span: 4, offset: 0 }}>
                 <img
                   alt={props.voter.name}
                   src={`${process.env.REACT_APP_API_PATH}/storage/${props.voter.picture}`}
@@ -49,8 +65,8 @@ function SingleVoterRouteView(props) {
               </Col>
             </Row>
             <Row>
-              <Col md={{ span: 10, offset: 1 }}>
-                <p className={"voterName text-center"}>{props.voter.name}</p>
+              <Col md={{ span: 10, offset: 0 }}>
+                <p className={"voterName"}>{props.voter.name}</p>
               </Col>
             </Row>
             <div className="content-container">
