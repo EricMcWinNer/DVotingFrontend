@@ -3,6 +3,7 @@ import { contains } from "utils/helpers";
 import { Link } from "react-router-dom";
 import election from "assets/img/icons/election.png";
 import parties from "assets/img/icons/parties.png";
+import candidates from "assets/img/icons/candidates.png";
 
 function VoterLinks(props) {
   return (
@@ -33,6 +34,20 @@ function VoterLinks(props) {
             className={"sidebarIcon"}
           />
           View Political Parties
+        </Link>
+      </li>
+      <li
+        className={
+          contains(props.location, "/dashboard/candidates") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/candidates"}>
+          <img
+            src={candidates}
+            alt={"Manage Candidates"}
+            className={"sidebarIcon"}
+          />
+          View Candidates
         </Link>
       </li>
     </>

@@ -49,8 +49,12 @@ function OfficialLinks(props) {
           View Voters
         </Link>
       </li>
-      <li>
-        <Link to={"/candidates"}>
+      <li
+        className={
+          contains(props.location, "/dashboard/candidates") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/candidates"}>
           <img
             src={candidates}
             alt={"Manage Candidates"}
