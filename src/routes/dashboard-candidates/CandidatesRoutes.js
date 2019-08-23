@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 
+import CandidatesHomeRoute from "./dashboard-candidates-home";
+
 class CandidatesRoutes extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,13 @@ class CandidatesRoutes extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path={this.props.match.path} />
+        <Route
+          exact
+          path={this.props.match.path}
+          render={props => (
+            <CandidatesHomeRoute user={this.props.user} {...props} />
+          )}
+        />
       </Switch>
     );
   }
