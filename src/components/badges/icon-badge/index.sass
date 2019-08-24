@@ -18,11 +18,14 @@
   &.voter, &.single
     @extend .confirm-background
 
-  &.official, &.married
+  &.official, &.married, &.President
     background-color: #6F42C1
 
   &.female, &.widowed
     background-color: #FF1695
 
-  &.male, &.divorced
+  &.male, &.divorced, &.Vice-President
     background-color: #010080
+
+  &.President, &.Vice-President
+    min-width: 100px

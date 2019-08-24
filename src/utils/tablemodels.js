@@ -186,3 +186,72 @@ export const votersModel = [
     selector: "occupation"
   }
 ];
+
+export const candidatesModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+    maxWidth: "10px"
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"confirm-background mr-2"}
+        to={`/dashboard/voters/${row.user_id}`}
+      >
+        <i className="fas fa-info-circle" />
+        Full info
+      </LinkButton>
+    ),
+    minWidth: "130px"
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <img
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.candidate_picture}`}
+        alt={row.name}
+        height={"45px"}
+      />
+    ),
+    maxWidth: "55px"
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "name"
+  },
+  {
+    name: "Position",
+    sortable: false,
+    cell: row => (
+      <IconBadge className={row.role} fixedWidth={70}>
+        {capitalize(row.role)}
+      </IconBadge>
+    ),
+    minWidth: "160px"
+  },
+  {
+    name: "Party Logo",
+    sortable: false,
+    cell: row => (
+      <img
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.party_logo}`}
+        alt={row.party_name}
+        height={"45px"}
+        style={{ borderRadius: "50%" }}
+      />
+    )
+  },
+  {
+    name: "Political Party",
+    sortable: true,
+    selector: "party_name",
+    minWidth: "300px"
+  }
+];
