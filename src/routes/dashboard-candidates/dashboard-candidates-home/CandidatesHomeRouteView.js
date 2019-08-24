@@ -9,6 +9,7 @@ import candidates from "assets/img/icons/candidates.png";
 import BaseCard from "components/cards/base-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
 import { candidatesModel } from "utils/tablemodels";
+import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
 function CandidatesHomeRouteView(props) {
   let candidatesData;
@@ -29,7 +30,7 @@ function CandidatesHomeRouteView(props) {
       <Col md={12}>
         <BaseCard>
           <Helmet>
-            <title>{process.env.REACT_APP_NAME} | View Voters</title>
+            <title>{process.env.REACT_APP_NAME} | View Candidates</title>
           </Helmet>
           <div className="title clearfix o-auto">
             <div className="float-left">
@@ -90,6 +91,20 @@ function CandidatesHomeRouteView(props) {
               </div>
             )}
           </div>
+          <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
+            {props.user.roles.includes("official") && (
+              <li>
+                <LinkButton
+                  id={"manage-election-button"}
+                  className={"logo-background"}
+                  to={`/dashboard/candidates/create`}
+                >
+                  <i className="far fa-plus-square" />
+                  Create
+                </LinkButton>
+              </li>
+            )}
+          </ul>
         </BaseCard>
       </Col>
     </Row>

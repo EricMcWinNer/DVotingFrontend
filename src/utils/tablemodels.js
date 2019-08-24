@@ -255,3 +255,75 @@ export const candidatesModel = [
     minWidth: "300px"
   }
 ];
+
+export const selectCandidatesModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial"
+  },
+  {
+    //todo - Change Icon to a proper one
+    name: "",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"confirm-background mr-2"}
+        to={`/dashboard/candidates/${row.id}/create`}
+      >
+        <i className="fas fa-info-circle" />
+        Make a Candidate
+      </LinkButton>
+    ),
+    minWidth: "130px"
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "name"
+  },
+  {
+    name: "Gender",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.gender} fixedWidth={70}>
+        {row.gender === "male" && <i className="fas fa-male" />}
+        {row.gender === "female" && <i className="fas fa-female" />}
+        {capitalize(row.gender)}
+      </IconBadge>
+    ),
+    maxWidth: "80px"
+  },
+  {
+    name: "Age",
+    sortable: true,
+    selector: "age.age",
+    maxWidth: "30px"
+  },
+  {
+    name: "Date of Birth",
+    sortable: true,
+    selector: "age.dob_string",
+    maxWidth: "220px"
+  },
+  {
+    name: "Marital Status",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.marital_status} fixedWidth={70}>
+        {capitalize(row.marital_status)}
+      </IconBadge>
+    )
+  },
+  {
+    name: "LGA",
+    sortable: true,
+    selector: "lga"
+  },
+  {
+    name: "State",
+    sortable: true,
+    selector: "state"
+  }
+];
