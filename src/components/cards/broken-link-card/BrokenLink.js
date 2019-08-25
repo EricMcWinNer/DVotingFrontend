@@ -1,12 +1,10 @@
 import React from "react";
+import Helmet from "react-helmet";
 
 import "./index.sass";
 import brokenLink from "assets/img/icons/broken-link.png";
 import BaseCard from "components/cards/base-card";
-import deleteIcon from "assets/img/icons/delete.png";
-import { Link } from "react-router-dom";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
-import Helmet from "components/forms/election/edit/EditElectionFormView";
 
 function BrokenLink(props) {
   return (

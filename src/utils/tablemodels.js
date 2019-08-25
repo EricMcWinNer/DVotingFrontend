@@ -1,5 +1,8 @@
 import React from "react";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
 
@@ -114,11 +117,12 @@ export const votersModel = [
         <IconBadge className={`${role}`} key={index + 1}>
           {role === "voter" && <i className="fas fa-person-booth" />}
           {role === "official" && <i className="fas fa-users-cog" />}
+          {role === "candidate" && <i className="fas fa-user-tie" />}
           {capitalize(role)}
         </IconBadge>
       ));
     },
-    minWidth: "170px"
+    minWidth: "200px"
   },
   {
     name: "Gender",
@@ -195,19 +199,65 @@ export const candidatesModel = [
     maxWidth: "10px"
   },
   {
-    name: "",
+    //TODO -SORT OUT TOOLTIP
+    name: "Actions",
     sortable: false,
     cell: row => (
-      <LinkButton
-        small
-        className={"confirm-background mr-2"}
-        to={`/dashboard/voters/${row.user_id}`}
-      >
-        <i className="fas fa-info-circle" />
-        Full info
-      </LinkButton>
+      <>
+        <OverlayTrigger
+          placement={"top"}
+          overlay={
+            <Tooltip id={`tooltip-info`}>
+              View the full information of the candidate
+            </Tooltip>
+          }
+        >
+          <LinkButton
+            small
+            className={"confirm-background center only-icon text-center mr-2"}
+            to={`/dashboard/voters/${row.user_id}`}
+          >
+            <i className="fas fa-info-circle" />
+          </LinkButton>
+        </OverlayTrigger>
+
+        <OverlayTrigger
+          placement={"top"}
+          trigger={"hover"}
+          overlay={
+            <Tooltip id={`tooltip-edit`}>
+              Edit the candidate's information
+            </Tooltip>
+          }
+        >
+          <LinkButton
+            small
+            className={"logo-background only-icon text-center mr-2"}
+            to={`/dashboard/candidates/${row.id}/edit`}
+          >
+            <i className="fas fa-user-edit" />
+          </LinkButton>
+        </OverlayTrigger>
+
+        <OverlayTrigger
+          placement={"top"}
+          overlay={
+            <Tooltip id={`tooltip-delete`}>
+              <b>Delete</b> this candidate
+            </Tooltip>
+          }
+        >
+          <LinkButton
+            small
+            className={"reject-background only-icon text-center mr-2"}
+            to={`/dashboard/candidates/${row.id}/delete`}
+          >
+            <i className="fas fa-trash-alt" />
+          </LinkButton>
+        </OverlayTrigger>
+      </>
     ),
-    minWidth: "130px"
+    minWidth: "200px"
   },
   {
     name: "",
@@ -224,7 +274,8 @@ export const candidatesModel = [
   {
     name: "Name",
     sortable: true,
-    selector: "name"
+    selector: "name",
+    minWidth: "250px"
   },
   {
     name: "Position",
@@ -273,10 +324,22 @@ export const selectCandidatesModel = [
         to={`/dashboard/candidates/${row.id}/create`}
       >
         <i className="fas fa-info-circle" />
-        Make a Candidate
+        Make Candidate
       </LinkButton>
     ),
     minWidth: "130px"
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <img
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.picture}`}
+        alt={row.name}
+        height={"45px"}
+      />
+    ),
+    maxWidth: "55px"
   },
   {
     name: "Name",

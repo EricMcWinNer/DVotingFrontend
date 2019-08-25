@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card";
 import Helmet from "react-helmet";
-import voters from "assets/img/icons/voter.png";
+import candidates from "assets/img/icons/totalcandidates.png";
 import DataTable from "react-data-table-component";
 import { selectCandidatesModel } from "utils/tablemodels";
 
@@ -40,23 +40,23 @@ function SelectNewCandidateRouteView(props) {
       <Col md={12}>
         <BaseCard>
           <Helmet>
-            <title>{process.env.REACT_APP_NAME} | View Voters</title>
+            <title>{process.env.REACT_APP_NAME} | Select new candidate</title>
           </Helmet>
           <div className="title clearfix o-auto">
             <div className="float-left">
               <img
-                src={voters}
+                src={candidates}
                 alt="No parties found"
                 className={"title-icon small"}
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Voters</p>
+              <p className={"title"}>Select a new Candidate</p>
             </div>
           </div>
           <p className="subtitle poppins">
-            In this section you can view all the voters registered in the
-            application.
+            In this section you can select a new candidate from a list of all
+            the users who are not candidates yet.
           </p>
           <div className={"searchTools"}>
             <ul className={"o-auto clearfix"}>

@@ -55,7 +55,7 @@ function ElectionHomeRouteView(props) {
       <Helmet>
         <title>
           {process.env.REACT_APP_NAME} |
-          {props.user.roles.includes("official") ? "Manage" : "View"} Election
+          {props.user.roles.includes("official") ? " Manage" : " View"} Election
         </title>
       </Helmet>
       <Col md={{ span: 7 }}>

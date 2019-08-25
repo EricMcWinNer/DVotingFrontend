@@ -18,6 +18,9 @@ function CandidatesHomeRouteView(props) {
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       ...candidate
     }));
+    if (!props.user.roles.includes("official")) {
+      candidatesModel.splice(1, 1);
+    }
   }
   const handleKeyUp = e => {
     if (e.keyCode === 13)
@@ -57,9 +60,9 @@ function CandidatesHomeRouteView(props) {
                   name={"searchNeedle"}
                   id={"searchNeedle"}
                   ref={props.searchNeedle}
-                  className={"searchVoter"}
+                  className={"searchCandidate"}
                   onKeyUp={e => handleKeyUp(e)}
-                  placeholder={"Search for a voter"}
+                  placeholder={"Search for a candidate"}
                 />
                 <button
                   className="closeSearch"

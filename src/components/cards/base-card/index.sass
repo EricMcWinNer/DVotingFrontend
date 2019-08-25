@@ -21,6 +21,37 @@
   label
     display: block
 
+  input.basecard-input
+    display: inline-block
+    border: 1px solid #ddd
+      radius: 4px
+    padding: 14px
+      left: 15px
+    width: 350px
+    @extend .cartogothic
+
+    &[disabled]
+      cursor: not-allowed
+
+  select.basecard-select
+    font-size: 14px
+    width: 350px
+    padding: 14px
+      left: 15px
+    border: 1px solid #ddd
+    height: 50px
+    display: inline-block !important
+    @extend .cartogothic
+
+
+  .react-datetime-picker__wrapper
+    border: 1px solid #ddd
+      radius: 4px
+    padding: 14px
+      left: 15px
+    width: 350px
+
+
   .inputGroup
     margin:
       bottom: 16px

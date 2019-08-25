@@ -11,6 +11,7 @@ function ReactRouterLinkButton(props) {
     <Link
       to={props.to}
       style={styles}
+      title={props.title === undefined ? "" : props.title}
       className={`${props.small ? "small" : ""} ${
         props.medium ? "medium" : ""
       } react-router-link-button ${props.className}`}
