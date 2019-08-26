@@ -75,7 +75,9 @@ class CreateCandidateFormController extends Component {
                 );
                 this.props.history.push("/dashboard/candidates/create");
               } else if (res.data.err === "officialCantBeCandidate")
-                alert("An official cannot be a candidate");
+                alert(
+                  "Users who already have a role besides just voter cannot be candidates"
+                );
               else if (res.data.err === "alreadyCandidate") {
                 alert(
                   "This user is already a candidate. You will be redirected to the candidate list"
