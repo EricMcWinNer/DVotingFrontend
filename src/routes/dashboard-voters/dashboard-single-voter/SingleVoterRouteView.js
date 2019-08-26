@@ -111,7 +111,7 @@ function SingleVoterRouteView(props) {
                     <i className="far fa-calendar" />
                     Date of birth:
                   </p>
-                  <p>{props.voter.age.dob_string}</p>
+                  <p>{props.voter.dob.dob_string}</p>
                 </div>
               </Row>
               <Row>
@@ -143,7 +143,7 @@ function SingleVoterRouteView(props) {
                     <i className="fas fa-map-marked-alt" />
                     State:
                   </p>
-                  <p>{props.voter.state}</p>
+                  <p>{props.voter.lga.state.name}</p>
                 </div>
               </Row>
               <Row>
@@ -152,7 +152,7 @@ function SingleVoterRouteView(props) {
                     <i className="fas fa-map-marker-alt" />
                     LGA:
                   </p>
-                  <p>{props.voter.lga}</p>
+                  <p>{props.voter.lga.name}</p>
                 </div>
               </Row>
               <Row>
@@ -179,7 +179,7 @@ function SingleVoterRouteView(props) {
                     <i className="fas fa-calendar-plus" />
                     Date Created:
                   </p>
-                  <p>{props.voter.date_created}</p>
+                  <p>{props.voter.created_at.created_at}</p>
                 </div>
               </Row>
               <Row className={"mt-4"}>

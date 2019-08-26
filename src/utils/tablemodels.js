@@ -139,13 +139,13 @@ export const votersModel = [
   {
     name: "Date of Birth",
     sortable: true,
-    selector: "age.dob_string",
+    selector: "dob.dob_string",
     maxWidth: "220px"
   },
   {
     name: "Age",
     sortable: true,
-    selector: "age.age",
+    selector: "dob.age",
     maxWidth: "30px"
   },
   {
@@ -156,12 +156,12 @@ export const votersModel = [
   {
     name: "LGA",
     sortable: true,
-    selector: "lga"
+    selector: "lga.name"
   },
   {
     name: "State",
     sortable: true,
-    selector: "state"
+    selector: "lga.state.name"
   },
   {
     name: "Address 1",
@@ -292,8 +292,8 @@ export const candidatesModel = [
     sortable: false,
     cell: row => (
       <img
-        src={`${process.env.REACT_APP_API_PATH}/storage/${row.party_logo}`}
-        alt={row.party_name}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.party.logo}`}
+        alt={row.party.name}
         height={"45px"}
         style={{ borderRadius: "50%" }}
       />
@@ -361,13 +361,13 @@ export const selectCandidatesModel = [
   {
     name: "Age",
     sortable: true,
-    selector: "age.age",
+    selector: "dob.age",
     maxWidth: "30px"
   },
   {
     name: "Date of Birth",
     sortable: true,
-    selector: "age.dob_string",
+    selector: "dob.dob_string",
     maxWidth: "220px"
   },
   {
@@ -382,11 +382,11 @@ export const selectCandidatesModel = [
   {
     name: "LGA",
     sortable: true,
-    selector: "lga"
+    selector: "lga.name"
   },
   {
     name: "State",
     sortable: true,
-    selector: "state"
+    selector: "lga.state.name"
   }
 ];

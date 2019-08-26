@@ -33,11 +33,11 @@ class CandidatesHomeRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          candidates: res.data.candidates,
-          currentPage: res.data.current_page,
-          totalPages: res.data.last_page,
-          perPage: res.data.per_page,
-          totalResults: res.data.total_results
+          candidates: res.data.candidates.data,
+          currentPage: res.data.candidates.current_page,
+          totalPages: res.data.candidates.last_page,
+          perPage: res.data.candidates.per_page,
+          totalResults: res.data.candidates.total
         });
       }
     });
@@ -92,11 +92,11 @@ class CandidatesHomeRoute extends Component {
         } else {
           this.setState({
             tableLoading: false,
-            candidates: res.data.candidates,
-            currentPage: res.data.current_page,
-            totalPages: res.data.last_page,
-            perPage: res.data.per_page,
-            totalResults: res.data.total_results
+            candidates: res.data.candidates.data,
+            currentPage: res.data.candidates.current_page,
+            totalPages: res.data.candidates.last_page,
+            perPage: res.data.candidates.per_page,
+            totalResults: res.data.candidates.total
           });
         }
       });

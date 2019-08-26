@@ -33,11 +33,11 @@ class SelectNewCandidateRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          users: res.data.users,
-          currentPage: res.data.current_page,
-          totalPages: res.data.last_page,
-          perPage: res.data.per_page,
-          totalResults: res.data.total_results,
+          users: res.data.users.data,
+          currentPage: res.data.users.current_page,
+          totalPages: res.data.users.last_page,
+          perPage: res.data.users.per_page,
+          totalResults: res.data.users.total,
           states: res.data.states,
           lgas: res.data.lgas
         });
@@ -179,11 +179,11 @@ class SelectNewCandidateRoute extends Component {
         } else {
           this.setState({
             tableLoading: false,
-            users: res.data.users,
-            currentPage: res.data.current_page,
-            totalPages: res.data.last_page,
-            perPage: res.data.per_page,
-            totalResults: res.data.total_results
+            users: res.data.users.data,
+            currentPage: res.data.users.current_page,
+            totalPages: res.data.users.last_page,
+            perPage: res.data.users.per_page,
+            totalResults: res.data.users.total
           });
         }
       });

@@ -29,7 +29,7 @@ function SelectNewCandidateRouteView(props) {
     ));
     lgas = props.lgas.map((lga, index) => (
       <option value={lga.lga_id} key={index}>
-        {lga.name} - {lga.state}
+        {lga.name} - {lga.state.name}
       </option>
     ));
   }

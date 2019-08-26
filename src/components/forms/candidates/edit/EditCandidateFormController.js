@@ -24,7 +24,7 @@ class EditCandidateFormController extends Component {
     if (prevProps.candidate === null && this.props.candidate !== null) {
       this.setState({
         selectedParty: this.props.candidate.party_id,
-        selectedPartyLogo: this.props.candidate.party_logo,
+        selectedPartyLogo: this.props.candidate.party.logo,
         role: this.props.candidate.role
       });
     }

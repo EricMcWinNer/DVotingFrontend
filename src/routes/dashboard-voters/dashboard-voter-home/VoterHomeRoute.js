@@ -37,11 +37,11 @@ class VoterHomeRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          voters: res.data.voters,
-          currentPage: res.data.current_page,
-          totalPages: res.data.last_page,
-          perPage: res.data.per_page,
-          totalResults: res.data.total_results,
+          voters: [...res.data.voters.data],
+          currentPage: res.data.voters.current_page,
+          totalPages: res.data.voters.last_page,
+          perPage: res.data.voters.per_page,
+          totalResults: res.data.voters.total,
           states: res.data.states,
           lgas: res.data.lgas
         });
@@ -183,11 +183,11 @@ class VoterHomeRoute extends Component {
         } else {
           this.setState({
             tableLoading: false,
-            voters: res.data.voters,
-            currentPage: res.data.current_page,
-            totalPages: res.data.last_page,
-            perPage: res.data.per_page,
-            totalResults: res.data.total_results
+            voters: [...res.data.voters.data],
+            currentPage: res.data.voters.current_page,
+            totalPages: res.data.voters.last_page,
+            perPage: res.data.voters.per_page,
+            totalResults: res.data.voters.total
           });
         }
       });
