@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import ConfirmOfficialCreateRouteView from "./ConfirmOfficialCreateRouteView";
+import DeleteOfficialRouteView from "./DeleteOfficialRouteView";
 
-class ConfirmOfficialCreateRoute extends Component {
+class DeleteOfficialRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
       componentIsLoading: true,
-      creating: false,
-      prospectiveOfficial: null
+      official: null,
+      deleting: false
     };
   }
 
@@ -17,7 +17,7 @@ class ConfirmOfficialCreateRoute extends Component {
     this._mounted = true;
     axios.defaults.withCredentials = true;
     axios(
-      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}/create/confirm`,
+      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
       {
         method: "get"
       }
@@ -27,7 +27,7 @@ class ConfirmOfficialCreateRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          prospectiveOfficial: res.data.user
+          official: res.data.official
         });
       }
     });
@@ -37,28 +37,28 @@ class ConfirmOfficialCreateRoute extends Component {
     this._mounted = false;
   }
 
-  handleCreate = e => {
+  handleDelete = e => {
     if (this._mounted) {
       e.preventDefault();
-      this.setState({ creating: true });
+      this.setState({ deleting: true });
       axios.defaults.withCredentials = true;
       axios(
-        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}/create`,
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
         {
-          method: "post"
+          method: "delete"
         }
       ).then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
         } else {
           this.setState({
-            creating: false
+            deleting: false
           });
           if (res.data.completed) {
             alert("Official deleted successfully");
-            this.props.history.push("/dashboard/officials");
+            this.props.history("/dashboard/officials");
           } else {
-            alert("An error occured");
+            alert("An error occurred.");
             this.props.history.push("/dashboard/officials");
           }
         }
@@ -68,8 +68,8 @@ class ConfirmOfficialCreateRoute extends Component {
 
   render() {
     return (
-      <ConfirmOfficialCreateRouteView
-        handleCreate={this.handleCreate}
+      <DeleteOfficialRouteView
+        handleDelete={this.handleDelete}
         {...this.state}
         {...this.props}
       />
@@ -77,4 +77,4 @@ class ConfirmOfficialCreateRoute extends Component {
   }
 }
 
-export default ConfirmOfficialCreateRoute;
+export default DeleteOfficialRoute;

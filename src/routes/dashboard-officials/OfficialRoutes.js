@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import OfficialHomeRoute from "./dashboard-officials-home";
 import CreateOfficialRoute from "./dashboard-officials-create";
 import ConfirmOfficialCreateRoute from "./dashboard-officials-create-confirm";
+import DeleteOfficialRoute from "./dashboard-officials-delete";
 
 class OfficialRoutes extends Component {
   constructor(props) {
@@ -41,6 +42,11 @@ class OfficialRoutes extends Component {
           render={props => (
             <ConfirmOfficialCreateRoute user={user} {...props} />
           )}
+        />
+        <Route
+          exact
+          path={`${this.props.match.path}/:id/delete`}
+          render={props => <DeleteOfficialRoute user={user} {...props} />}
         />
       </Switch>
     );

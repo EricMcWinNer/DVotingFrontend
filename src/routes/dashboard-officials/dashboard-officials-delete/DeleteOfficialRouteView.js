@@ -1,25 +1,24 @@
 import React from "react";
-import "./index.sass";
-import BaseCard from "components/cards/base-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
 import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import BaseCard from "components/cards/base-card";
 import Helmet from "react-helmet";
 import officials from "assets/img/icons/official.png";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
-function ConfirmOfficialCreateRouteView(props) {
+function DeleteOfficialRouteView(props) {
   return props.componentIsLoading ? (
     <SubRouteLoader />
-  ) : props.prospectiveOfficial === null ? (
+  ) : props.official === null ? (
     <BrokenLinkCard />
   ) : (
     <Row id={"deleteCandidate"}>
       <Col md={12}>
         <BaseCard>
           <Helmet>
-            <title>{process.env.REACT_APP_NAME} | Create Official</title>
+            <title>{process.env.REACT_APP_NAME} | Delete Official</title>
           </Helmet>
           <div className="title clearfix o-auto">
             <div className="float-left">
@@ -30,22 +29,22 @@ function ConfirmOfficialCreateRouteView(props) {
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Create Official</p>
+              <p className={"title"}>Delete Official</p>
             </div>
           </div>
           <p className="subtitle poppins">
-            Are you sure you want to make{" "}
-            <b>{props.prospectiveOfficial.name}</b> an official?
+            Are you sure you make <b>{props.official.name}</b> to stop being an
+            official?
           </p>
           <ul className={"no-style m-0 p-0 h-menu"}>
             <li>
               <LinkButton
                 medium
                 className={"confirm-background mr-3"}
-                onClick={e => props.handleCreate(e)}
-                to={`/dashboard/officials/${props.prospectiveOfficial.id}/create`}
+                onClick={e => props.handleDelete(e)}
+                to={`/dashboard/officials/${props.official.id}/delete`}
               >
-                {props.creating ? (
+                {props.deleting ? (
                   <i className="fas fa-spinner fa-pulse" />
                 ) : (
                   "Yes"
@@ -56,7 +55,7 @@ function ConfirmOfficialCreateRouteView(props) {
               <LinkButton
                 medium
                 className={"reject-background"}
-                to={`/dashboard/officials/create`}
+                to={`/dashboard/officials`}
               >
                 No
               </LinkButton>
@@ -68,4 +67,4 @@ function ConfirmOfficialCreateRouteView(props) {
   );
 }
 
-export default ConfirmOfficialCreateRouteView;
+export default DeleteOfficialRouteView;
