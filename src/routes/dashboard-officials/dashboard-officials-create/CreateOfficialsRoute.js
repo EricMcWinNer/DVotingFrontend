@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "./index.sass";
-import OfficialHomeRouteView from "./OfficialHomeRouteView";
+import CreateOfficialsRouteView from "./CreateOfficialsRouteView";
 
-class OfficialHomeRoute extends Component {
+//TODO - WHEN YOU HAVE DATA URL ENCODE THE SEARCH STRINGS
+
+class CreateOfficialsRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
       componentIsLoading: true,
-      officials: null,
+      users: null,
       currentPage: 0,
       totalPages: 0,
       perPage: 20,
@@ -27,7 +29,7 @@ class OfficialHomeRoute extends Component {
     this._mounted = true;
     axios.defaults.withCredentials = true;
     axios(
-      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}`,
+      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}`,
       {
         method: "get"
       }
@@ -37,11 +39,11 @@ class OfficialHomeRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          officials: res.data.officials.data,
-          currentPage: res.data.officials.current_page,
-          totalPages: res.data.officials.last_page,
-          perPage: res.data.officials.per_page,
-          totalResults: res.data.officials.total,
+          users: res.data.users.data,
+          currentPage: res.data.users.current_page,
+          totalPages: res.data.users.last_page,
+          perPage: res.data.users.per_page,
+          totalResults: res.data.users.total,
           states: res.data.states,
           lgas: res.data.lgas
         });
@@ -63,20 +65,20 @@ class OfficialHomeRoute extends Component {
       let url;
       if (searchNeedle !== "") {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
       } else {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}?page=${currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}?page=${currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
       }
       this.getTableResults(url);
     }
@@ -126,14 +128,14 @@ class OfficialHomeRoute extends Component {
     if (filterState !== "" && filterLGA === "") {
       url =
         search === ""
-          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${perPage}`
-          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
+          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${perPage}`
+          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
       this.getTableResults(url);
     } else if (filterState === "" && filterLGA !== "") {
       url =
         search === ""
-          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${perPage}`
-          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
+          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${perPage}`
+          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
       this.getTableResults(url);
     } else {
       this.getSearchResults();
@@ -151,20 +153,20 @@ class OfficialHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       if (search === "" || search === undefined || search === null) {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}?page=${this.state.currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}?page=${this.state.currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${this.state.perPage}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${this.state.perPage}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${this.state.perPage}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${this.state.perPage}`;
       } else {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
       }
       this.getTableResults(url);
     }
@@ -182,11 +184,11 @@ class OfficialHomeRoute extends Component {
         } else {
           this.setState({
             tableLoading: false,
-            officials: [...res.data.officials.data],
-            currentPage: res.data.officials.current_page,
-            totalPages: res.data.officials.last_page,
-            perPage: res.data.officials.per_page,
-            totalResults: res.data.officials.total
+            users: [...res.data.users.data],
+            currentPage: res.data.users.current_page,
+            totalPages: res.data.users.last_page,
+            perPage: res.data.users.per_page,
+            totalResults: res.data.users.total
           });
         }
       });
@@ -211,7 +213,7 @@ class OfficialHomeRoute extends Component {
 
   render() {
     return (
-      <OfficialHomeRouteView
+      <CreateOfficialsRouteView
         clearSearch={this.clearSearch}
         changePage={this.changePage}
         changeRowsPerPage={this.changeRowsPerPage}
@@ -226,4 +228,4 @@ class OfficialHomeRoute extends Component {
   }
 }
 
-export default OfficialHomeRoute;
+export default CreateOfficialsRoute;

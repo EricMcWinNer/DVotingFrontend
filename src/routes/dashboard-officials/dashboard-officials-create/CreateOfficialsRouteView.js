@@ -2,19 +2,19 @@ import React from "react";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
-import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
+import SubRouteLoader from "components/loaders/dashboard-sub-route/";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Helmet from "react-helmet";
 import officials from "assets/img/icons/official.png";
-import { officialModel } from "utils/tablemodels";
 import DataTable from "react-data-table-component";
+import { selectOfficialModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
-function OfficialHomeRouteView(props) {
-  let officialData, states, lgas;
+function CreateOfficialsRouteView(props) {
+  let eligibleOfficialsData, states, lgas;
   if (!props.componentIsLoading) {
-    officialData = props.officials.map((official, index) => ({
+    eligibleOfficialsData = props.users.map((official, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       ...official
     }));
@@ -40,23 +40,24 @@ function OfficialHomeRouteView(props) {
       <Col md={12}>
         <BaseCard>
           <Helmet>
-            <title>{process.env.REACT_APP_NAME} | Manage Officials</title>
+            <title>{process.env.REACT_APP_NAME} | Create Officials</title>
           </Helmet>
           <div className="title clearfix o-auto">
             <div className="float-left">
               <img
                 src={officials}
-                alt="Manage Officials"
+                alt="Create Officials"
                 className={"title-icon small"}
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Officials</p>
+              <p className={"title"}>Create Official</p>
             </div>
           </div>
           <p className="subtitle poppins">
-            In this section you can view and manage all the officials registered
-            in the application
+            In this section you can create new officials. You can do that by
+            either selecting an already registered user from the list below or
+            generating a pin for new registers to automatically become official.
           </p>
           <div className={"searchTools"}>
             <ul className={"o-auto fullWidth clearfix"}>
@@ -110,8 +111,8 @@ function OfficialHomeRouteView(props) {
             <DataTable
               noHeader
               striped
-              columns={officialModel}
-              data={officialData}
+              columns={selectOfficialModel}
+              data={eligibleOfficialsData}
               paginationServer
               pagination
               paginationTotalRows={props.totalResults}
@@ -132,11 +133,11 @@ function OfficialHomeRouteView(props) {
               <li>
                 <LinkButton
                   id={"manage-election-button"}
-                  className={"logo-background"}
-                  to={`/dashboard/officials/create`}
+                  className={"confirm-background"}
+                  to={`/dashboard/pins/`}
                 >
                   <i className="far fa-plus-square" />
-                  Create new Official
+                  Generate Pins for Officials
                 </LinkButton>
               </li>
             )}
@@ -147,4 +148,4 @@ function OfficialHomeRouteView(props) {
   );
 }
 
-export default OfficialHomeRouteView;
+export default CreateOfficialsRouteView;

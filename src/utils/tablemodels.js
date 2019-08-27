@@ -323,11 +323,11 @@ export const selectCandidatesModel = [
         className={"confirm-background mr-2"}
         to={`/dashboard/candidates/${row.id}/create`}
       >
-        <i className="fas fa-info-circle" />
+        <i className="far fa-plus-circle" />
         Make Candidate
       </LinkButton>
     ),
-    minWidth: "130px"
+    minWidth: "190px"
   },
   {
     name: "",
@@ -362,13 +362,13 @@ export const selectCandidatesModel = [
     name: "Age",
     sortable: true,
     selector: "dob.age",
-    maxWidth: "30px"
+    minWidth: "30px"
   },
   {
     name: "Date of Birth",
     sortable: true,
     selector: "dob.dob_string",
-    maxWidth: "220px"
+    minWidth: "180px"
   },
   {
     name: "Marital Status",
@@ -445,6 +445,90 @@ export const officialModel = [
     sortable: true,
     selector: "phone_number",
     minWidth: "200px"
+  },
+  {
+    name: "LGA",
+    sortable: true,
+    selector: "lga.name"
+  },
+  {
+    name: "State",
+    sortable: true,
+    selector: "lga.state.name"
+  }
+];
+
+export const selectOfficialModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial"
+  },
+  {
+    //todo - Change Icon to a proper one
+    name: "",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"cool-purple-background mr-2"}
+        to={`/dashboard/officials/${row.id}/create`}
+      >
+        <i className="fas fa-plus" />
+        Make Official
+      </LinkButton>
+    ),
+    minWidth: "190px"
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <img
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.picture}`}
+        alt={row.name}
+        height={"45px"}
+      />
+    ),
+    maxWidth: "55px"
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "name"
+  },
+  {
+    name: "Gender",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.gender} fixedWidth={70}>
+        {row.gender === "male" && <i className="fas fa-male" />}
+        {row.gender === "female" && <i className="fas fa-female" />}
+        {capitalize(row.gender)}
+      </IconBadge>
+    ),
+    maxWidth: "80px"
+  },
+  {
+    name: "Age",
+    sortable: true,
+    selector: "dob.age",
+    minWidth: "30px"
+  },
+  {
+    name: "Date of Birth",
+    sortable: true,
+    selector: "dob.dob_string",
+    minWidth: "180px"
+  },
+  {
+    name: "Marital Status",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.marital_status} fixedWidth={70}>
+        {capitalize(row.marital_status)}
+      </IconBadge>
+    )
   },
   {
     name: "LGA",

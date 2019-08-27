@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import OfficialHomeRoute from "./dashboard-officials-home";
+import CreateOfficialRoute from "./dashboard-officials-create";
 
 class OfficialRoutes extends Component {
   constructor(props) {
@@ -27,6 +28,11 @@ class OfficialRoutes extends Component {
           exact
           path={`${this.props.match.path}/`}
           render={props => <OfficialHomeRoute user={user} {...props} />}
+        />
+        <Route
+          exact
+          path={`${this.props.match.path}/create`}
+          render={props => <CreateOfficialRoute user={user} {...props} />}
         />
       </Switch>
     );
