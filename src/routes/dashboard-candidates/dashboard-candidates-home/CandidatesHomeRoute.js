@@ -16,7 +16,6 @@ class CandidatesHomeRoute extends Component {
       totalResults: 0,
       tableLoading: false
     };
-    this.searchNeedle = React.createRef();
   }
 
   componentDidMount() {

@@ -20,15 +20,13 @@ class OfficialRoutes extends Component {
   }
 
   render() {
+    const user = this.props.user;
     return (
       <Switch>
         <Route
           exact
           path={`${this.props.match.path}/`}
-          isAuthorized={this.props.user.roles.includes("official")}
-          render={props => (
-            <OfficialHomeRoute user={this.props.user} {...props} />
-          )}
+          render={props => <OfficialHomeRoute user={user} {...props} />}
         />
       </Switch>
     );

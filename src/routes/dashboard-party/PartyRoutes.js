@@ -6,6 +6,7 @@ import RestrictedRoute from "components/routes/restricted-route";
 import PartyCreateRoute from "routes/dashboard-party/dashboard-party-create/CreatePartyRoute";
 import PartyEditRoute from "routes/dashboard-party/dashboard-party-edit/EditPartyRoute";
 import PartyDeleteRoute from "routes/dashboard-party/dashboard-party-delete/DeletePartyRoute";
+import UserManager from "security/UserManager";
 
 class PartyRoutes extends Component {
   constructor(props) {
@@ -24,34 +25,31 @@ class PartyRoutes extends Component {
   }
 
   render() {
+    const user = this.props.user;
     return (
       <Switch>
         <Route
           path={`${this.props.match.path}`}
           exact
-          render={props => <PartyHomeRoute user={this.props.user} {...props} />}
+          render={props => <PartyHomeRoute user={user} {...props} />}
         />
         <RestrictedRoute
           path={`${this.props.match.path}/create`}
           exact
-          isAuthorized={this.props.user.roles.includes("official")}
-          render={props => (
-            <PartyCreateRoute user={this.props.user} {...props} />
-          )}
+          isAuthorized={UserManager.isOfficial(user)}
+          render={props => <PartyCreateRoute user={user} {...props} />}
         />
         <RestrictedRoute
           exact
-          render={props => <PartyEditRoute user={this.props.user} {...props} />}
-          isAuthorized={this.props.user.roles.includes("official")}
+          render={props => <PartyEditRoute user={user} {...props} />}
+          isAuthorized={UserManager.isOfficial(user)}
           path={`${this.props.match.path}/:id/edit`}
         />
         <RestrictedRoute
           exact
           path={`${this.props.match.path}/:id/delete`}
-          isAuthorized={this.props.user.roles.includes("official")}
-          render={props => (
-            <PartyDeleteRoute user={this.props.user} {...props} />
-          )}
+          isAuthorized={UserManager.isOfficial(user)}
+          render={props => <PartyDeleteRoute user={user} {...props} />}
         />
       </Switch>
     );

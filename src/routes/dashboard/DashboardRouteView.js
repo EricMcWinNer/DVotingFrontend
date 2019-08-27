@@ -14,6 +14,7 @@ import VotersRouteContainer from "routes/dashboard-voters";
 import CandidatesContainer from "routes/dashboard-candidates";
 import OfficialHomeContainer from "routes/dashboard-officials";
 import RestrictedRoute from "components/routes/restricted-route";
+import UserManager from "security/UserManager";
 
 function DashBoardRouteView(props) {
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
@@ -60,7 +61,7 @@ function DashBoardRouteView(props) {
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/voters`}
-                  isAuthorized={props.user.roles.includes("official")}
+                  isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
                     <VotersRouteContainer user={user} {...props} />
                   )}
@@ -73,7 +74,7 @@ function DashBoardRouteView(props) {
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/officials`}
-                  isAuthorized={props.user.roles.includes("official")}
+                  isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
                     <OfficialHomeContainer user={user} {...props} />
                   )}

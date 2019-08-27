@@ -390,3 +390,70 @@ export const selectCandidatesModel = [
     selector: "lga.state.name"
   }
 ];
+
+export const officialModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial"
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <>
+        <LinkButton
+          small
+          className={"confirm-background mr-2"}
+          to={`/dashboard/voters/${row.id}`}
+        >
+          <i className="fas fa-info-circle" />
+          Full info
+        </LinkButton>
+        <LinkButton
+          small
+          className={"reject-background mr-2"}
+          to={`/dashboard/officials/${row.id}/delete`}
+        >
+          <i className="fas fa-trash-alt" />
+          Delete
+        </LinkButton>
+      </>
+    ),
+    minWidth: "200px"
+  },
+  {
+    name: "Picture",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"profile-picture"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.picture}`}
+        alt={row.name}
+      />
+    ),
+    maxWidth: "45px"
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "name",
+    minWidth: "250px"
+  },
+  {
+    name: "Phone Number",
+    sortable: true,
+    selector: "phone_number",
+    minWidth: "200px"
+  },
+  {
+    name: "LGA",
+    sortable: true,
+    selector: "lga.name"
+  },
+  {
+    name: "State",
+    sortable: true,
+    selector: "lga.state.name"
+  }
+];

@@ -16,7 +16,7 @@ class DashboardRoute extends Component {
   componentDidMount() {
     this._mounted = true;
     axios.defaults.withCredentials = true;
-    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/user`, {
+    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/home/user`, {
       method: "get"
     }).then(res => {
       if (res.data.isSessionValid == "true") {
@@ -36,7 +36,7 @@ class DashboardRoute extends Component {
   logOut = e => {
     e.preventDefault();
     axios.defaults.withCredentials = true;
-    axios(`${process.env.REACT_APP_API_PATH}/api/logout`, {
+    axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/logout`, {
       method: "get"
     }).then(res => {
       if (res.data.success == "true") {

@@ -52,7 +52,7 @@ class RegisterController extends Component {
   getStates = () => {
     if (this._mounted) {
       axios
-        .get(`${process.env.REACT_APP_API_PATH}/api/states`)
+        .get(`${process.env.REACT_APP_API_PATH}/api/misc/states`)
         .then(res => {
           this.setState({ states: res.data.states, statesLoading: false });
         })
@@ -140,7 +140,7 @@ class RegisterController extends Component {
         data.append("picture", this.state.profilePictureFile);
         axios({
           method: "post",
-          url: `${process.env.REACT_APP_API_PATH}/api/official/register`,
+          url: `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`,
           data: data,
           withCredentials: true
         })
@@ -177,7 +177,9 @@ class RegisterController extends Component {
       if (this._mounted)
         this.setState({ stateOfOrigin: value, lgasLoading: true }, () => {
           axios
-            .get(`${process.env.REACT_APP_API_PATH}/api/state/${value}/lgas`)
+            .get(
+              `${process.env.REACT_APP_API_PATH}/api/misc/state/${value}/lgas`
+            )
             .then(res => {
               this.setState({ lgas: res.data.lgas, lgasLoading: false });
             });
