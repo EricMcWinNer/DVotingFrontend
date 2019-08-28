@@ -1,21 +1,23 @@
 import React from "react";
-
-import "./index.sass";
-import BaseCard from "components/cards/base-card";
-import SubRouteLoader from "components/loaders/dashboard-sub-route/";
+import Helmet from "react-helmet";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Helmet from "react-helmet";
-import officials from "assets/img/icons/official.png";
 import DataTable from "react-data-table-component";
-import { selectOfficialModel } from "utils/tablemodels";
-import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
-function CreateOfficialsRouteView(props) {
-	let eligibleOfficialsData, states, lgas;
+import "./index.sass";
+import SubRouteLoader from "components/loaders/dashboard-sub-route";
+import BaseCard from "components/cards/base-card";
+import officer from "assets/img/icons/officer.png";
+import { selectOfficerModel } from "utils/tablemodels";
+import LinkButton from "components/buttons/react-router-link-button";
+
+function SelectNewOfficerRouteView(props) {
+	const userManager = props.userManager;
+	let eligibleOfficersData, states, lgas;
 	if (!props.componentIsLoading) {
-		eligibleOfficialsData = props.users.map((official, index) => ({
+		eligibleOfficersData = props.eligibleOfficers.map((official, index) => ({
 			serial: (props.currentPage - 1) * props.perPage + (index + 1),
+			reversedRoles: JSON.parse(official.roles).reverse(),
 			...official,
 		}));
 		states = props.states.map((state, index) => (
@@ -38,27 +40,27 @@ function CreateOfficialsRouteView(props) {
 	) : (
 		<Row id={"candidates"}>
 			<Col md={12}>
-				<BaseCard>
+				<BaseCard className="officer">
 					<Helmet>
-						<title>{process.env.REACT_APP_NAME} | Create Officials</title>
+						<title>{process.env.REACT_APP_NAME} | Manage Officers</title>
 					</Helmet>
 					<div className="title clearfix o-auto">
 						<div className="float-left">
 							<img
-								src={officials}
-								alt="Create Officials"
+								src={officer}
+								alt="Manage Officials"
 								className={"title-icon small"}
 							/>
 						</div>
 						<div className="float-left">
-							<p className={"title"}>Create an Electoral Official</p>
+							<p className={"title"}>Select New Polling Officers</p>
 						</div>
 					</div>
 					<p className="subtitle poppins">
-						In this section you can create new electoral officials. You can do
-						that by either selecting an already registered user from the list
-						below or generating a pin for new registers to automatically become
-						electoral official.
+						In this section you can select a new polling officer. A list of all
+						the registered voters who have not been assigned other roles is
+						available below for you to choose from. You could also generate
+						officer registration pins using the button below.
 					</p>
 					<div className={"searchTools"}>
 						<ul className={"o-auto fullWidth clearfix"}>
@@ -112,8 +114,8 @@ function CreateOfficialsRouteView(props) {
 						<DataTable
 							noHeader
 							striped
-							columns={selectOfficialModel}
-							data={eligibleOfficialsData}
+							columns={selectOfficerModel}
+							data={eligibleOfficersData}
 							paginationServer
 							pagination
 							paginationTotalRows={props.totalResults}
@@ -129,19 +131,28 @@ function CreateOfficialsRouteView(props) {
 							</div>
 						)}
 					</div>
-					<ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
-						{props.user.roles.includes("official") && (
-							<li>
-								<LinkButton
-									id={"manage-election-button"}
-									className={"confirm-background"}
-									to={`/dashboard/pins/`}
-								>
-									<i className="far fa-plus-square" />
-									Generate Pins for Officials
-								</LinkButton>
-							</li>
-						)}
+					<ul className={"no-style mt-5 mx-0 fullWidth p-0 clearfloat o-auto h-menu"}>
+						<li className={"float-left"}>
+							<LinkButton
+								id={"manage-election-button"}
+								className={"confirm-background"}
+								to={`/dashboard/pins`}
+							>
+								<i className="fas fa-angle-left" />
+								Generate officer pins
+							</LinkButton>
+						</li>
+
+						<li className={"float-right"}>
+							<LinkButton
+								id={"manage-election-button"}
+								className={"cool-purple-background"}
+								to={`/dashboard/officers`}
+							>
+								<i className="fas fa-angle-left" />
+								Back to Officers
+							</LinkButton>
+						</li>
 					</ul>
 				</BaseCard>
 			</Col>
@@ -149,4 +160,4 @@ function CreateOfficialsRouteView(props) {
 	);
 }
 
-export default CreateOfficialsRouteView;
+export default SelectNewOfficerRouteView;

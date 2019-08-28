@@ -13,6 +13,7 @@ import PartyRouteContainer from "routes/dashboard-party";
 import VotersRouteContainer from "routes/dashboard-voters";
 import CandidatesContainer from "routes/dashboard-candidates";
 import OfficialHomeContainer from "routes/dashboard-officials";
+import OfficerHomeContainer from "routes/dashboard-officers"
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
 
@@ -77,6 +78,13 @@ function DashBoardRouteView(props) {
                   isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
                     <OfficialHomeContainer user={user} {...props} />
+                  )}
+                />
+                <RestrictedRoute
+                  path={`${props.match.path}/officers`}
+                  isAuthorized={UserManager.isOfficial(user)}
+                  render={props => (
+                    <OfficerHomeContainer user={user} {...props} />
                   )}
                 />
               </Switch>

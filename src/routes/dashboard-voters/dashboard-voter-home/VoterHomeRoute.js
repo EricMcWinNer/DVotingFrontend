@@ -195,7 +195,11 @@ class VoterHomeRoute extends Component {
   };
 
   clearSearch = () => {
-    if (this._mounted) {
+    if (this._mounted && 
+      (this.searchNeedle.current.value !== "" 
+        || this.state.selectedLga !== "" 
+        || this.state.selectedState !== "")
+        ) {
       this.setState(
         {
           currentPage: 1,

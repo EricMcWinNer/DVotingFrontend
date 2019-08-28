@@ -30,12 +30,12 @@ function ConfirmOfficialCreateRouteView(props) {
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Create Official</p>
+              <p className={"title"}>Create Electoral Official</p>
             </div>
           </div>
           <p className="subtitle poppins">
             Are you sure you want to make{" "}
-            <b>{props.prospectiveOfficial.name}</b> an official?
+            <b>{props.prospectiveOfficial.name}</b> an electoral official?
           </p>
           <ul className={"no-style m-0 p-0 h-menu"}>
             <li>

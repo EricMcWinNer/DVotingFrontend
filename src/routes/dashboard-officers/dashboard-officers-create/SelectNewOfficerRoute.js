@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
+import UserManager from "security/UserManager";
 
-import "./index.sass";
-import CreateOfficialsRouteView from "./CreateOfficialsRouteView";
+import SelectNewOfficerRouteView from "./SelectNewOfficerRouteView";
 
-//TODO - WHEN YOU HAVE DATA URL ENCODE THE SEARCH STRINGS
-
-class CreateOfficialsRoute extends Component {
+class SelectNewOfficerRoute extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			componentIsLoading: true,
-			users: null,
+			eligibleOfficers: null,
 			currentPage: 0,
 			totalPages: 0,
 			perPage: 20,
@@ -27,28 +25,37 @@ class CreateOfficialsRoute extends Component {
 
 	componentDidMount() {
 		this._mounted = true;
+		this._userManager = new UserManager(this.props.user);
 		axios.defaults.withCredentials = true;
 		axios(
 			`${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}`,
 			{
 				method: "get",
 			}
-		).then(res => {
-			if (res.data.isSessionValid == "false") {
-				this.props.history.push("/login");
-			} else {
-				this.setState({
-					componentIsLoading: false,
-					users: res.data.users.data,
-					currentPage: res.data.users.current_page,
-					totalPages: res.data.users.last_page,
-					perPage: res.data.users.per_page,
-					totalResults: res.data.users.total,
-					states: res.data.states,
-					lgas: res.data.lgas,
-				});
-			}
-		});
+		)
+			.then(res => {
+				if (res.data.isSessionValid == "false") {
+					this.props.history.push("/login");
+				} else {
+					this.setState({
+						componentIsLoading: false,
+						eligibleOfficers: res.data.users.data,
+						currentPage: res.data.users.current_page,
+						totalPages: res.data.users.last_page,
+						perPage: res.data.users.per_page,
+						totalResults: res.data.users.total,
+						states: res.data.states,
+						lgas: res.data.lgas,
+					});
+				}
+			})
+			.catch(res => {
+				for (let x in res) {
+					console.log(res[x]);
+					console.log(x);
+					console.log("\n");
+				}
+			});
 	}
 
 	componentWillUnmount() {
@@ -65,20 +72,20 @@ class CreateOfficialsRoute extends Component {
 			let url;
 			if (searchNeedle !== "") {
 				if (filterState === "" && filterLGA === "")
-					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
+					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
 				else
 					url =
 						filterState !== ""
-							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
-							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
+							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
+							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
 			} else {
 				if (filterState === "" && filterLGA === "")
-					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}?page=${currentPage}`;
+					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/${this.state.perPage}?page=${currentPage}`;
 				else
 					url =
 						filterState !== ""
-							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
-							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
+							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
+							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
 			}
 			this.getTableResults(url);
 		}
@@ -128,14 +135,14 @@ class CreateOfficialsRoute extends Component {
 		if (filterState !== "" && filterLGA === "") {
 			url =
 				search === ""
-					? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${perPage}`
-					: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
+					? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbystate/${filterState}/${perPage}`
+					: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
 			this.getTableResults(url);
 		} else if (filterState === "" && filterLGA !== "") {
 			url =
 				search === ""
-					? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${perPage}`
-					: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
+					? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbylga/${filterLGA}/${perPage}`
+					: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
 			this.getTableResults(url);
 		} else {
 			this.getSearchResults();
@@ -153,20 +160,20 @@ class CreateOfficialsRoute extends Component {
 			axios.defaults.withCredentials = true;
 			if (search === "" || search === undefined || search === null) {
 				if (filterState === "" && filterLGA === "")
-					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}?page=${this.state.currentPage}`;
+					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/${this.state.perPage}?page=${this.state.currentPage}`;
 				else
 					url =
 						filterState !== ""
-							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbystate/${filterState}/${this.state.perPage}`
-							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/filterbylga/${filterLGA}/${this.state.perPage}`;
+							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbystate/${filterState}/${this.state.perPage}`
+							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/filterbylga/${filterLGA}/${this.state.perPage}`;
 			} else {
 				if (filterState === "" && filterLGA === "")
-					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}`;
+					url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${search}/${this.state.perPage}`;
 				else
 					url =
 						filterState !== ""
-							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
-							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
+							? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
+							: `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/create/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
 			}
 			this.getTableResults(url);
 		}
@@ -218,7 +225,8 @@ class CreateOfficialsRoute extends Component {
 
 	render() {
 		return (
-			<CreateOfficialsRouteView
+			<SelectNewOfficerRouteView
+				userManager={this._userManager}
 				clearSearch={this.clearSearch}
 				changePage={this.changePage}
 				changeRowsPerPage={this.changeRowsPerPage}
@@ -233,4 +241,4 @@ class CreateOfficialsRoute extends Component {
 	}
 }
 
-export default CreateOfficialsRoute;
+export default SelectNewOfficerRoute;

@@ -1,22 +1,24 @@
 import React from "react";
-
-import "./index.sass";
-import BaseCard from "components/cards/base-card";
-import SubRouteLoader from "components/loaders/dashboard-sub-route/";
+import Helmet from "react-helmet";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Helmet from "react-helmet";
-import officials from "assets/img/icons/official.png";
 import DataTable from "react-data-table-component";
-import { selectOfficialModel } from "utils/tablemodels";
-import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
-function CreateOfficialsRouteView(props) {
-	let eligibleOfficialsData, states, lgas;
+import SubRouteLoader from "components/loaders/dashboard-sub-route";
+import BaseCard from "components/cards/base-card";
+import "./index.sass";
+import officer from "assets/img/icons/officer.png";
+import { officerModel } from "utils/tablemodels";
+import LinkButton from "components/buttons/react-router-link-button";
+
+function OfficerHomeRouteView(props) {
+	const userManager = props.userManager;
+	let officerData, states, lgas;
 	if (!props.componentIsLoading) {
-		eligibleOfficialsData = props.users.map((official, index) => ({
+		officerData = props.officers.map((officer, index) => ({
 			serial: (props.currentPage - 1) * props.perPage + (index + 1),
-			...official,
+			reversedRoles: JSON.parse(officer.roles).reverse(),
+			...officer,
 		}));
 		states = props.states.map((state, index) => (
 			<option value={state.state_id} key={index}>
@@ -38,27 +40,25 @@ function CreateOfficialsRouteView(props) {
 	) : (
 		<Row id={"candidates"}>
 			<Col md={12}>
-				<BaseCard>
+				<BaseCard className="officer">
 					<Helmet>
-						<title>{process.env.REACT_APP_NAME} | Create Officials</title>
+						<title>{process.env.REACT_APP_NAME} | Manage Officers</title>
 					</Helmet>
 					<div className="title clearfix o-auto">
 						<div className="float-left">
 							<img
-								src={officials}
-								alt="Create Officials"
+								src={officer}
+								alt="Manage Officials"
 								className={"title-icon small"}
 							/>
 						</div>
 						<div className="float-left">
-							<p className={"title"}>Create an Electoral Official</p>
+							<p className={"title"}>Polling Officers</p>
 						</div>
 					</div>
 					<p className="subtitle poppins">
-						In this section you can create new electoral officials. You can do
-						that by either selecting an already registered user from the list
-						below or generating a pin for new registers to automatically become
-						electoral official.
+						In this section you can view and manage all the polling officers
+						registered in the application
 					</p>
 					<div className={"searchTools"}>
 						<ul className={"o-auto fullWidth clearfix"}>
@@ -112,8 +112,8 @@ function CreateOfficialsRouteView(props) {
 						<DataTable
 							noHeader
 							striped
-							columns={selectOfficialModel}
-							data={eligibleOfficialsData}
+							columns={officerModel}
+							data={officerData}
 							paginationServer
 							pagination
 							paginationTotalRows={props.totalResults}
@@ -130,15 +130,15 @@ function CreateOfficialsRouteView(props) {
 						)}
 					</div>
 					<ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
-						{props.user.roles.includes("official") && (
+						{userManager.isOfficial() && (
 							<li>
 								<LinkButton
 									id={"manage-election-button"}
-									className={"confirm-background"}
-									to={`/dashboard/pins/`}
+									className={"logo-background"}
+									to={`/dashboard/officers/create`}
 								>
 									<i className="far fa-plus-square" />
-									Generate Pins for Officials
+									Create new Officer
 								</LinkButton>
 							</li>
 						)}
@@ -149,4 +149,4 @@ function CreateOfficialsRouteView(props) {
 	);
 }
 
-export default CreateOfficialsRouteView;
+export default OfficerHomeRouteView;

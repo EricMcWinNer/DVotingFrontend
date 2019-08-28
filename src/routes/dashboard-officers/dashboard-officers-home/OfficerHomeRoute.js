@@ -1,58 +1,59 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import "./index.sass";
-import OfficialHomeRouteView from "./OfficialHomeRouteView";
+import OfficerHomeRouteView from "./OfficerHomeRouteView";
+import UserManager from "security/UserManager";
 
-class OfficialHomeRoute extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      componentIsLoading: true,
-      officials: null,
-      currentPage: 0,
-      totalPages: 0,
-      perPage: 20,
-      totalResults: 0,
-      tableLoading: false,
-      selectedState: "",
-      selectedLga: "",
-      lgas: null,
-      states: null
-    };
-    this.searchNeedle = React.createRef();
+class OfficerHomeRoute extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			componentIsLoading: true,
+			officers: null,
+			currentPage: 0,
+			totalPages: 0,
+			perPage: 20,
+			totalResults: 0,
+			tableLoading: false,
+			selectedState: "",
+			selectedLga: "",
+			lgas: null,
+			states: null
+		};
+		this.searchNeedle = React.createRef();
+	}
+
+	componentDidMount() {
+		this._mounted = true;
+		this._userManager = new UserManager(this.props.user);
+		axios.defaults.withCredentials = true;
+		axios(
+			`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/index/${this.state.perPage}`,
+			{
+				method: "get"
+			}
+		).then(res => {
+			if (res.data.isSessionValid == "false") {
+				this.props.history.push("/login");
+			} else {
+				this.setState({
+					componentIsLoading: false,
+					officers: res.data.officers.data,
+					currentPage: res.data.officers.current_page,
+					totalPages: res.data.officers.last_page,
+					perPage: res.data.officers.per_page,
+					totalResults: res.data.officers.total,
+					states: res.data.states,
+					lgas: res.data.lgas
+				});
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		this._mounted = false;
   }
-
-  componentDidMount() {
-    this._mounted = true;
-    axios.defaults.withCredentials = true;
-    axios(
-      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}`,
-      {
-        method: "get"
-      }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          officials: res.data.officials.data,
-          currentPage: res.data.officials.current_page,
-          totalPages: res.data.officials.last_page,
-          perPage: res.data.officials.per_page,
-          totalResults: res.data.officials.total,
-          states: res.data.states,
-          lgas: res.data.lgas
-        });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
+  
   changePage = currentPage => {
     if (this._mounted) {
       this.setState({ tableLoading: true, currentPage });
@@ -63,20 +64,20 @@ class OfficialHomeRoute extends Component {
       let url;
       if (searchNeedle !== "") {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=state&filter_value=${filterState}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${searchNeedle}/${this.state.perPage}?page=${currentPage}&filter_by=lga&filter_value=${filterLGA}`;
       } else {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}?page=${currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/index/${this.state.perPage}?page=${currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbystate/${filterState}/${this.state.perPage}?page=${currentPage}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbylga/${filterLGA}/${this.state.perPage}?page=${currentPage}`;
       }
       this.getTableResults(url);
     }
@@ -126,14 +127,14 @@ class OfficialHomeRoute extends Component {
     if (filterState !== "" && filterLGA === "") {
       url =
         search === ""
-          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${perPage}`
-          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
+          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbystate/${filterState}/${perPage}`
+          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${search}/${perPage}?filter_by=state&filter_value=${filterState}`;
       this.getTableResults(url);
     } else if (filterState === "" && filterLGA !== "") {
       url =
         search === ""
-          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${perPage}`
-          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
+          ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbylga/${filterLGA}/${perPage}`
+          : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${search}/${perPage}?filter_by=lga&filter_value=${filterLGA}`;
       this.getTableResults(url);
     } else {
       this.getSearchResults();
@@ -151,20 +152,20 @@ class OfficialHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       if (search === "" || search === undefined || search === null) {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}?page=${this.state.currentPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/index/${this.state.perPage}?page=${this.state.currentPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbystate/${filterState}/${this.state.perPage}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/filterbylga/${filterLGA}/${this.state.perPage}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbystate/${filterState}/${this.state.perPage}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/filterbylga/${filterLGA}/${this.state.perPage}`;
       } else {
         if (filterState === "" && filterLGA === "")
-          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}`;
+          url = `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${search}/${this.state.perPage}`;
         else
           url =
             filterState !== ""
-              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
-              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
+              ? `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${search}/${this.state.perPage}?filter_by=state&filter_value=${filterState}`
+              : `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/search/${search}/${this.state.perPage}?filter_by=lga&filter_value=${filterLGA}`;
       }
       this.getTableResults(url);
     }
@@ -182,11 +183,11 @@ class OfficialHomeRoute extends Component {
         } else {
           this.setState({
             tableLoading: false,
-            officials: [...res.data.officials.data],
-            currentPage: res.data.officials.current_page,
-            totalPages: res.data.officials.last_page,
-            perPage: res.data.officials.per_page,
-            totalResults: res.data.officials.total
+            officers: [...res.data.officers.data],
+            currentPage: res.data.officers.current_page,
+            totalPages: res.data.officers.last_page,
+            perPage: res.data.officers.per_page,
+            totalResults: res.data.officers.total
           });
         }
       });
@@ -213,10 +214,12 @@ class OfficialHomeRoute extends Component {
     }
   };
 
-  render() {
-    return (
-      <OfficialHomeRouteView
-        clearSearch={this.clearSearch}
+
+	render() {
+		return (
+			<OfficerHomeRouteView
+				userManager={this._userManager}
+				clearSearch={this.clearSearch}
         changePage={this.changePage}
         changeRowsPerPage={this.changeRowsPerPage}
         getSearchResults={this.getSearchResults}
@@ -225,9 +228,9 @@ class OfficialHomeRoute extends Component {
         searchNeedle={this.searchNeedle}
         {...this.props}
         {...this.state}
-      />
-    );
-  }
+			/>
+		);
+	}
 }
 
-export default OfficialHomeRoute;
+export default OfficerHomeRoute;

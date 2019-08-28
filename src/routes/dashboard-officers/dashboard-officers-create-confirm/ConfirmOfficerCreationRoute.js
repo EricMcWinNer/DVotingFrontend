@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import DeleteOfficialRouteView from "./DeleteOfficialRouteView";
+import ConfirmOfficerCreationRouteView from "./ConfirmOfficerCreationRouteView";
 
-class DeleteOfficialRoute extends Component {
+class ConfirmOfficerCreationRoute extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			componentIsLoading: true,
-			official: null,
-			deleting: false,
+			creating: false,
+			prospectiveOfficer: null,
 		};
 	}
 
@@ -17,7 +17,7 @@ class DeleteOfficialRoute extends Component {
 		this._mounted = true;
 		axios.defaults.withCredentials = true;
 		axios(
-			`${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
+			`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${this.props.match.params.id}/create/confirm`,
 			{
 				method: "get",
 			}
@@ -27,7 +27,7 @@ class DeleteOfficialRoute extends Component {
 			} else {
 				this.setState({
 					componentIsLoading: false,
-					official: res.data.official,
+					prospectiveOfficer: res.data.user,
 				});
 			}
 		});
@@ -37,29 +37,29 @@ class DeleteOfficialRoute extends Component {
 		this._mounted = false;
 	}
 
-	handleDelete = e => {
+	handleCreate = e => {
 		if (this._mounted) {
 			e.preventDefault();
-			this.setState({ deleting: true });
+			this.setState({ creating: true });
 			axios.defaults.withCredentials = true;
 			axios(
-				`${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
+				`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${this.props.match.params.id}`,
 				{
-					method: "delete",
+					method: "post",
 				}
 			).then(res => {
 				if (res.data.isSessionValid == "false") {
 					this.props.history.push("/login");
 				} else {
 					this.setState({
-						deleting: false,
+						creating: false,
 					});
 					if (res.data.completed) {
-						alert("Electoral Official deleted successfully");
-						this.props.history.push("/dashboard/officials");
+						alert("Polling Officer created successfully");
+						this.props.history.push("/dashboard/officers");
 					} else {
-						alert("An error occurred.");
-						this.props.history.push("/dashboard/officials");
+						alert("An error occured");
+						this.props.history.push("/dashboard/officers");
 					}
 				}
 			});
@@ -68,8 +68,8 @@ class DeleteOfficialRoute extends Component {
 
 	render() {
 		return (
-			<DeleteOfficialRouteView
-				handleDelete={this.handleDelete}
+			<ConfirmOfficerCreationRouteView
+				handleCreate={this.handleCreate}
 				{...this.state}
 				{...this.props}
 			/>
@@ -77,4 +77,4 @@ class DeleteOfficialRoute extends Component {
 	}
 }
 
-export default DeleteOfficialRoute;
+export default ConfirmOfficerCreationRoute;

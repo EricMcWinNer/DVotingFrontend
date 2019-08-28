@@ -77,8 +77,12 @@ function OfficialLinks(props) {
           Manage Officials
         </Link>
       </li>
-      <li>
-        <Link to={"/polls"}>
+      <li
+        className={
+          contains(props.location, "/dashboard/officers") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/officers"}>
           <img
             src={officer}
             alt={"Manage Polling Officers"}

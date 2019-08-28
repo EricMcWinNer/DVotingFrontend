@@ -16,6 +16,7 @@ function OfficialHomeRouteView(props) {
   if (!props.componentIsLoading) {
     officialData = props.officials.map((official, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
+      reversedRoles: JSON.parse(official.roles).reverse(),
       ...official
     }));
     states = props.states.map((state, index) => (
@@ -51,7 +52,7 @@ function OfficialHomeRouteView(props) {
               />
             </div>
             <div className="float-left">
-              <p className={"title"}>Officials</p>
+              <p className={"title"}>Electoral Officials</p>
             </div>
           </div>
           <p className="subtitle poppins">

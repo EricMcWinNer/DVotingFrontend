@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import DeleteOfficialRouteView from "./DeleteOfficialRouteView";
+import DeleteOfficerRouteView from "./DeleteOfficerRouteView";
 
-class DeleteOfficialRoute extends Component {
+class DeleteOfficerRoute extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			componentIsLoading: true,
-			official: null,
+			officer: null,
 			deleting: false,
 		};
 	}
@@ -17,7 +17,7 @@ class DeleteOfficialRoute extends Component {
 		this._mounted = true;
 		axios.defaults.withCredentials = true;
 		axios(
-			`${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
+			`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${this.props.match.params.id}`,
 			{
 				method: "get",
 			}
@@ -27,7 +27,7 @@ class DeleteOfficialRoute extends Component {
 			} else {
 				this.setState({
 					componentIsLoading: false,
-					official: res.data.official,
+					officer: res.data.officer,
 				});
 			}
 		});
@@ -43,7 +43,7 @@ class DeleteOfficialRoute extends Component {
 			this.setState({ deleting: true });
 			axios.defaults.withCredentials = true;
 			axios(
-				`${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${this.props.match.params.id}`,
+				`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${this.props.match.params.id}`,
 				{
 					method: "delete",
 				}
@@ -55,11 +55,11 @@ class DeleteOfficialRoute extends Component {
 						deleting: false,
 					});
 					if (res.data.completed) {
-						alert("Electoral Official deleted successfully");
-						this.props.history.push("/dashboard/officials");
+						alert("Polling Officer deleted successfully");
+						this.props.history.push("/dashboard/officers");
 					} else {
 						alert("An error occurred.");
-						this.props.history.push("/dashboard/officials");
+						this.props.history.push("/dashboard/officers");
 					}
 				}
 			});
@@ -68,7 +68,7 @@ class DeleteOfficialRoute extends Component {
 
 	render() {
 		return (
-			<DeleteOfficialRouteView
+			<DeleteOfficerRouteView
 				handleDelete={this.handleDelete}
 				{...this.state}
 				{...this.props}
@@ -77,4 +77,4 @@ class DeleteOfficialRoute extends Component {
 	}
 }
 
-export default DeleteOfficialRoute;
+export default DeleteOfficerRoute;

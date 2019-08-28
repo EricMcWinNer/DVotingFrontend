@@ -24,3 +24,7 @@ yarn-error.log*
 
 #Auto-generated IDE Files
 /.idea/
+
+#Fontawesome and other local CSS files that will be added as CDNs in production
+/public/webfonts/
+/public/all.min.css
