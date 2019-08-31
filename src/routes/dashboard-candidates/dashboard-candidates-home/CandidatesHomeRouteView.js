@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import DataTable from "react-data-table-component";
+import SweetAlert from "react-bootstrap-sweetalert"
 
 import "./index.sass";
 import candidates from "assets/img/icons/candidates.png";
@@ -11,7 +12,9 @@ import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubR
 import { candidatesModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
+
 function CandidatesHomeRouteView(props) {
+  const userManager = props.componentIsLoading ? null : props.userManager;
   let candidatesData;
   if (!props.componentIsLoading) {
     candidatesData = props.candidates.map((candidate, index) => ({
@@ -108,6 +111,18 @@ function CandidatesHomeRouteView(props) {
               </li>
             )}
           </ul>
+          {userManager.isOfficial() && !props.componentIsLoading && props.showNoCandidateModal && candidatesData.length === 0 && (
+						<SweetAlert
+							info
+							allowEscape
+              closeOnClickOutside
+							title="No Candidates!"
+              onConfirm={props.redirectToCreate}
+              onCancel={props.closeNoCandidatesModal}
+						>
+							<span className="cartogothic">There is no candidate registered. Click the link below to create one</span>
+						</SweetAlert>
+					)}
         </BaseCard>
       </Col>
     </Row>

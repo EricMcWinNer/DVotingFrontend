@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "./index.sass";
 import CandidatesHomeRouteView from "./CandidatesHomeRouteView";
+import UserManager from "security/UserManager";
 
 class CandidatesHomeRoute extends Component {
 	constructor(props) {
@@ -15,7 +16,9 @@ class CandidatesHomeRoute extends Component {
 			perPage: 20,
 			totalResults: 0,
 			tableLoading: false,
+			showNoCandidateModal: true,
 		};
+		this._userManager = new UserManager(this.props.user);
 	}
 
 	componentDidMount() {
@@ -109,6 +112,14 @@ class CandidatesHomeRoute extends Component {
 		}
 	}
 
+	redirectToCreate = () => {
+		this.props.history.push("/dashboard/candidates/create");
+	};
+
+	closeNoCandidatesModal = () => {
+		this.setState({ showNoCandidateModal: false });
+	};
+
 	render() {
 		return (
 			<CandidatesHomeRouteView
@@ -118,6 +129,9 @@ class CandidatesHomeRoute extends Component {
 				changeRowsPerPage={this.changeRowsPerPage}
 				getSearchResults={this.getSearchResults}
 				searchNeedle={this.searchNeedle}
+				userManager={this._userManager}
+				redirectToCreate={this.redirectToCreate}
+				closeNoCandidatesModal={this.closeNoCandidatesModal}
 				{...this.state}
 				{...this.props}
 			/>
