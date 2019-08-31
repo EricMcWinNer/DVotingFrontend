@@ -20,7 +20,8 @@ class CreatePartyFormController extends Component {
 			alertType: "",
 			alertCallBack: null,
 		};
-		this._userManager = new UserManager(this.props.user);	}
+		this._userManager = new UserManager(this.props.user);
+	}
 
 	componentDidMount() {
 		this._mounted = true;
@@ -138,7 +139,6 @@ class CreatePartyFormController extends Component {
 								"success",
 								this.redirectToPartyHome
 							);
-							
 						}
 					}
 				});

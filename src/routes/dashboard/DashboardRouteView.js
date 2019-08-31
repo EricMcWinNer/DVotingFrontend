@@ -20,7 +20,6 @@ import UserManager from "security/UserManager";
 
 function DashBoardRouteView(props) {
 	const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
-	const lastName = nameArray[0];
 	const firstName = nameArray[1];
 	const lastAndFirstName = nameArray[0] + " " + nameArray[1];
 	const user = props.componentIsLoading ? null : props.user;
