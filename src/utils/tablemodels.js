@@ -6,7 +6,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
 
-export const politicalPartiesModel = [
+export const politicalPartiesModel = modalFunction => [
 	{
 		name: "S/N",
 		selector: "serial",
@@ -29,6 +29,7 @@ export const politicalPartiesModel = [
 				<LinkButton
 					small
 					to={`/dashboard/party/${row.id}/delete`}
+					onClick={e => modalFunction(e, row.id)}
 					className={"reject-background"}
 				>
 					<i className="far fa-trash-alt" />
@@ -324,7 +325,7 @@ export const selectCandidatesModel = [
 				className={"confirm-background mr-2"}
 				to={`/dashboard/candidates/${row.id}/create`}
 			>
-				<i className="far fa-plus-circle" />
+				<i className="fas fa-plus-circle" />
 				Make Candidate
 			</LinkButton>
 		),
@@ -734,3 +735,67 @@ export const officerModel = [
 		selector: "lga.state.name",
 	},
 ];
+export const pinModel = [
+	{
+		name: "S/N",
+		sortable: true,
+		selector: "serial",
+	},
+	{
+		name: "User Type",
+		sortable: false,
+		cell: row => (
+			<IconBadge className={`${row.user_type}`}>
+				{row.user_type === "voter" && <i className="fas fa-person-booth" />}
+				{row.user_type === "official" && <i className="fas fa-users-cog" />}
+				{row.user_type === "candidate" && <i className="fas fa-user-tie" />}
+				{row.user_type === "officer" && <i className="fas fa-user-alt" />}
+				{capitalize(row.user_type)}
+			</IconBadge>
+		),
+		minWidth: "100px",
+	},
+	{
+		name: "Pin Content",
+		cell: row => <b>{row.content}</b>,
+	},
+	{
+		name: "Used By",
+		cell: row =>
+			row.used_by === null ? (
+				<IconBadge className={`cool-purple-background`}>None</IconBadge>
+			) : (
+				<LinkButton
+					className={"confirm-background"}
+					to={`/dashboard/voters/${row.used_by.id}`}
+				>
+					View User
+				</LinkButton>
+			),
+	},
+	{
+		name: "Date Used",
+		cell: row => (row.date_used === null ? "n/a" : row.date_used),
+	},
+
+	{
+		name: "Created By",
+		cell: row => {
+			const name = row.created_by.name.split(" ");
+			return (
+				<LinkButton
+					small
+					className={"confirm-background"}
+					to={`/dashboard/voters/${row.created_by.id}`}
+				>
+					{`${name[0]} ${name[1]}`}
+				</LinkButton>
+			);
+		},
+	},
+	{
+		name: "Date Created",
+		selector: "created_at.created_at",
+	},
+];
+

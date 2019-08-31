@@ -5,14 +5,18 @@ import "./index.sass";
 import RingLoader from "components/loaders/ring-loader";
 
 function DashboardSubRouteLoader(props) {
-  return (
-    <div className={"subRouteLoader"}>
-      <Helmet>
-        <title>{process.env.REACT_APP_NAME} | Loading...</title>
-      </Helmet>
-      <RingLoader />
-    </div>
-  );
+	return (
+		<div
+			className={`subRouteLoader${
+				props.className === undefined ? "" : ` ${props.className}`
+			}`}
+		>
+			<Helmet>
+				<title>{process.env.REACT_APP_NAME} | Loading...</title>
+			</Helmet>
+			<RingLoader />
+		</div>
+	);
 }
 
 export default DashboardSubRouteLoader;

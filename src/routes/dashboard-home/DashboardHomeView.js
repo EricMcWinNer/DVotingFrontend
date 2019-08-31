@@ -13,55 +13,55 @@ import totalOfficers from "assets/img/icons/officer.png";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
 
 function DashboardHomeView(props) {
-  return (
-    <div id={"dashboardHomeView"}>
-      {props.componentIsLoading ? (
-        <SubRouteLoader />
-      ) : (
-        <Container>
-          <Row>
-            <Col md={3}>
-              <AnalyticCard
-                icon={totalVoters}
-                title={"Total Voters"}
-                number={props.voters.count}
-                subtitle={`Last Created ${props.voters.lastCreated}`}
-              />
-            </Col>
-            <Col md={3}>
-              <AnalyticCard
-                icon={totalCandidates}
-                title={"Total Candidates"}
-                number={"84"}
-                subtitle={"Last Created 14:00"}
-              />
-            </Col>
-            <Col md={3}>
-              <AnalyticCard
-                icon={totalParties}
-                title={"Total Parties"}
-                number={props.parties.count}
-                subtitle={`Last Created ${props.parties.lastCreated}`}
-              />
-            </Col>
-            <Col md={3}>
-              <AnalyticCard
-                icon={totalOfficers}
-                title={"Polling Officers"}
-                number={"204"}
-                subtitle={"Last Created 14:00"}
-              />
-            </Col>
-          </Row>
-          <Row className={"rowMargin"}>
-            <Col md={6}>
-              <CountdownTimer election={props.election} />
-            </Col>
-          </Row>
-        </Container>
-      )}
-    </div>
-  );
+	return (
+		<div id={"dashboardHomeView"}>
+			{props.componentIsLoading ? (
+				<SubRouteLoader />
+			) : (
+				<Container>
+					<Row>
+						<Col md={3}>
+							<AnalyticCard
+								icon={totalVoters}
+								title={"Total Voters"}
+								number={props.voters.count}
+								subtitle={`Last Created ${props.voters.lastCreated}`}
+							/>
+						</Col>
+						<Col md={3}>
+							<AnalyticCard
+								icon={totalCandidates}
+								title={"Total Candidates"}
+								number={props.candidates.count}
+								subtitle={`Last Created ${props.candidates.lastCreated}`}
+							/>
+						</Col>
+						<Col md={3}>
+							<AnalyticCard
+								icon={totalParties}
+								title={"Total Parties"}
+								number={props.parties.count}
+								subtitle={`Last Created ${props.parties.lastCreated}`}
+							/>
+						</Col>
+						<Col md={3}>
+							<AnalyticCard
+								icon={totalOfficers}
+								title={"Polling Officers"}
+								number={props.officers.count}
+								subtitle={`Last Created ${props.officers.lastCreated}`}
+							/>
+						</Col>
+					</Row>
+					<Row className={"rowMargin"}>
+						<Col md={6}>
+							<CountdownTimer election={props.election} />
+						</Col>
+					</Row>
+				</Container>
+			)}
+		</div>
+	);
 }
 
 export default DashboardHomeView;

@@ -91,6 +91,20 @@ function OfficialLinks(props) {
           Manage Polling Officers
         </Link>
       </li>
+      <li
+        className={
+          contains(props.location, "/dashboard/pins") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/pins"}>
+          <img
+            src={officer}
+            alt={"Manage Registration Pins"}
+            className={"sidebarIcon"}
+          />
+          Manage Registration Pins
+        </Link>
+      </li>
     </>
   );
 }

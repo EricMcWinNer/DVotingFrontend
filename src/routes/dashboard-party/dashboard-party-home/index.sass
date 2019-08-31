@@ -25,3 +25,45 @@
     max-height: 60vh
     overflow-y: scroll
 
+  .searchParty
+    padding: 8px 16px
+      right: 40px
+    height: 40px
+    border: 1px solid #ddd
+      radius: 3px
+    min-width: 250px
+    @extend .cartogothic
+
+    & + .closeSearch
+      background-color: transparent
+      border: none
+      position: relative
+      font-size: 18px
+      padding: 0
+      display: inline-flex
+      justify-content: center
+      align-items: center
+      left: -40px
+      height: 40px
+      width: 40px
+      @extend .cartogothic
+
+
+  .searchTools
+
+    label
+      @extend .cartogothic
+      color: #444
+
+    ul
+      margin: 0
+      padding: 0
+      list-style: none
+
+      li
+        display: inline-block
+
+        &:not(.float-right)
+          margin-right: 10px
+
+

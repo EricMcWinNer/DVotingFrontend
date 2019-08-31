@@ -5,7 +5,6 @@ import ElectionHomeRoute from "routes/dashboard-election/dashboard-election-home
 import RestrictedRoute from "components/routes/restricted-route";
 import CreateElectionRoute from "routes/dashboard-election/dashboard-election-create";
 import EditElectionRoute from "routes/dashboard-election/dashboard-election-edit";
-import DeleteElectionRoute from "routes/dashboard-election/dashboard-election-delete";
 import UserManager from "security/UserManager";
 
 class ElectionRoutes extends Component {
@@ -42,12 +41,6 @@ class ElectionRoutes extends Component {
           exact
           isAuthorized={UserManager.isOfficial(user)}
           component={EditElectionRoute}
-        />
-        <RestrictedRoute
-          path={`${this.props.match.path}/delete`}
-          exact
-          isAuthorized={UserManager.isOfficial(user)}
-          component={DeleteElectionRoute}
         />
       </Switch>
     );
