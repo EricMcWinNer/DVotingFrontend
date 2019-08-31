@@ -157,7 +157,7 @@ class PartyHomeRoute extends Component {
 	};
 
 	closeDeleteModal = () => {
-		this.setState({ fireDeleteModal: false, party: null });
+		if (this._mounted) this.setState({ fireDeleteModal: false });
 	};
 
 	showDeleteModal = (e, id) => {

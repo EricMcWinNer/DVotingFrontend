@@ -193,7 +193,7 @@ export const votersModel = [
 	},
 ];
 
-export const candidatesModel = [
+export const candidatesModel = modalCallback => [
 	{
 		name: "S/N",
 		sortable: true,
@@ -209,7 +209,7 @@ export const candidatesModel = [
 				<OverlayTrigger
 					placement={"top"}
 					overlay={
-						<Tooltip id={`tooltip-info`}>
+						<Tooltip id={`tooltip-info-${row.serial}`}>
 							View the full information of the candidate
 						</Tooltip>
 					}
@@ -227,7 +227,7 @@ export const candidatesModel = [
 					placement={"top"}
 					trigger={"hover"}
 					overlay={
-						<Tooltip id={`tooltip-edit`}>
+						<Tooltip id={`tooltip-edit-${row.serial}`}>
 							Edit the candidate's information
 						</Tooltip>
 					}
@@ -244,7 +244,7 @@ export const candidatesModel = [
 				<OverlayTrigger
 					placement={"top"}
 					overlay={
-						<Tooltip id={`tooltip-delete`}>
+						<Tooltip id={`tooltip-delete-${row.serial}`}>
 							<b>Delete</b> this candidate
 						</Tooltip>
 					}
@@ -253,6 +253,7 @@ export const candidatesModel = [
 						small
 						className={"reject-background only-icon text-center mr-2"}
 						to={`/dashboard/candidates/${row.id}/delete`}
+						onClick={e => modalCallback(e, row.id)}
 					>
 						<i className="fas fa-trash-alt" />
 					</LinkButton>
