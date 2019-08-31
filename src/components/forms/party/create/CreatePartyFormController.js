@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "./index.sass";
 import CreatePartyFormView from "./CreatePartyFormView";
+import UserManager from "security/UserManager";
 
 class CreatePartyFormController extends Component {
 	constructor(props) {
@@ -13,16 +14,24 @@ class CreatePartyFormController extends Component {
 			acronym: "",
 			partyLogoFile: null,
 			fileNotImage: false,
+			showErrorAlert: false,
+			errorTitle: "",
+			errorMessage: "",
+			alertType: "",
+			alertCallBack: null,
 		};
-	}
+		this._userManager = new UserManager(this.props.user);	}
 
 	componentDidMount() {
 		this._mounted = true;
 		//TODO UPDATE THIS CODE TO HANDLE PROPER USER VALIDATION
 		axios.defaults.withCredentials = true;
-		axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/validate-web-app-session`, {
-			method: "get",
-		}).then(res => {
+		axios(
+			`${process.env.REACT_APP_API_PATH}/api/web/auth/validate-web-app-session`,
+			{
+				method: "get",
+			}
+		).then(res => {
 			if (res.data.isSessionValid == "true") {
 				this.setState({
 					componentIsLoading: false,
@@ -54,6 +63,34 @@ class CreatePartyFormController extends Component {
 		this.setState({ partyLogoFile: picture });
 	};
 
+	showAlert = (
+		errorTitle,
+		errorMessage,
+		alertType = "warning",
+		alertCallBack = null
+	) => {
+		this.setState({
+			showErrorAlert: true,
+			errorTitle,
+			errorMessage,
+			alertType,
+			alertCallBack,
+		});
+	};
+
+	redirectToPartyHome = () => {
+		this.props.history.push("/dashboard/party");
+	};
+
+	closeErrorModal = () => {
+		this.setState({
+			showErrorAlert: false,
+			errorTitle: "",
+			errorMessage: "",
+			alertCallBack: null,
+		});
+	};
+
 	handleSubmit = e => {
 		e.preventDefault();
 		if (this._mounted) {
@@ -75,22 +112,33 @@ class CreatePartyFormController extends Component {
 						});
 						if (res.data.isValid === false) {
 							if (res.data.field === "partyLogo")
-								alert("The party logo you entered is invalid");
+								this.showAlert(
+									"Invalid Party Logo",
+									"The party logo you entered is invalid"
+								);
 							else if (res.data.field === "partyName")
-								alert(
+								this.showAlert(
+									"Invalid Party Name",
 									"The party name you entered is invalid. Please enter one less than 256 characters long"
 								);
 							else if (res.data.field === "acronym")
-								alert(
+								this.showAlert(
+									"Invalid Acronym",
 									"The acronym you entered is invalid. Please enter one less than 7 characters long"
 								);
 							else if (res.data.field === "duplicateName")
-								alert(
+								this.showAlert(
+									"Duplicate Party Name",
 									"A political party with this name already exists. Political parties must have unique names."
 								);
 						} else if (res.data.completed === true) {
-							alert("Political party created successfully");
-							this.props.history.push("/dashboard/party");
+							this.showAlert(
+								"Success!",
+								"Political party created successfully",
+								"success",
+								this.redirectToPartyHome
+							);
+							
 						}
 					}
 				});
@@ -104,6 +152,8 @@ class CreatePartyFormController extends Component {
 				updatePartyLogo={this.updatePartyLogo}
 				handleSubmit={this.handleSubmit}
 				onChange={this.handleChange}
+				userManager={this._userManager}
+				closeErrorModal={this.closeErrorModal}
 				{...this.state}
 				{...this.props}
 			/>

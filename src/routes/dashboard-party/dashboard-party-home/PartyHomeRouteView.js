@@ -144,11 +144,11 @@ function PartyHomeRouteView(props) {
 							<li>
 								<LinkButton
 									id={"manage-election-button"}
-									className={"logo-background"}
+									className={"cool-purple-background"}
 									to={`/dashboard/party/create`}
 								>
 									<i className="far fa-plus-square" />
-									Create
+									Create new party
 								</LinkButton>
 							</li>
 						)}

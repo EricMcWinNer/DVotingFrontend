@@ -94,8 +94,12 @@ function CreateElectionForm(props) {
 										type={props.alertType}
 										allowEscape
 										closeOnClickOutside
-                    title={props.errorTitle}
-										onConfirm={(typeof props.alertCallBack).toLowerCase() === "function" ? props.alertCallBack : props.closeErrorModal}
+										title={props.errorTitle}
+										onConfirm={
+											(typeof props.alertCallBack).toLowerCase() === "function"
+												? props.alertCallBack
+												: props.closeErrorModal
+										}
 										onCancel={props.closeErrorModal}
 									>
 										<span className="cartogothic">{props.errorMessage}</span>

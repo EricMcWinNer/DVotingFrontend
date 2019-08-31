@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
 import Col from "react-bootstrap/Col";
 import createIcon from "assets/img/icons/create.png";
-import DateTimePicker from "react-datetime-picker";
 import Row from "react-bootstrap/Row";
-import Alert from "react-bootstrap/Alert";
+import SweetAlert from "react-bootstrap-sweetalert"
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import { capitalizeWords } from "utils/helpers";
 import Helmet from "react-helmet";
 import PictureUploadInput from "components/forms/picture-upload-handler";
 
 function CreatePartyFormView(props) {
-	const [show, setShow] = useState(props.fileNotImage);
+	const userManager = props.userManager;
 	return (
 		<Row id={"createPartyForm"}>
 			{props.componentIsLoading ? (
@@ -93,27 +92,25 @@ function CreatePartyFormView(props) {
 								</LinkButton>
 							</div>
 						</form>
+						{userManager.isOfficial() &&
+								!props.componentIsLoading &&
+								props.showErrorAlert && (
+									<SweetAlert
+										type={props.alertType}
+										allowEscape
+										closeOnClickOutside
+										title={props.errorTitle}
+										onConfirm={
+											(typeof props.alertCallBack).toLowerCase() === "function"
+												? props.alertCallBack
+												: props.closeErrorModal
+										}
+										onCancel={props.closeErrorModal}
+									>
+										<span className="cartogothic">{props.errorMessage}</span>
+									</SweetAlert>
+								)}
 					</BaseCard>
-					<div className={"fixed-top"}>
-						{props.fileNotImage ? (
-							<Alert
-								variant="danger"
-								onClose={() => {
-									setShow(false);
-									props.dismissImageAlert();
-								}}
-								dismissible
-							>
-								<Alert.Heading>Uploaded File is not an Image</Alert.Heading>
-								<p>
-									The profile picture uploaded is not an image, change the file
-									and try again
-								</p>
-							</Alert>
-						) : (
-							<div />
-						)}
-					</div>
 				</Col>
 			)}
 		</Row>
