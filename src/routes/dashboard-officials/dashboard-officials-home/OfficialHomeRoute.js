@@ -31,7 +31,6 @@ class OfficialHomeRoute extends Component {
 
   componentDidMount() {
     this._mounted = true;
-    console.log(typeof this.props.updateUser, "officialhomeroute");
     this.initializeRoute();
   }
 
@@ -116,7 +115,6 @@ class OfficialHomeRoute extends Component {
   deleteOfficialConfirm = () => {
     if (this._mounted) {
       this.setState({ officialIsLoading: true });
-      console.log(typeof this.props.updateUser);
       this.deleteOfficial(this.state.official.id).then(res => {
         this.setState({
           fireDeleteModal: false,

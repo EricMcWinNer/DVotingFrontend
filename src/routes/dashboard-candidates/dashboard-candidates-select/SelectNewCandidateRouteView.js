@@ -20,7 +20,7 @@ function SelectNewCandidateRouteView(props) {
     userData = props.users.map((voter, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       reversedRoles: JSON.parse(voter.roles).reverse(),
-      ...voter
+      ...voter,
     }));
     states = props.states.map((state, index) => (
       <option value={state.state_id} key={index}>
