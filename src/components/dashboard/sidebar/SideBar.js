@@ -15,7 +15,14 @@ function SideBar(props) {
         <UserInfo name={props.name} user={props.user} />
         <div>
           <ul>
-            <li className={props.location === "/dashboard" ? "selected" : ""}>
+            <li
+              className={
+                props.location === "/dashboard" ||
+                props.location === "/dashboard/"
+                  ? "selected"
+                  : ""
+              }
+            >
               <Link to={"/dashboard"}>
                 <img
                   src={speedometer}

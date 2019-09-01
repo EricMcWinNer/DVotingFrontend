@@ -10,14 +10,17 @@ import officials from "assets/img/icons/official.png";
 import { officialModel } from "utils/tablemodels";
 import DataTable from "react-data-table-component";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 function OfficialHomeRouteView(props) {
   let officialData, states, lgas;
+  const userManager = props.componentIsLoading ? null : props.userManager;
+  const officialColumns = officialModel(props.showDeleteModal);
   if (!props.componentIsLoading) {
     officialData = props.officials.map((official, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       reversedRoles: JSON.parse(official.roles).reverse(),
-      ...official
+      ...official,
     }));
     states = props.states.map((state, index) => (
       <option value={state.state_id} key={index}>
@@ -111,7 +114,7 @@ function OfficialHomeRouteView(props) {
             <DataTable
               noHeader
               striped
-              columns={officialModel}
+              columns={officialColumns}
               data={officialData}
               paginationServer
               pagination
@@ -133,7 +136,7 @@ function OfficialHomeRouteView(props) {
               <li>
                 <LinkButton
                   id={"manage-election-button"}
-                  className={"logo-background"}
+                  className={"cool-purple-background"}
                   to={`/dashboard/officials/create`}
                 >
                   <i className="far fa-plus-square" />
@@ -142,6 +145,47 @@ function OfficialHomeRouteView(props) {
               </li>
             )}
           </ul>
+          {userManager.isOfficial() && props.fireDeleteModal && (
+            <SweetAlert
+              warning={!props.officialIsLoading}
+              custom={props.officialIsLoading}
+              allowEscape
+              closeOnClickOutside={!props.officialIsLoading}
+              showCancel={!props.officialIsLoading}
+              showConfirm={!props.officialIsLoading}
+              confirmBtnText={`${props.officialIsLoading ? "" : "Yes, do it!"}`}
+              confirmBtnBsStyle="danger"
+              cancelBtnBsStyle="default"
+              title={`${props.officialIsLoading ? "" : "Are you sure?"}`}
+              onCancel={props.closeDeleteModal}
+              onConfirm={props.deleteOfficialConfirm}
+            >
+              {props.officialIsLoading ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                <span className="cartogothic">
+                  {props.official.id === userManager.returnUser().id
+                    ? "This action will stop you from being an official"
+                    : "This action will delete the selected official."}
+                </span>
+              )}
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireDeleteSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success?"
+              onConfirm={props.handleModalConfirmation}
+            >
+              <span className="cartogothic">
+                {props.official.id === userManager.returnUser().id
+                  ? "You have successfully been stopped being an official"
+                  : "Official deleted successfully"}
+              </span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>

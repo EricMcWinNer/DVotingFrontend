@@ -5,55 +5,55 @@ import OfficerHomeRouteView from "./OfficerHomeRouteView";
 import UserManager from "security/UserManager";
 
 class OfficerHomeRoute extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			componentIsLoading: true,
-			officers: null,
-			currentPage: 0,
-			totalPages: 0,
-			perPage: 20,
-			totalResults: 0,
-			tableLoading: false,
-			selectedState: "",
-			selectedLga: "",
-			lgas: null,
-			states: null
-		};
-		this.searchNeedle = React.createRef();
-	}
-
-	componentDidMount() {
-		this._mounted = true;
-		this._userManager = new UserManager(this.props.user);
-		axios.defaults.withCredentials = true;
-		axios(
-			`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/index/${this.state.perPage}`,
-			{
-				method: "get"
-			}
-		).then(res => {
-			if (res.data.isSessionValid == "false") {
-				this.props.history.push("/login");
-			} else {
-				this.setState({
-					componentIsLoading: false,
-					officers: res.data.officers.data,
-					currentPage: res.data.officers.current_page,
-					totalPages: res.data.officers.last_page,
-					perPage: res.data.officers.per_page,
-					totalResults: res.data.officers.total,
-					states: res.data.states,
-					lgas: res.data.lgas
-				});
-			}
-		});
-	}
-
-	componentWillUnmount() {
-		this._mounted = false;
+  constructor(props) {
+    super(props);
+    this.state = {
+      componentIsLoading: true,
+      officers: null,
+      currentPage: 0,
+      totalPages: 0,
+      perPage: 20,
+      totalResults: 0,
+      tableLoading: false,
+      selectedState: "",
+      selectedLga: "",
+      lgas: null,
+      states: null,
+    };
+    this.searchNeedle = React.createRef();
   }
-  
+
+  componentDidMount() {
+    this._mounted = true;
+    this._userManager = new UserManager(this.props.user);
+    axios.defaults.withCredentials = true;
+    axios(
+      `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/index/${this.state.perPage}`,
+      {
+        method: "get",
+      }
+    ).then(res => {
+      if (res.data.isSessionValid == "false") {
+        this.props.history.push("/login");
+      } else {
+        this.setState({
+          componentIsLoading: false,
+          officers: res.data.officers.data,
+          currentPage: res.data.officers.current_page,
+          totalPages: res.data.officers.last_page,
+          perPage: res.data.officers.per_page,
+          totalResults: res.data.officers.total,
+          states: res.data.states,
+          lgas: res.data.lgas,
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   changePage = currentPage => {
     if (this._mounted) {
       this.setState({ tableLoading: true, currentPage });
@@ -99,7 +99,7 @@ class OfficerHomeRoute extends Component {
       type === "search"
     ) {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -176,7 +176,7 @@ class OfficerHomeRoute extends Component {
       this.setState({ tableLoading: true });
       axios.defaults.withCredentials = true;
       axios(url, {
-        method: "get"
+        method: "get",
       }).then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
@@ -187,7 +187,7 @@ class OfficerHomeRoute extends Component {
             currentPage: res.data.officers.current_page,
             totalPages: res.data.officers.last_page,
             perPage: res.data.officers.per_page,
-            totalResults: res.data.officers.total
+            totalResults: res.data.officers.total,
           });
         }
       });
@@ -195,16 +195,17 @@ class OfficerHomeRoute extends Component {
   };
 
   clearSearch = () => {
-    if (this._mounted && 
-      (this.searchNeedle.current.value !== "" 
-        || this.state.selectedLga !== "" 
-        || this.state.selectedState !== "")
-        ) {
+    if (
+      this._mounted &&
+      (this.searchNeedle.current.value !== "" ||
+        this.state.selectedLga !== "" ||
+        this.state.selectedState !== "")
+    ) {
       this.setState(
         {
           currentPage: 1,
           selectedLga: "",
-          selectedState: ""
+          selectedState: "",
         },
         () => {
           this.searchNeedle.current.value = "";
@@ -214,12 +215,11 @@ class OfficerHomeRoute extends Component {
     }
   };
 
-
-	render() {
-		return (
-			<OfficerHomeRouteView
-				userManager={this._userManager}
-				clearSearch={this.clearSearch}
+  render() {
+    return (
+      <OfficerHomeRouteView
+        userManager={this._userManager}
+        clearSearch={this.clearSearch}
         changePage={this.changePage}
         changeRowsPerPage={this.changeRowsPerPage}
         getSearchResults={this.getSearchResults}
@@ -228,9 +228,9 @@ class OfficerHomeRoute extends Component {
         searchNeedle={this.searchNeedle}
         {...this.props}
         {...this.state}
-			/>
-		);
-	}
+      />
+    );
+  }
 }
 
 export default OfficerHomeRoute;

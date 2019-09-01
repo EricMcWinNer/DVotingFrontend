@@ -10,12 +10,13 @@ class OfficialRoutes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      componentIsLoading: true
+      componentIsLoading: true,
     };
   }
 
   componentDidMount() {
     this._mounted = true;
+    console.log(typeof this.props.updateUser, "officialroutes");
   }
 
   componentWillUnmount() {
@@ -24,12 +25,15 @@ class OfficialRoutes extends Component {
 
   render() {
     const user = this.props.user;
+    const updateUser = this.props.updateUser;
     return (
       <Switch>
         <Route
           exact
           path={`${this.props.match.path}/`}
-          render={props => <OfficialHomeRoute user={user} {...props} />}
+          render={props => (
+            <OfficialHomeRoute user={user} updateUser={updateUser} {...props} />
+          )}
         />
         <Route
           exact

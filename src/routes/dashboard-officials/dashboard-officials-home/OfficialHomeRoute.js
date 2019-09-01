@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "./index.sass";
 import OfficialHomeRouteView from "./OfficialHomeRouteView";
+import UserManager from "security/UserManager";
 
 class OfficialHomeRoute extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class OfficialHomeRoute extends Component {
     this.state = {
       componentIsLoading: true,
       officials: null,
-      currentPage: 0,
+      currentPage: 1,
       totalPages: 0,
       perPage: 20,
       totalResults: 0,
@@ -18,36 +19,126 @@ class OfficialHomeRoute extends Component {
       selectedState: "",
       selectedLga: "",
       lgas: null,
-      states: null
+      states: null,
+      officialIsLoading: false,
+      fireDeleteModal: false,
+      fireDeleteSuccessModal: false,
+      official: null,
     };
     this.searchNeedle = React.createRef();
+    this._userManager = new UserManager(this.props.user);
   }
 
   componentDidMount() {
     this._mounted = true;
-    axios.defaults.withCredentials = true;
-    axios(
-      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${this.state.perPage}`,
-      {
-        method: "get"
-      }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          officials: res.data.officials.data,
-          currentPage: res.data.officials.current_page,
-          totalPages: res.data.officials.last_page,
-          perPage: res.data.officials.per_page,
-          totalResults: res.data.officials.total,
-          states: res.data.states,
-          lgas: res.data.lgas
-        });
-      }
-    });
+    console.log(typeof this.props.updateUser, "officialhomeroute");
+    this.initializeRoute();
   }
+
+  initializeRoute = (table = false) => {
+    if (this._mounted) {
+      this.setState({ componentIsLoading: !table, tableLoading: table });
+      axios.defaults.withCredentials = true;
+      const req = axios.get(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/index/${
+          this.state.perPage
+        }${table ? `?page=${this.state.currentPage}` : ""}`
+      );
+      req.then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        } else {
+          this.setState(state => ({
+            componentIsLoading: false,
+            tableLoading: false,
+            officials: res.data.officials.data,
+            currentPage: res.data.officials.current_page,
+            totalPages: res.data.officials.last_page,
+            perPage: res.data.officials.per_page,
+            totalResults: res.data.officials.total,
+            states: table ? state.states : res.data.states,
+            lgas: table ? state.lgas : res.data.lgas,
+          }));
+        }
+      });
+      return req;
+    }
+  };
+
+  closeDeleteModal = () => {
+    if (this._mounted) this.setState({ fireDeleteModal: false });
+  };
+
+  getOfficial = id => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios.get(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
+      );
+      req.then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            official: res.data.official,
+          });
+        }
+      });
+      return req;
+    }
+  };
+
+  deleteOfficial = id => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios.delete(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
+      );
+      req.then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        }
+      });
+      return req;
+    }
+  };
+
+  showDeleteModal = (e, id) => {
+    if (this._mounted) {
+      e.preventDefault();
+      this.setState({ officialIsLoading: true, fireDeleteModal: true });
+      this.getOfficial(id).then(res => {
+        this.setState({ officialIsLoading: false });
+      });
+    }
+  };
+
+  deleteOfficialConfirm = () => {
+    if (this._mounted) {
+      this.setState({ officialIsLoading: true });
+      console.log(typeof this.props.updateUser);
+      this.deleteOfficial(this.state.official.id).then(res => {
+        this.setState({
+          fireDeleteModal: false,
+          officialIsLoading: false,
+          fireDeleteSuccessModal: true,
+        });
+      });
+    }
+  };
+
+  handleModalConfirmation = () => {
+    if (this._mounted) {
+      if (this.state.official.id === this._userManager.returnUser().id) {
+        this.props.updateUser().then(res => {
+          this.props.history.push("/dashboard");
+        });
+      } else {
+        this.setState({ fireDeleteSuccessModal: false });
+        this.initializeRoute(true);
+      }
+    }
+  };
 
   componentWillUnmount() {
     this._mounted = false;
@@ -98,7 +189,7 @@ class OfficialHomeRoute extends Component {
       type === "search"
     ) {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -175,7 +266,7 @@ class OfficialHomeRoute extends Component {
       this.setState({ tableLoading: true });
       axios.defaults.withCredentials = true;
       axios(url, {
-        method: "get"
+        method: "get",
       }).then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
@@ -186,7 +277,7 @@ class OfficialHomeRoute extends Component {
             currentPage: res.data.officials.current_page,
             totalPages: res.data.officials.last_page,
             perPage: res.data.officials.per_page,
-            totalResults: res.data.officials.total
+            totalResults: res.data.officials.total,
           });
         }
       });
@@ -194,16 +285,17 @@ class OfficialHomeRoute extends Component {
   };
 
   clearSearch = () => {
-    if (this._mounted && 
-      (this.searchNeedle.current.value !== "" 
-        || this.state.selectedLga !== "" 
-        || this.state.selectedState !== "")
-        ) {
+    if (
+      this._mounted &&
+      (this.searchNeedle.current.value !== "" ||
+        this.state.selectedLga !== "" ||
+        this.state.selectedState !== "")
+    ) {
       this.setState(
         {
           currentPage: 1,
           selectedLga: "",
-          selectedState: ""
+          selectedState: "",
         },
         () => {
           this.searchNeedle.current.value = "";
@@ -223,6 +315,11 @@ class OfficialHomeRoute extends Component {
         handleChange={this.handleChange}
         handleFilterSelect={this.handleFilterSelect}
         searchNeedle={this.searchNeedle}
+        closeDeleteModal={this.closeDeleteModal}
+        showDeleteModal={this.showDeleteModal}
+        deleteOfficialConfirm={this.deleteOfficialConfirm}
+        handleModalConfirmation={this.handleModalConfirmation}
+        userManager={this._userManager}
         {...this.props}
         {...this.state}
       />

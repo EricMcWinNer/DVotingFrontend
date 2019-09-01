@@ -394,7 +394,7 @@ export const selectCandidatesModel = [
 	},
 ];
 
-export const officialModel = [
+export const officialModel = modalFunction => [
 	{
 		name: "S/N",
 		sortable: true,
@@ -417,6 +417,7 @@ export const officialModel = [
 					small
 					className={"reject-background mr-2"}
 					to={`/dashboard/officials/${row.id}/delete`}
+					onClick={e => modalFunction(e, row.id)}
 				>
 					<i className="fas fa-trash-alt" />
 					Delete
