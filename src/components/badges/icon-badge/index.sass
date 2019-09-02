@@ -21,14 +21,17 @@
   &.voter, &.single
     @extend .confirm-background
 
-  &.official, &.married, &.President, &.candidate
+  &.official, &.married, &.President
     background-color: #6F42C1
 
   &.female, &.widowed
     background-color: #FF1695
 
-  &.male, &.divorced, &.Vice-President
+  &.male, &.divorced, &.Vice-President, &.candidate
     background-color: #010080
 
   &.President, &.Vice-President
     min-width: 100px
+
+  &.officer
+    background-color: #67b9cc

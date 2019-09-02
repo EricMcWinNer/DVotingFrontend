@@ -12,14 +12,19 @@ import ElectionRouteContainer from "routes/dashboard-election";
 import PartyRouteContainer from "routes/dashboard-party";
 import VotersRouteContainer from "routes/dashboard-voters";
 import CandidatesContainer from "routes/dashboard-candidates";
+import OfficialHomeContainer from "routes/dashboard-officials";
+import OfficerHomeContainer from "routes/dashboard-officers";
+import PinHomeContainer from "routes/dashboard-pins";
 import RestrictedRoute from "components/routes/restricted-route";
+import UserManager from "security/UserManager";
 
 function DashBoardRouteView(props) {
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
-  const lastName = nameArray[0];
   const firstName = nameArray[1];
   const lastAndFirstName = nameArray[0] + " " + nameArray[1];
-  const user = props.user;
+  const user = props.componentIsLoading ? null : props.user;
+  const updateUser = props.componentIsLoading ? null : props.updateUser;
+  console.log(typeof props.updateUser, "dashboardrouteview");
   return props.componentIsLoading ? (
     <FullScreenLoader />
   ) : (
@@ -59,7 +64,7 @@ function DashBoardRouteView(props) {
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/voters`}
-                  isAuthorized={props.user.roles.includes("official")}
+                  isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
                     <VotersRouteContainer user={user} {...props} />
                   )}
@@ -69,6 +74,29 @@ function DashBoardRouteView(props) {
                   render={props => (
                     <CandidatesContainer user={user} {...props} />
                   )}
+                />
+                <RestrictedRoute
+                  path={`${props.match.path}/officials`}
+                  isAuthorized={UserManager.isOfficial(user)}
+                  render={props => (
+                    <OfficialHomeContainer
+                      user={user}
+                      updateUser={updateUser}
+                      {...props}
+                    />
+                  )}
+                />
+                <RestrictedRoute
+                  path={`${props.match.path}/officers`}
+                  isAuthorized={UserManager.isOfficial(user)}
+                  render={props => (
+                    <OfficerHomeContainer user={user} {...props} />
+                  )}
+                />
+                <RestrictedRoute
+                  path={`${props.match.path}/pins`}
+                  isAuthorized={UserManager.isOfficial(user)}
+                  render={props => <PinHomeContainer user={user} {...props} />}
                 />
               </Switch>
             </div>

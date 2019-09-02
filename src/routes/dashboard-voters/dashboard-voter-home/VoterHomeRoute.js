@@ -18,7 +18,7 @@ class VoterHomeRoute extends Component {
       states: null,
       lgas: null,
       selectedState: "",
-      selectedLga: ""
+      selectedLga: "",
     };
     this.searchNeedle = React.createRef();
   }
@@ -29,7 +29,7 @@ class VoterHomeRoute extends Component {
     axios(
       `${process.env.REACT_APP_API_PATH}/api/dashboard/voters/list/${this.state.perPage}`,
       {
-        method: "get"
+        method: "get",
       }
     ).then(res => {
       if (res.data.isSessionValid == "false") {
@@ -37,13 +37,13 @@ class VoterHomeRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          voters: res.data.voters,
-          currentPage: res.data.current_page,
-          totalPages: res.data.last_page,
-          perPage: res.data.per_page,
-          totalResults: res.data.total_results,
+          voters: [...res.data.voters.data],
+          currentPage: res.data.voters.current_page,
+          totalPages: res.data.voters.last_page,
+          perPage: res.data.voters.per_page,
+          totalResults: res.data.voters.total,
           states: res.data.states,
-          lgas: res.data.lgas
+          lgas: res.data.lgas,
         });
       }
     });
@@ -59,7 +59,6 @@ class VoterHomeRoute extends Component {
       const filterState = this.state.selectedState;
       const filterLGA = this.state.selectedLga;
       const searchNeedle = this.searchNeedle.current.value;
-      axios.defaults.withCredentials = true;
       let url;
       if (searchNeedle !== "") {
         if (filterState === "" && filterLGA === "")
@@ -99,7 +98,7 @@ class VoterHomeRoute extends Component {
       type === "search"
     ) {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -176,18 +175,18 @@ class VoterHomeRoute extends Component {
       this.setState({ tableLoading: true });
       axios.defaults.withCredentials = true;
       axios(url, {
-        method: "get"
+        method: "get",
       }).then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
         } else {
           this.setState({
             tableLoading: false,
-            voters: res.data.voters,
-            currentPage: res.data.current_page,
-            totalPages: res.data.last_page,
-            perPage: res.data.per_page,
-            totalResults: res.data.total_results
+            voters: [...res.data.voters.data],
+            currentPage: res.data.voters.current_page,
+            totalPages: res.data.voters.last_page,
+            perPage: res.data.voters.per_page,
+            totalResults: res.data.voters.total,
           });
         }
       });
@@ -195,12 +194,17 @@ class VoterHomeRoute extends Component {
   };
 
   clearSearch = () => {
-    if (this._mounted) {
+    if (
+      this._mounted &&
+      (this.searchNeedle.current.value !== "" ||
+        this.state.selectedLga !== "" ||
+        this.state.selectedState !== "")
+    ) {
       this.setState(
         {
           currentPage: 1,
           selectedLga: "",
-          selectedState: ""
+          selectedState: "",
         },
         () => {
           this.searchNeedle.current.value = "";

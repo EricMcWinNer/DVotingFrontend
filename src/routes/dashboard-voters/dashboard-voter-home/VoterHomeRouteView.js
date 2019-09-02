@@ -20,7 +20,7 @@ function VoterHomeRouteView(props) {
     votersData = props.voters.map((voter, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       reversedRoles: JSON.parse(voter.roles).reverse(),
-      ...voter
+      ...voter,
     }));
     states = props.states.map((state, index) => (
       <option value={state.state_id} key={index}>
@@ -29,7 +29,7 @@ function VoterHomeRouteView(props) {
     ));
     lgas = props.lgas.map((lga, index) => (
       <option value={lga.lga_id} key={index}>
-        {lga.name} - {lga.state}
+        {lga.name} - {lga.state.name}
       </option>
     ));
   }

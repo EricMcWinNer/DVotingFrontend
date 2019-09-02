@@ -7,6 +7,7 @@ import voter from "assets/img/icons/voter.png";
 import candidates from "assets/img/icons/candidates.png";
 import official from "assets/img/icons/official.png";
 import officer from "assets/img/icons/officer.png";
+import registrationPin from "assets/img/icons/registrationpin.png";
 
 function OfficialLinks(props) {
   return (
@@ -63,24 +64,46 @@ function OfficialLinks(props) {
           Manage Candidates
         </Link>
       </li>
-      <li>
-        <Link to={"/officials"}>
+      <li
+        className={
+          contains(props.location, "/dashboard/officials") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/officials"}>
           <img
             src={official}
             alt={"Mange Officials"}
             className={"sidebarIcon"}
           />
-          Manage Officials
+          Manage Electoral Officials
         </Link>
       </li>
-      <li>
-        <Link to={"/polls"}>
+      <li
+        className={
+          contains(props.location, "/dashboard/officers") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/officers"}>
           <img
             src={officer}
             alt={"Manage Polling Officers"}
             className={"sidebarIcon"}
           />
           Manage Polling Officers
+        </Link>
+      </li>
+      <li
+        className={
+          contains(props.location, "/dashboard/pins") ? "selected" : ""
+        }
+      >
+        <Link to={"/dashboard/pins"}>
+          <img
+            src={registrationPin}
+            alt={"Manage Registration Pins"}
+            className={"sidebarIcon"}
+          />
+          Manage Registration Pins
         </Link>
       </li>
     </>

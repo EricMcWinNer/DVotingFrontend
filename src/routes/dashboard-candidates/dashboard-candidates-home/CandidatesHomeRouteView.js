@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import DataTable from "react-data-table-component";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 import "./index.sass";
 import candidates from "assets/img/icons/candidates.png";
@@ -12,11 +13,13 @@ import { candidatesModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 
 function CandidatesHomeRouteView(props) {
+  const userManager = props.componentIsLoading ? null : props.userManager;
+  const candidateColumns = candidatesModel(props.showDeleteModal);
   let candidatesData;
   if (!props.componentIsLoading) {
     candidatesData = props.candidates.map((candidate, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
-      ...candidate
+      ...candidate,
     }));
     if (!props.user.roles.includes("official")) {
       candidatesModel.splice(1, 1);
@@ -77,7 +80,7 @@ function CandidatesHomeRouteView(props) {
             <DataTable
               noHeader
               striped
-              columns={candidatesModel}
+              columns={candidateColumns}
               data={candidatesData}
               paginationServer
               pagination
@@ -108,6 +111,63 @@ function CandidatesHomeRouteView(props) {
               </li>
             )}
           </ul>
+          {userManager.isOfficial() &&
+            !props.componentIsLoading &&
+            props.showNoCandidateModal &&
+            candidatesData.length === 0 && (
+              <SweetAlert
+                info
+                allowEscape
+                closeOnClickOutside
+                title="No Candidates!"
+                onConfirm={props.redirectToCreate}
+                onCancel={props.closeNoCandidatesModal}
+              >
+                <span className="cartogothic">
+                  There is no candidate registered. Click the link below to
+                  create one
+                </span>
+              </SweetAlert>
+            )}
+          {userManager.isOfficial() && props.fireDeleteModal && (
+            <SweetAlert
+              warning={!props.candidateIsLoading}
+              custom={props.candidateIsLoading}
+              allowEscape
+              closeOnClickOutside={!props.candidateIsLoading}
+              showCancel={!props.candidateIsLoading}
+              showConfirm={!props.candidateIsLoading}
+              confirmBtnText={`${
+                props.candidateIsLoading ? "" : "Yes, delete it!"
+              }`}
+              confirmBtnBsStyle="danger"
+              cancelBtnBsStyle="default"
+              title={`${props.candidateIsLoading ? "" : "Are you sure?"}`}
+              onCancel={props.closeDeleteModal}
+              onConfirm={props.deleteCandidateConfirm}
+            >
+              {props.candidateIsLoading ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                <span className="cartogothic">
+                  This action will delete the selected candidate.
+                </span>
+              )}
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireDeleteSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success!"
+              onConfirm={props.handleModalConfirmation}
+            >
+              <span className="cartogothic">
+                Candidate deleted successfully
+              </span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>

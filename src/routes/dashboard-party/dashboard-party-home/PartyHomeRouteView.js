@@ -11,13 +11,20 @@ import DataTable from "react-data-table-component";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
 import Helmet from "react-helmet";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 function PartyHomeRouteView(props) {
+  const userManager = props.componentIsLoading ? null : props.userManager;
+  const partiesModel = politicalPartiesModel(props.showDeleteModal);
+  const handleKeyUp = e => {
+    if (e.keyCode === 13)
+      props.getSearchResults(props.searchNeedle.current.value);
+  };
   let partiesData;
   if (!props.componentIsLoading) {
     partiesData = props.parties.map((datum, index) => ({
-      serial: index + 1,
-      ...datum
+      serial: (props.currentPage - 1) * props.perPage + (index + 1),
+      ...datum,
     }));
     if (!props.user.roles.includes("official")) {
       politicalPartiesModel.splice(1, 1);
@@ -89,28 +96,101 @@ function PartyHomeRouteView(props) {
               <>You can create more parties using the link provided below.</>
             )}
           </p>
+          <div className={"searchTools"}>
+            <ul className={"o-auto clearfix"}>
+              <li className="float-right">
+                <label htmlFor={"searchNeedle"}>Search:</label>
+                <input
+                  type={"search"}
+                  name={"searchNeedle"}
+                  id={"searchNeedle"}
+                  ref={props.searchNeedle}
+                  className={"searchParty"}
+                  onKeyUp={e => handleKeyUp(e)}
+                  placeholder={"Search for a party"}
+                />
+                <button
+                  className="closeSearch"
+                  onClick={e => props.clearSearch(e)}
+                >
+                  &times;
+                </button>
+              </li>
+            </ul>
+          </div>
           <div className={"DataTableContainer"}>
             <DataTable
               noHeader
               striped
-              columns={politicalPartiesModel}
+              columns={partiesModel}
               data={partiesData}
+              pagination
+              paginationServer
+              paginationTotalRows={props.totalResults}
+              onChangePage={page => props.changePage(page)}
+              onChangeRowsPerPage={(currentRowsPerPage, currentPage) =>
+                props.changeRowsPerPage(currentRowsPerPage, currentPage)
+              }
+              paginationPerPage={20}
             />
+            {props.tableLoading && (
+              <div className="DataTableLoader">
+                <SubRouteLoader />
+              </div>
+            )}
           </div>
           <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
             {props.user.roles.includes("official") && (
               <li>
                 <LinkButton
                   id={"manage-election-button"}
-                  className={"logo-background"}
+                  className={"cool-purple-background"}
                   to={`/dashboard/party/create`}
                 >
                   <i className="far fa-plus-square" />
-                  Create
+                  Create new party
                 </LinkButton>
               </li>
             )}
           </ul>
+          {userManager.isOfficial() && props.fireDeleteModal && (
+            <SweetAlert
+              warning={!props.partyIsDeleting}
+              custom={props.partyIsDeleting}
+              allowEscape
+              closeOnClickOutside={!props.partyIsDeleting}
+              showCancel={!props.partyIsDeleting}
+              showConfirm={!props.partyIsDeleting}
+              confirmBtnText={`${
+                props.partyIsDeleting ? "" : "Yes, delete it!"
+              }`}
+              confirmBtnBsStyle="danger"
+              cancelBtnBsStyle="default"
+              title={`${props.partyIsDeleting ? "" : "Are you sure?"}`}
+              onCancel={props.closeDeleteModal}
+              onConfirm={props.deletePartyConfirm}
+            >
+              {props.partyIsDeleting ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                <span className="cartogothic">
+                  This action will delete the selected party and all its
+                  candidates. It cannot be undone.
+                </span>
+              )}
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireDeleteSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success?"
+              onConfirm={props.handleModalConfirmation}
+            >
+              <span className="cartogothic">Election deleted successfully</span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>

@@ -38,7 +38,7 @@ class LoginController extends Component {
         form.append("email", this.state.email);
         form.append("password", this.state.password);
         axios.defaults.withCredentials = true;
-        axios(`${process.env.REACT_APP_API_PATH}/api/login`, {
+        axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/login`, {
           method: "post",
           data: form
         })

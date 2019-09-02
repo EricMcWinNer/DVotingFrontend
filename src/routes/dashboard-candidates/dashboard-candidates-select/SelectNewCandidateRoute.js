@@ -17,7 +17,7 @@ class SelectNewCandidateRoute extends Component {
       states: null,
       lgas: null,
       selectedState: "",
-      selectedLga: ""
+      selectedLga: "",
     };
     this.searchNeedle = React.createRef();
   }
@@ -26,20 +26,20 @@ class SelectNewCandidateRoute extends Component {
     this._mounted = true;
     axios.defaults.withCredentials = true;
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/new`, {
-      method: "get"
+      method: "get",
     }).then(res => {
       if (res.data.isSessionValid == "false") {
         this.props.history.push("/login");
       } else {
         this.setState({
           componentIsLoading: false,
-          users: res.data.users,
-          currentPage: res.data.current_page,
-          totalPages: res.data.last_page,
-          perPage: res.data.per_page,
-          totalResults: res.data.total_results,
+          users: res.data.users.data,
+          currentPage: res.data.users.current_page,
+          totalPages: res.data.users.last_page,
+          perPage: res.data.users.per_page,
+          totalResults: res.data.users.total,
           states: res.data.states,
-          lgas: res.data.lgas
+          lgas: res.data.lgas,
         });
       }
     });
@@ -95,7 +95,7 @@ class SelectNewCandidateRoute extends Component {
       type === "search"
     ) {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -172,18 +172,18 @@ class SelectNewCandidateRoute extends Component {
       this.setState({ tableLoading: true });
       axios.defaults.withCredentials = true;
       axios(url, {
-        method: "get"
+        method: "get",
       }).then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
         } else {
           this.setState({
             tableLoading: false,
-            users: res.data.users,
-            currentPage: res.data.current_page,
-            totalPages: res.data.last_page,
-            perPage: res.data.per_page,
-            totalResults: res.data.total_results
+            users: res.data.users.data,
+            currentPage: res.data.users.current_page,
+            totalPages: res.data.users.last_page,
+            perPage: res.data.users.per_page,
+            totalResults: res.data.users.total,
           });
         }
       });
@@ -196,7 +196,7 @@ class SelectNewCandidateRoute extends Component {
         {
           currentPage: 1,
           selectedLga: "",
-          selectedState: ""
+          selectedState: "",
         },
         () => {
           this.searchNeedle.current.value = "";
