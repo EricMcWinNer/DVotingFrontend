@@ -24,7 +24,6 @@ function DashBoardRouteView(props) {
   const lastAndFirstName = nameArray[0] + " " + nameArray[1];
   const user = props.componentIsLoading ? null : props.user;
   const updateUser = props.componentIsLoading ? null : props.updateUser;
-  console.log(typeof props.updateUser, "dashboardrouteview");
   return props.componentIsLoading ? (
     <FullScreenLoader />
   ) : (

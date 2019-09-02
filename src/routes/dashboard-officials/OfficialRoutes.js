@@ -16,7 +16,6 @@ class OfficialRoutes extends Component {
 
   componentDidMount() {
     this._mounted = true;
-    console.log(typeof this.props.updateUser, "officialroutes");
   }
 
   componentWillUnmount() {

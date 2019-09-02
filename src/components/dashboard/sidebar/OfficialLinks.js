@@ -7,7 +7,7 @@ import voter from "assets/img/icons/voter.png";
 import candidates from "assets/img/icons/candidates.png";
 import official from "assets/img/icons/official.png";
 import officer from "assets/img/icons/officer.png";
-import registrationPin from "assets/img/icons/registrationpin.png";
+import registrationPin from "assets/img/icons/padlock.png";
 
 function OfficialLinks(props) {
   return (

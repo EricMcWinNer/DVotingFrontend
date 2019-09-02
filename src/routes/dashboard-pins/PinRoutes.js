@@ -3,34 +3,45 @@ import { Switch, Route } from "react-router-dom";
 
 import UserManager from "security/UserManager";
 import PinHomeRoute from "./dashboard-pins-home";
+import CreatePinRoute from "./dashboard-pins-create";
 
 class PinRoutes extends Component {
-	constructor(props) {
-		super(props);
-		this._userManager = new UserManager(props.user);
-	}
+  constructor(props) {
+    super(props);
+    this._userManager = new UserManager(props.user);
+  }
 
-	componentDidMount() {
-		this._mounted = true;
-	}
+  componentDidMount() {
+    this._mounted = true;
+  }
 
-	componentWillUnmount() {
-		this._mounted = false;
-	}
+  componentWillUnmount() {
+    this._mounted = false;
+  }
 
-	render() {
-		return (
-			<Switch>
-				<Route
-					exact
-					path={`${this.props.match.path}/`}
-					render={props => (
-						<PinHomeRoute userManager={this._userManager} {...props} />
-					)}
-				/>
-			</Switch>
-		);
-	}
+  render() {
+    return (
+      <Switch>
+        <Route
+          exact
+          path={`${this.props.match.path}/`}
+          render={props => (
+            <PinHomeRoute userManager={this._userManager} {...props} />
+          )}
+        />
+        <Route
+          exact
+          path={[
+            `${this.props.match.path}/create`,
+            `${this.props.match.path}/create/:type`,
+          ]}
+          render={props => (
+            <CreatePinRoute userManager={this._userManager} {...props} />
+          )}
+        />
+      </Switch>
+    );
+  }
 }
 
 export default PinRoutes;

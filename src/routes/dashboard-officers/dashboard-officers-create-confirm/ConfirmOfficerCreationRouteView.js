@@ -34,8 +34,8 @@ function ConfirmOfficerCreationRouteView(props) {
             </div>
           </div>
           <p className="subtitle poppins">
-            Are you sure you want to make{" "}
-            <b>{props.prospectiveOfficer.name}</b> a polling officer?
+            Are you sure you want to make <b>{props.prospectiveOfficer.name}</b>{" "}
+            a polling officer?
           </p>
           <ul className={"no-style m-0 p-0 h-menu"}>
             <li>

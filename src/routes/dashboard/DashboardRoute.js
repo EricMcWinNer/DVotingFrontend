@@ -61,7 +61,6 @@ class DashboardRoute extends Component {
   };
 
   render() {
-    console.log(typeof this.updateUser, "dashboardroute");
     return (
       <DashboardRouteView
         componentIsLoading={this.state.componentIsLoading}

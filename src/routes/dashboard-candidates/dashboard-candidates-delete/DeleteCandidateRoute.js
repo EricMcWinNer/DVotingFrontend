@@ -9,7 +9,7 @@ class DeleteCandidateRoute extends Component {
     this.state = {
       componentIsLoading: true,
       candidate: null,
-      deleting: false
+      deleting: false,
     };
   }
 
@@ -19,7 +19,7 @@ class DeleteCandidateRoute extends Component {
     axios(
       `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${this.props.match.params.id}`,
       {
-        method: "get"
+        method: "get",
       }
     ).then(res => {
       if (res.data.isSessionValid == "false") {
@@ -27,7 +27,7 @@ class DeleteCandidateRoute extends Component {
       } else {
         this.setState({
           componentIsLoading: false,
-          candidate: res.data.candidate
+          candidate: res.data.candidate,
         });
       }
     });
@@ -41,7 +41,7 @@ class DeleteCandidateRoute extends Component {
       axios(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${this.props.match.params.id}`,
         {
-          method: "delete"
+          method: "delete",
         }
       ).then(res => {
         if (res.data.isSessionValid == "false") {
@@ -49,7 +49,7 @@ class DeleteCandidateRoute extends Component {
         } else {
           this.setState({
             componentIsLoading: false,
-            deleting: false
+            deleting: false,
           });
           if (res.data.completed === true) {
             alert("Candidate deleted successfully");
