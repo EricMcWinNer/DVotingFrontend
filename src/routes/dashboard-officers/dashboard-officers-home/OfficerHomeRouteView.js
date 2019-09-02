@@ -10,10 +10,12 @@ import "./index.sass";
 import officer from "assets/img/icons/officer.png";
 import { officerModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 function OfficerHomeRouteView(props) {
   const userManager = props.userManager;
   let officerData, states, lgas;
+  const officerColumns = officerModel(props.showDeleteModal);
   if (!props.componentIsLoading) {
     officerData = props.officers.map((officer, index) => ({
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
@@ -112,7 +114,7 @@ function OfficerHomeRouteView(props) {
             <DataTable
               noHeader
               striped
-              columns={officerModel}
+              columns={officerColumns}
               data={officerData}
               paginationServer
               pagination
@@ -134,7 +136,7 @@ function OfficerHomeRouteView(props) {
               <li>
                 <LinkButton
                   id={"manage-election-button"}
-                  className={"logo-background"}
+                  className={"cool-purple-background"}
                   to={`/dashboard/officers/create`}
                 >
                   <i className="far fa-plus-square" />
@@ -143,6 +145,41 @@ function OfficerHomeRouteView(props) {
               </li>
             )}
           </ul>
+          {userManager.isOfficial() && props.fireDeleteModal && (
+            <SweetAlert
+              warning={!props.officerIsLoading}
+              custom={props.officerIsLoading}
+              allowEscape
+              closeOnClickOutside={!props.officerIsLoading}
+              showCancel={!props.officerIsLoading}
+              showConfirm={!props.officerIsLoading}
+              confirmBtnText={`${props.officerIsLoading ? "" : "Yes, do it!"}`}
+              confirmBtnBsStyle="danger"
+              cancelBtnBsStyle="default"
+              title={`${props.officerIsLoading ? "" : "Are you sure?"}`}
+              onCancel={props.closeDeleteModal}
+              onConfirm={props.deleteOfficerConfirm}
+            >
+              {props.officerIsLoading ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                <span className="cartogothic">
+                  This action will delete the selected officer.
+                </span>
+              )}
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireDeleteSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success?"
+              onConfirm={props.handleModalConfirmation}
+            >
+              <span className="cartogothic">Officer deleted successfully</span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>

@@ -568,7 +568,7 @@ export const selectOfficialModel = showModal => [
   },
 ];
 
-export const selectOfficerModel = [
+export const selectOfficerModel = showModal => [
   {
     name: "S/N",
     sortable: true,
@@ -583,6 +583,7 @@ export const selectOfficerModel = [
         small
         className={"cool-purple-background mr-2"}
         to={`/dashboard/officers/${row.id}/create`}
+        onClick={e => showModal(e, row.id)}
       >
         <i className="fas fa-plus" />
         Make Officer
@@ -653,7 +654,7 @@ export const selectOfficerModel = [
     selector: "lga.state.name",
   },
 ];
-export const officerModel = [
+export const officerModel = showModal => [
   {
     name: "S/N",
     sortable: true,
@@ -676,6 +677,7 @@ export const officerModel = [
           small
           className={"reject-background mr-2"}
           to={`/dashboard/officers/${row.id}/delete`}
+          onClick={e => showModal(e, row.id)}
         >
           <i className="fas fa-trash-alt" />
           Delete

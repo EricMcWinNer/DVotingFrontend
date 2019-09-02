@@ -10,9 +10,11 @@ import BaseCard from "components/cards/base-card";
 import officer from "assets/img/icons/officer.png";
 import { selectOfficerModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 function SelectNewOfficerRouteView(props) {
   const userManager = props.userManager;
+  const selectOfficerColumns = selectOfficerModel(props.showCreateModal);
   let eligibleOfficersData, states, lgas;
   if (!props.componentIsLoading) {
     eligibleOfficersData = props.eligibleOfficers.map((official, index) => ({
@@ -114,7 +116,7 @@ function SelectNewOfficerRouteView(props) {
             <DataTable
               noHeader
               striped
-              columns={selectOfficerModel}
+              columns={selectOfficerColumns}
               data={eligibleOfficersData}
               paginationServer
               pagination
@@ -158,6 +160,42 @@ function SelectNewOfficerRouteView(props) {
               </LinkButton>
             </li>
           </ul>
+          {userManager.isOfficial() && props.fireCreateModal && (
+            <SweetAlert
+              info={!props.officerIsLoading}
+              custom={props.officerIsLoading}
+              allowEscape
+              closeOnClickOutside={!props.officerIsLoading}
+              showCancel={!props.officerIsLoading}
+              showConfirm={!props.officerIsLoading}
+              confirmBtnText={`${props.officerIsLoading ? "" : "Yes, do it!"}`}
+              confirmBtnBsStyle="info"
+              cancelBtnBsStyle="default"
+              title={`${props.officerIsLoading ? "" : "Are you sure?"}`}
+              onCancel={props.closeCreateModal}
+              onConfirm={props.createOfficerConfirm}
+            >
+              {props.officerIsLoading ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                <span className="cartogothic">
+                  This action will make the selected user an officer.
+                </span>
+              )}
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireCreateSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success!"
+              onConfirm={props.handleModalConfirmation}
+              onCancel={props.handleModalConfirmation}
+            >
+              <span className="cartogothic">Officer created successfully</span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>

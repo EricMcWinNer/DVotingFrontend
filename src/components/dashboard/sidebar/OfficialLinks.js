@@ -75,7 +75,7 @@ function OfficialLinks(props) {
             alt={"Mange Officials"}
             className={"sidebarIcon"}
           />
-          Manage Officials
+          Manage Electoral Officials
         </Link>
       </li>
       <li

@@ -3,6 +3,7 @@ import axios from "axios";
 import UserManager from "security/UserManager";
 
 import SelectNewOfficerRouteView from "./SelectNewOfficerRouteView";
+import CreateOfficialsRouteView from "routes/dashboard-officials/dashboard-officials-create/CreateOfficialsRouteView";
 
 class SelectNewOfficerRoute extends Component {
   constructor(props) {
@@ -19,44 +20,117 @@ class SelectNewOfficerRoute extends Component {
       selectedLga: "",
       lgas: null,
       states: null,
+      officerIsLoading: false,
+      fireCreateModal: false,
+      fireCreateSuccessModal: false,
+      user: null,
     };
+    this._userManager = new UserManager(this.props.user);
     this.searchNeedle = React.createRef();
   }
 
   componentDidMount() {
     this._mounted = true;
-    this._userManager = new UserManager(this.props.user);
-    axios.defaults.withCredentials = true;
-    axios(
-      `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${this.state.perPage}`,
-      {
-        method: "get",
-      }
-    )
-      .then(res => {
+    this.initializeRoute();
+  }
+
+  initializeRoute = (table = false) => {
+    if (this._mounted) {
+      this.setState({ componentIsLoading: !table, tableLoading: table });
+      axios.defaults.withCredentials = true;
+      const req = axios.get(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/create/${
+          this.state.perPage
+        }${table ? `?page=${this.state.currentPage}` : ""}`
+      );
+      req.then(res => {
         if (res.data.isSessionValid == "false") {
           this.props.history.push("/login");
         } else {
-          this.setState({
+          this.setState(state => ({
             componentIsLoading: false,
+            tableLoading: false,
             eligibleOfficers: res.data.users.data,
             currentPage: res.data.users.current_page,
             totalPages: res.data.users.last_page,
             perPage: res.data.users.per_page,
             totalResults: res.data.users.total,
-            states: res.data.states,
-            lgas: res.data.lgas,
-          });
-        }
-      })
-      .catch(res => {
-        for (let x in res) {
-          console.log(res[x]);
-          console.log(x);
-          console.log("\n");
+            states: table ? state.states : res.data.states,
+            lgas: table ? state.lgas : res.data.lgas,
+          }));
         }
       });
-  }
+      return req;
+    }
+  };
+
+  closeCreateModal = () => {
+    if (this._mounted) this.setState({ fireCreateModal: false });
+  };
+
+  getUser = id => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios.get(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}/create/confirm`
+      );
+      req.then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            user: res.data.user,
+          });
+        }
+      });
+      return req;
+    }
+  };
+
+  createOfficer = id => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios.post(
+        `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
+      );
+      req.then(res => {
+        if (res.data.isSessionValid == "false") {
+          this.props.history.push("/login");
+        }
+      });
+      return req;
+    }
+  };
+
+  createOfficerConfirm = () => {
+    if (this._mounted) {
+      this.setState({ officerIsLoading: true });
+      this.createOfficer(this.state.user.id).then(res => {
+        this.setState({
+          fireCreateModal: false,
+          officerIsLoading: false,
+          fireCreateSuccessModal: true,
+        });
+      });
+    }
+  };
+
+  showCreateModal = (e, id) => {
+    if (this._mounted) {
+      e.preventDefault();
+      this.setState({ officerIsLoading: true, fireCreateModal: true });
+      this.getUser(id).then(res => {
+        this.setState({ officerIsLoading: false });
+      });
+    }
+  };
+
+  handleModalConfirmation = () => {
+    if (this._mounted) {
+      this.setState({ fireCreateSuccessModal: false });
+      this.initializeRoute(true);
+    }
+  };
 
   componentWillUnmount() {
     this._mounted = false;
@@ -234,6 +308,10 @@ class SelectNewOfficerRoute extends Component {
         handleChange={this.handleChange}
         handleFilterSelect={this.handleFilterSelect}
         searchNeedle={this.searchNeedle}
+        showCreateModal={this.showCreateModal}
+        closeCreateModal={this.closeCreateModal}
+        createOfficerConfirm={this.createOfficerConfirm}
+        handleModalConfirmation={this.handleModalConfirmation}
         {...this.props}
         {...this.state}
       />

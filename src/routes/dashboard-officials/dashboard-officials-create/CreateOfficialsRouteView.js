@@ -159,13 +159,13 @@ function CreateOfficialsRouteView(props) {
               cancelBtnBsStyle="default"
               title={`${props.officialIsLoading ? "" : "Are you sure?"}`}
               onCancel={props.closeCreateModal}
-              onConfirm={props.createOfficialConfirm}
+              onConfirm={props.createOfficerConfirm}
             >
               {props.officialIsLoading ? (
                 <SubRouteLoader className={"mt-5 mb-5"} />
               ) : (
                 <span className="cartogothic">
-                  This action make the selected user an official.
+                  This action will make the selected user an official.
                 </span>
               )}
             </SweetAlert>
