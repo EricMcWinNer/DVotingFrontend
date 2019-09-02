@@ -7,8 +7,11 @@ import speedometer from "assets/img/icons/speedometer.png";
 import UserInfo from "./userinfo";
 import OfficialLinks from "./OfficialLinks";
 import VoterLinks from "./VoterLinks";
+import OfficerLinks from "./OfficerLinks";
+import UserManager from "security/UserManager";
 
 function SideBar(props) {
+  const userManager = new UserManager(props.user);
   return (
     <div id={"sidebar"}>
       <div className="overlay">
@@ -32,11 +35,13 @@ function SideBar(props) {
                 Dashboard home
               </Link>
             </li>
-            {props.user.roles.includes("official") ? (
-              <OfficialLinks {...props} />
-            ) : (
-              <VoterLinks {...props} />
+            {userManager.isOfficial() && <OfficialLinks {...props} />}
+            {userManager.isOfficer() && (
+              <>
+                <OfficerLinks {...props} /> <VoterLinks {...props} />
+              </>
             )}
+            {userManager.isOnlyVoter() && <VoterLinks {...props} />}
           </ul>
         </div>
       </div>
