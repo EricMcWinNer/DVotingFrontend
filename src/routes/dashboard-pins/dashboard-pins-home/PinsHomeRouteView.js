@@ -55,7 +55,7 @@ function PinsHomeRouteView(props) {
                 <LinkButton
                   id={"manage-election-button"}
                   className={"logo-background mt-3"}
-                  to={`/dashboard/officials/create`}
+                  to={`/dashboard/pins/create`}
                 >
                   <i className="fas fa-plus-circle" />
                   Create new Pins

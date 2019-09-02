@@ -10,7 +10,7 @@ import candidates from "assets/img/icons/totalcandidates.png";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import PictureUploadInput from "components/forms/picture-upload-handler";
 import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
-import SweetAlert from "react-bootstrap-sweetalert"
+import SweetAlert from "react-bootstrap-sweetalert";
 
 function CreateCandidateFormView(props) {
   const userManager = props.userManager;
@@ -134,23 +134,23 @@ function CreateCandidateFormView(props) {
             </div>
           </form>
           {userManager.isOfficial() &&
-								!props.componentIsLoading &&
-								props.showErrorAlert && (
-									<SweetAlert
-										type={props.alertType}
-										allowEscape
-										closeOnClickOutside
-										title={props.errorTitle}
-										onConfirm={
-											(typeof props.alertCallBack).toLowerCase() === "function"
-												? props.alertCallBack
-												: props.closeErrorModal
-										}
-										onCancel={props.closeErrorModal}
-									>
-										<span className="cartogothic">{props.errorMessage}</span>
-									</SweetAlert>
-								)}
+            !props.componentIsLoading &&
+            props.showErrorAlert && (
+              <SweetAlert
+                type={props.alertType}
+                allowEscape
+                closeOnClickOutside
+                title={props.errorTitle}
+                onConfirm={
+                  (typeof props.alertCallBack).toLowerCase() === "function"
+                    ? props.alertCallBack
+                    : props.closeErrorModal
+                }
+                onCancel={props.closeErrorModal}
+              >
+                <span className="cartogothic">{props.errorMessage}</span>
+              </SweetAlert>
+            )}
         </BaseCard>
       </Col>
     </Row>
