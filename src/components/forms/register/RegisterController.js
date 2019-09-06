@@ -174,7 +174,10 @@ class RegisterController extends Component {
             this.setState({ formIsSubmitting: false }, () => {
               if (res.data.isValid == false) {
                 if (res.data.field === "password")
-                  alert("The passwords you submitted do not match");
+                  this.displayAlert(
+                    "Invalid Password",
+                    "The passwords you submitted do not match"
+                  );
                 else if (res.data.field === "emailExists")
                   this.displayAlert(
                     "Invalid e-mail",
