@@ -14,7 +14,7 @@ class EntryPoint extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newlyRegistered: false
+      newlyRegistered: false,
     };
   }
 

@@ -1,12 +1,23 @@
 import React, { Component } from "react";
+import Webcam from "react-webcam";
+import upload from "assets/img/icons/photo-upload.png";
+import webcam from "assets/img/icons/webcam.png";
+import BasicModal from "components/cards/basic-modal";
+import "./index.sass";
 
 class PictureUploadInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pictureUrl: null,
-      pictureFile: null
+      pictureFile: null,
+      showWebcam: false,
+      webCamPicture: null,
+      previewWebCamPicture: false,
+      webCamWidth: 0,
+      webCamHeight: 0,
     };
+    this.pictureUploadRef = React.createRef();
   }
 
   componentDidMount() {
@@ -14,6 +25,36 @@ class PictureUploadInput extends Component {
     if (this.props.defaultPictureUrl !== undefined)
       this.setState({ pictureUrl: this.props.defaultPictureUrl });
   }
+
+  setRef = webcam => {
+    this.webcam = webcam;
+  };
+
+  capture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+    this.setState({ webCamPicture: imageSrc, previewWebCamPicture: true });
+  };
+
+  takeAgain = () => {
+    this.setState({ webCamPicture: null, previewWebCamPicture: false });
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.webCamWidth !== this.props.webCamWidth)
+      this.setState({ webCamWidth: this.props.webCamWidth }, () => {
+        this.calculateWebCamHeight();
+      });
+  }
+
+  calculateWebCamHeight = () => {
+    const width = window.outerWidth - (window.outerWidth / 100) * 30;
+    const aspectRatio = window.outerWidth / window.outerHeight;
+    const height = width / aspectRatio;
+    console.log(window.innerWidth, width);
+    console.log(aspectRatio, "Aspect Ratio");
+    console.log(height, "Height");
+    this.setState({ webCamWidth: width, webCamHeight: height });
+  };
 
   componentWillUnmount() {
     this._mounted = false;
@@ -26,8 +67,41 @@ class PictureUploadInput extends Component {
   dismissImageAlert = () => {
     if (this._mounted)
       this.setState({
-        fileNotImage: false
+        fileNotImage: false,
       });
+  };
+
+  displayWebcam(status = true) {
+    if (this._mounted) {
+      this.videoConstraints = {
+        width: this.state.webCamWidth,
+        height: this.state.webCamHeight,
+        facingMode: "user",
+      };
+      this.setState({ showWebcam: status });
+    }
+  }
+
+  cancelPicture = () => {
+    this.props.updatePictureFile(null);
+    this.setState({
+      pictureUrl: null,
+      pictureFile: null,
+      webCamPicture: null,
+    });
+    this.pictureUploadRef.current.value = null;
+  };
+
+  saveCapturedPicture = () => {
+    this.setState({
+      showWebcam: false,
+      previewWebCamPicture: false,
+    });
+    this.setState({
+      pictureUrl: this.state.webCamPicture,
+      pictureFile: this.state.webCamPicture,
+    });
+    this.props.updatePictureFile(this.state.webCamPicture);
   };
 
   readURI = e => {
@@ -47,7 +121,7 @@ class PictureUploadInput extends Component {
           reader.onload = function(ev) {
             this.setState({
               pictureUrl: ev.target.result,
-              fileNotImage: false
+              fileNotImage: false,
             });
           }.bind(this);
           reader.readAsDataURL(e.target.files[0]);
@@ -57,10 +131,23 @@ class PictureUploadInput extends Component {
       }
   };
 
+  removeWebCam = () => {
+    this.setState({
+      showWebcam: false,
+      previewWebCamPicture: false,
+      webCamPicture: null,
+    });
+  };
+
   render() {
     return (
-      <div className="fullWidth inputGroup">
-        <label htmlFor="candidatePicture">{this.props.label}</label>
+      <div className="fullWidth pictureUploadWrapper inputGroup">
+        <label
+          htmlFor="pictureUpload"
+          className={`${this.props.required ? "required" : ""}`}
+        >
+          {this.props.label}
+        </label>
         {this.state.pictureUrl === null ? (
           <div />
         ) : (
@@ -70,17 +157,87 @@ class PictureUploadInput extends Component {
               alt={this.props.label}
               className={"uploadedImage-Preview"}
             />
+            {this.props.fancyInput && (
+              <div onClick={() => this.cancelPicture()} className={"cancel"}>
+                Cancel
+              </div>
+            )}
           </div>
         )}
-        <input
-          type={"file"}
-          id={"candidatePicture"}
-          name={"candidatePicture"}
-          className={"basecard-input"}
-          accept="image/*"
-          placeholder={"Candidate Picture"}
-          onChange={e => this.handlePictureChange(e)}
-        />
+        {this.state.showWebcam && (
+          <BasicModal
+            center
+            icon={webcam}
+            title={"Take a Profile Picture"}
+            className={"b-80 l-90"}
+            custom={this.state.previewWebCamPicture}
+            redo={this.takeAgain}
+            cancelText={
+              <span>
+                <i className="fas fa-times" /> Cancel
+              </span>
+            }
+            savePicture={this.saveCapturedPicture}
+            confirmText={
+              <span>
+                <i className="fas fa-camera" /> Capture
+              </span>
+            }
+            confirmCallBack={this.capture}
+            cancelCallBack={this.removeWebCam}
+          >
+            {this.state.previewWebCamPicture ? (
+              <div className="fullWidth">
+                <img
+                  src={this.state.webCamPicture}
+                  alt="Preview Webcam picture"
+                  className={"d-block mx-auto"}
+                  width={this.state.webCamWidth}
+                />
+              </div>
+            ) : (
+              <Webcam
+                audio={false}
+                height={this.state.webCamHeight}
+                ref={this.setRef}
+                screenshotFormat="image/jpeg"
+                width={this.state.webCamWidth}
+                videoConstraints={this.videoConstraints}
+                className={"mx-auto d-block"}
+                style={{ width: this.state.webCamWidth }}
+              />
+            )}
+          </BasicModal>
+        )}
+        <div className="uploadInputWrapper">
+          <div className={`${this.props.fancyInput && "upload-picture-label"}`}>
+            <img src={upload} alt={"Click or drag and drop here"} />
+            Click or drag and drop here
+            <div className={"label-overlay"}>
+              <input
+                type={"file"}
+                id={"pictureUpload"}
+                name={"pictureUpload"}
+                className={`basecard-input ${
+                  this.props.fancyInput ? "invisible-input" : ""
+                }`}
+                accept="image/*"
+                onChange={e => this.handlePictureChange(e)}
+                required={this.props.required}
+                ref={this.pictureUploadRef}
+              />
+            </div>
+          </div>
+          {this.props.useWebcam && (
+            <div
+              className={`upload-picture-label`}
+              onClick={() => this.displayWebcam()}
+            >
+              <img src={webcam} alt={"Take a picture with webcam"} />
+              Take a picture with webcam
+            </div>
+          )}
+        </div>
       </div>
     );
   }

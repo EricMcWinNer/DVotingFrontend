@@ -11,41 +11,53 @@ $pinIconURL: 'assets/img/icons/number-pad.png'
 $profilePictureURL: 'assets/img/icons/profile.png'
 
 #registerForm
-  input, select
+  label + input, select, input[name=pictureUpload]
     display: block
     width: 90%
     min-width: 150px
     border: 1px solid #ddd
     padding: 14px 40px 14px 15px
     border-radius: 5px
+    font-size: 13px
+
     &.error
       border-color: #ff0033
       outline: none
     @extend .cartogothic
+
   select
     height: 48px
     font-size: 0.875rem
     padding:
       right: 25px
+
   input
     background:
       repeat: no-repeat
       size: 18px 18px
       position: calc(100% - 12px) 15px
+
     &[name=password], &[name=confirmPassword]
       background-image: url('~#{$passwordIconURL}')
+
     &[name=email]
       background-image: url('~#{$emailIconURL}')
+
     &[name=dob]
       background-image: url('~#{$dobIconURL}')
+
     &[name=phoneNumber]
       background-image: url('~#{$phoneIconURL}')
+
     &[name=address1], &[name=address2]
       background-image: url('~#{$streetIconURL}')
+
     &[name=confirmationPin]
       background-image: url('~#{$pinIconURL}')
-    &[name=profilePicture]
+
+    &[name=pictureUpload]
       background-image: url('~#{$profilePictureURL}')
+
   #submitButton
     background-color: $themeColor
     @extend .b-100
@@ -55,24 +67,67 @@ $profilePictureURL: 'assets/img/icons/profile.png'
     font-size: 17px
     border: none
     color: white
+
   #cancelButton
     @extend #submitButton
     background-color: #E4EBF1
     color: #333
+
   form
     margin-top: 20px
+
   .newLine
     margin-top: 40px
+
   label
     font-weight: bold
     margin-bottom: 10px
+    display: block
     @extend .openSans
+
     &.required::after
       content: " *"
       color: red
       display: inline-block
       margin-left: 5px
       font-weight: bold
+
+  .react-date-picker
+    width: 100%
+
+    input
+      padding: 0 1px !important
+
+    .react-date-picker__wrapper
+      display: flex
+      width: 90%
+      min-width: 150px
+      height: 48px
+      border: 1px solid #ddd
+      padding: 10px 15px 14px
+      border-radius: 5px
+      @extend .cartogothic
+
+      button
+        background-color: transparent
+        border: none
+        margin: 0 5px
+
+        &:first-of-type
+          margin-left: auto
+
+      .react-date-picker__inputGroup__divider
+        padding: 1px 5px !important
+
+      .react-date-picker__inputGroup
+        display: inline-block
+
+        input
+          width: 45px !important
+          border: none !important
+          &.react-date-picker__inputGroup__month, &.react-date-picker__inputGroup__day
+            width: 18px !important
+
 #imagePreview
   margin:
     top: 25px

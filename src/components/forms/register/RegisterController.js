@@ -36,11 +36,15 @@ class RegisterController extends Component {
       validPassword: true,
       confirmPassword: "",
       confirmationPin: "",
-      profilePictureURL: null,
       profilePictureFile: null,
-      fileNotImage: false,
       aspectRatioError: false,
-      formIsSubmitting: false
+      formIsSubmitting: false,
+      showAlert: false,
+      alertTitle: "",
+      alertMessage: "",
+      alertType: "",
+      alertCallBack: null,
+      webcamWidth: "",
     };
   }
 
@@ -48,6 +52,34 @@ class RegisterController extends Component {
     this._mounted = true;
     this.getStates();
   }
+
+  udpateProfilePicture = picture => {
+    this.setState({ profilePictureFile: picture });
+  };
+
+  displayAlert = (
+    alertTitle,
+    alertMessage,
+    alertType = "warning",
+    alertCallBack = null
+  ) => {
+    this.setState({
+      showAlert: true,
+      alertTitle,
+      alertMessage,
+      alertType,
+      alertCallBack,
+    });
+  };
+
+  closeAlert = () => {
+    this.setState({
+      showAlert: false,
+      alertTitle: "",
+      alertMessage: "",
+      alertCallBack: null,
+    });
+  };
 
   getStates = () => {
     if (this._mounted) {
@@ -68,13 +100,6 @@ class RegisterController extends Component {
     this._mounted = false;
   }
 
-  dismissImageAlert = () => {
-    if (this._mounted)
-      this.setState({
-        fileNotImage: false
-      });
-  };
-
   handleChange = e => {
     let { name, value, type, tagName } = e.target;
     if (
@@ -87,7 +112,7 @@ class RegisterController extends Component {
       if (this._mounted)
         this.setState(
           {
-            [name]: value
+            [name]: value,
           },
           () => {
             if (type === "email")
@@ -132,7 +157,7 @@ class RegisterController extends Component {
           address2: this.state.address2,
           password: this.state.password,
           confirmPassword: this.state.confirmPassword,
-          confirmationPin: this.state.confirmationPin
+          confirmationPin: this.state.confirmationPin,
         };
         const json = JSON.stringify(userInfo);
         const data = new FormData();
@@ -140,32 +165,59 @@ class RegisterController extends Component {
         data.append("picture", this.state.profilePictureFile);
         axios({
           method: "post",
-          url: `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`,
+          url:
+            this.props.url === undefined
+              ? `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`
+              : this.props.url,
           data: data,
-          withCredentials: true
+          withCredentials: true,
         })
           .then(res => {
             console.log(res);
             this.setState({ formIsSubmitting: false }, () => {
               if (res.data.isValid == false) {
                 if (res.data.field === "password")
-                  alert("The passwords you submitted do not match");
+                  this.displayAlert(
+                    "Invalid Password",
+                    "The passwords you submitted do not match"
+                  );
                 else if (res.data.field === "emailExists")
-                  alert(
+                  this.displayAlert(
+                    "Invalid e-mail",
                     "The email address you submitted has already been used"
                   );
                 else if (res.data.field === "confirmationPin")
-                  alert("The confirmation pin you entered is invalid");
+                  this.displayAlert(
+                    "Invalid Registration Pin",
+                    "The confirmation pin you entered is invalid"
+                  );
+                else if (res.data.field === "confirmationPinUsed")
+                  this.displayAlert(
+                    "Invalid Registration Pin",
+                    "The confirmation pin you entered has already been used"
+                  );
                 else if (res.data.field === "tooYoung")
-                  alert("You must be at least 18 years old to be an official");
-                else alert(`The ${res.data.field} you submitted is not valid`);
-              } else {
+                  this.displayAlert(
+                    "Invalid Age",
+                    "You must be at least 18 years old to be an register-official"
+                  );
+                else
+                  this.displayAlert(
+                    "Invalid Entry",
+                    `The ${res.data.field} you submitted is not valid`
+                  );
+              } else if ("exception" in res.data)
+                this.displayAlert(
+                  "Error!",
+                  "Something went wrong, please try again later",
+                  "error"
+                );
+              else {
                 this.props.signInRedirect();
               }
             });
           })
           .catch(err => {
-            console.log(err);
             this.setState({ formIsSubmitting: false });
           });
       });
@@ -186,35 +238,7 @@ class RegisterController extends Component {
         });
   };
 
-  handleProfilePicture = e => {
-    this.readURI(e);
-  };
-
-  readURI(e) {
-    const fileTypes = ["jpg", "jpeg", "png"];
-    if (this._mounted)
-      if (e.target.files && e.target.files[0]) {
-        const extension = e.target.files[0].name
-            .split(".")
-            .pop()
-            .toLowerCase(), //file extension from input file
-          isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
-        if (isSuccess) {
-          this.setState({ profilePictureFile: e.target.files[0] });
-          let reader = new FileReader();
-          //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
-          reader.onload = function(ev) {
-            this.setState({
-              profilePictureURL: ev.target.result,
-              fileNotImage: false
-            });
-          }.bind(this);
-          reader.readAsDataURL(e.target.files[0]);
-        } else {
-          this.setState({ fileNotImage: true, profilePictureURL: null });
-        }
-      }
-  }
+  changeDob = date => this.setState({ dob: date });
 
   render() {
     return (
@@ -223,8 +247,13 @@ class RegisterController extends Component {
         handleSubmit={this.handleSubmit}
         handleChange={this.handleChange}
         handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
-        handleProfilePicture={this.handleProfilePicture}
+        updateCampaignPicture={this.updateCampaignPicture}
         dismissImageAlert={this.dismissImageAlert}
+        closeAlert={this.closeAlert}
+        changeDob={this.changeDob}
+        udpateProfilePicture={this.udpateProfilePicture}
+        calcWidth={this.calcWidth}
+        pictureContainer={this.pictureContainer}
       />
     );
   }

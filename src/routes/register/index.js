@@ -1,1 +1,1 @@
-export { default } from "./RegisterRoute";
+export { default } from "./RegisterRoutes";
