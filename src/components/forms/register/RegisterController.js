@@ -191,6 +191,11 @@ class RegisterController extends Component {
                     "Invalid Registration Pin",
                     "The confirmation pin you entered is invalid"
                   );
+                else if (res.data.field === "confirmationPinUsed")
+                  this.displayAlert(
+                    "Invalid Registration Pin",
+                    "The confirmation pin you entered has already been used"
+                  );
                 else if (res.data.field === "tooYoung")
                   this.displayAlert(
                     "Invalid Age",
