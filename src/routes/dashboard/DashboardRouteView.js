@@ -87,7 +87,9 @@ function DashBoardRouteView(props) {
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/officers`}
-                  isAuthorized={UserManager.isOfficial(user)}
+                  isAuthorized={
+                    UserManager.isOfficial(user) || UserManager.isOfficer(user)
+                  }
                   render={props => (
                     <OfficerHomeContainer user={user} {...props} />
                   )}

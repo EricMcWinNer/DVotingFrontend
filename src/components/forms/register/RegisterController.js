@@ -244,6 +244,7 @@ class RegisterController extends Component {
     return (
       <RegisterView
         {...this.state}
+        {...this.props}
         handleSubmit={this.handleSubmit}
         handleChange={this.handleChange}
         handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}

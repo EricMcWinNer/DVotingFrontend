@@ -18,7 +18,7 @@ function RegisterView(props) {
 
   useEffect(() => {
     setOffsetWidth(containerRef.current.offsetWidth);
-  });
+  }, [containerRef]);
 
   const states = props.states.map(state => (
     <option key={state.state_id} value={state.state_id}>
@@ -76,7 +76,11 @@ function RegisterView(props) {
                 onChange={e => props.handleChange(e)}
                 value={props.gender}
               >
-                <option value={""}>Select your gender</option>
+                <option value={""}>
+                  {props.officerMode === undefined
+                    ? "Select your gender"
+                    : "Select voter's gender"}
+                </option>
                 <option value={0}>Male</option>
                 <option value={1}>Female</option>
               </select>
@@ -94,7 +98,11 @@ function RegisterView(props) {
                 onChange={e => props.handleChange(e)}
                 value={props.maritalStatus}
               >
-                <option value={""}>Select your marital status</option>
+                <option value={""}>
+                  {props.officerMode === undefined
+                    ? "Select your marital status"
+                    : "Select voter's marital status"}
+                </option>
                 <option value={0}>Single</option>
                 <option value={1}>Married</option>
                 <option value={2}>Divorced</option>
@@ -167,7 +175,9 @@ function RegisterView(props) {
                 <option value={""}>
                   {props.statesLoading
                     ? "Please wait...states are loading..."
-                    : "Select your state of origin"}
+                    : props.officerMode === undefined
+                    ? "Select your state of origin"
+                    : "Select voter's state of origin"}
                 </option>
                 {states}
               </select>
@@ -190,7 +200,9 @@ function RegisterView(props) {
                 <option value={""}>
                   {props.lgasLoading
                     ? "Please wait...LGAs are loading..."
-                    : "Select your local government area"}
+                    : props.officerMode === undefined
+                    ? "Select your Local Government Area"
+                    : "Select voter's Local Government Area"}
                 </option>
                 {props.lgasLoading ? "" : lgas}
               </select>
@@ -251,19 +263,21 @@ function RegisterView(props) {
                 value={props.confirmPassword}
               />
             </Col>
-            <Col md={4}>
-              <label htmlFor="confirmationPin" className="required">
-                Confirmation Pin
-              </label>
-              <input
-                type="text"
-                id={"confirmationPin"}
-                name={"confirmationPin"}
-                className={"normal"}
-                onChange={e => props.handleChange(e)}
-                value={props.confirmationPin}
-              />
-            </Col>
+            {props.officerMode === undefined && (
+              <Col md={4}>
+                <label htmlFor="confirmationPin" className="required">
+                  Confirmation Pin
+                </label>
+                <input
+                  type="text"
+                  id={"confirmationPin"}
+                  name={"confirmationPin"}
+                  className={"normal"}
+                  onChange={e => props.handleChange(e)}
+                  value={props.confirmationPin}
+                />
+              </Col>
+            )}
           </Row>
           <Row className={"newLine"}>
             <Col md={4}>

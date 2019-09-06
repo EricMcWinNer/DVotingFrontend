@@ -8,10 +8,12 @@ function OfficialLinks(props) {
     <>
       <li
         className={
-          contains(props.location, "/dashboard/officer/voter") ? "selected" : ""
+          contains(props.location, "/dashboard/officers/voters/new")
+            ? "selected"
+            : ""
         }
       >
-        <Link to={"/dashboard/officer/voter/new"}>
+        <Link to={"/dashboard/officers/voters/new"}>
           <img
             src={register}
             alt={"Register New Voter"}

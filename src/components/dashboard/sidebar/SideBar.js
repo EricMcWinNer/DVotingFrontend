@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Col from "react-bootstrap/Col";
 
 import "./sidebar.sass";
 import speedometer from "assets/img/icons/speedometer.png";
