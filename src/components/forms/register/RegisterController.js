@@ -57,7 +57,7 @@ class RegisterController extends Component {
     this.setState({ profilePictureFile: picture });
   };
 
-  showAlertAction = (
+  displayAlert = (
     alertTitle,
     alertMessage,
     alertType = "warning",
@@ -176,23 +176,37 @@ class RegisterController extends Component {
                 if (res.data.field === "password")
                   alert("The passwords you submitted do not match");
                 else if (res.data.field === "emailExists")
-                  alert(
+                  this.displayAlert(
+                    "Invalid e-mail",
                     "The email address you submitted has already been used"
                   );
                 else if (res.data.field === "confirmationPin")
-                  alert("The confirmation pin you entered is invalid");
+                  this.displayAlert(
+                    "Invalid Registration Pin",
+                    "The confirmation pin you entered is invalid"
+                  );
                 else if (res.data.field === "tooYoung")
-                  alert(
+                  this.displayAlert(
+                    "Invalid Age",
                     "You must be at least 18 years old to be an register-official"
                   );
-                else alert(`The ${res.data.field} you submitted is not valid`);
-              } else {
+                else
+                  this.displayAlert(
+                    "Invalid Entry",
+                    `The ${res.data.field} you submitted is not valid`
+                  );
+              } else if ("exception" in res.data)
+                this.displayAlert(
+                  "Error!",
+                  "Something went wrong, please try again later",
+                  "error"
+                );
+              else {
                 this.props.signInRedirect();
               }
             });
           })
           .catch(err => {
-            console.log(err);
             this.setState({ formIsSubmitting: false });
           });
       });

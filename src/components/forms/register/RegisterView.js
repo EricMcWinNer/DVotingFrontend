@@ -6,6 +6,7 @@ import LinkButton from "components/buttons/react-router-link-button";
 import PictureUploadInput from "components/forms/picture-upload-handler";
 
 import "./index.sass";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 /*
   TODO - FIND A BETTER DATEPICKER
@@ -301,6 +302,22 @@ function RegisterView(props) {
           </Row>
         </form>
       </Col>
+      {props.showAlert && (
+        <SweetAlert
+          type={props.alertType}
+          allowEscape
+          closeOnClickOutside
+          title={props.alertTitle}
+          onConfirm={
+            (typeof props.alertCallBack).toLowerCase() === "function"
+              ? props.alertCallBack
+              : props.closeAlert
+          }
+          onCancel={props.closeAlert}
+        >
+          <span className="cartogothic">{props.alertMessage}</span>
+        </SweetAlert>
+      )}
     </Row>
   );
 }
