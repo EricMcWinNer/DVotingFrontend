@@ -165,7 +165,10 @@ class RegisterController extends Component {
         data.append("picture", this.state.profilePictureFile);
         axios({
           method: "post",
-          url: `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`,
+          url:
+            this.props.url === undefined
+              ? `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`
+              : this.props.url,
           data: data,
           withCredentials: true,
         })
