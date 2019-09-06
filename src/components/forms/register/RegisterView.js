@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
-import { Link } from "react-router-dom";
+import DatePicker from "react-date-picker";
+import LinkButton from "components/buttons/react-router-link-button";
+import PictureUploadInput from "components/forms/picture-upload-handler";
 
-import "components/forms/register/register.sass";
+import "./index.sass";
 
 /*
   TODO - FIND A BETTER DATEPICKER
  */
 function RegisterView(props) {
-  const [show, setShow] = useState(props.fileNotImage);
+  let containerRef = React.createRef();
+
+  const [offsetWidth, setOffsetWidth] = useState(0);
+
+  useEffect(() => {
+    setOffsetWidth(containerRef.current.offsetWidth);
+  });
+
   const states = props.states.map(state => (
     <option key={state.state_id} value={state.state_id}>
       {state.name}
@@ -35,7 +43,7 @@ function RegisterView(props) {
                 type="text"
                 name={"lastName"}
                 placeholder={"Last Name"}
-                className={props.validLastName ? "" : "error"}
+                className={`${props.validLastName ? "" : "error"} normal`}
                 onChange={e => props.handleChange(e)}
                 value={props.lastName}
               />
@@ -49,7 +57,7 @@ function RegisterView(props) {
                 type="text"
                 name={"otherNames"}
                 placeholder={"Other Names"}
-                className={props.validOtherNames ? "" : "error"}
+                className={`${props.validOtherNames ? "" : "error"} normal`}
                 onChange={e => props.handleChange(e)}
                 value={props.otherNames}
               />
@@ -100,7 +108,7 @@ function RegisterView(props) {
                 id={"email"}
                 type="email"
                 name={"email"}
-                className={props.validEmail ? "" : "error"}
+                className={`${props.validEmail ? "" : "error"} normal`}
                 placeholder={"Email Address"}
                 onChange={e => props.handleChange(e)}
                 value={props.email}
@@ -115,7 +123,7 @@ function RegisterView(props) {
                 type="text"
                 name={"phoneNumber"}
                 placeholder={"Phone Number"}
-                className={props.validPhoneNumber ? "" : "error"}
+                className={`${props.validPhoneNumber ? "" : "error"} normal`}
                 onChange={e => props.handleChange(e)}
                 value={props.phoneNumber}
               />
@@ -126,14 +134,7 @@ function RegisterView(props) {
               <label htmlFor="dob" className="required">
                 Date of birth
               </label>
-              <input
-                id={"dob"}
-                type={"date"}
-                name={"dob"}
-                placeholder={"Date of birth"}
-                onChange={e => props.handleChange(e)}
-                value={props.dob}
-              />
+              <DatePicker value={props.dob} onChange={props.changeDob} />
             </Col>
             <Col md={4}>
               <label htmlFor="occupation" className="required">
@@ -144,6 +145,7 @@ function RegisterView(props) {
                 type={"text"}
                 name={"occupation"}
                 placeholder={"Occupation"}
+                className={"normal"}
                 onChange={e => props.handleChange(e)}
                 value={props.occupation}
               />
@@ -200,6 +202,7 @@ function RegisterView(props) {
                 type="text"
                 id={"address1"}
                 name={"address1"}
+                className={"normal"}
                 placeholder={"Address 1"}
                 onChange={e => props.handleChange(e)}
                 value={props.address1}
@@ -212,6 +215,7 @@ function RegisterView(props) {
                 type="text"
                 name={"address2"}
                 placeholder={"Address 2"}
+                className={"normal"}
                 onChange={e => props.handleChange(e)}
                 value={props.address2}
               />
@@ -227,7 +231,7 @@ function RegisterView(props) {
                 type="password"
                 name={"password"}
                 placeholder={"Password"}
-                className={props.validPassword ? "" : "error"}
+                className={`${props.validPassword ? "" : "error"} normal`}
                 onChange={e => props.handleChange(e)}
                 value={props.password}
               />
@@ -241,7 +245,7 @@ function RegisterView(props) {
                 id={"confirmPassword"}
                 name={"confirmPassword"}
                 placeholder={"Confirm Password"}
-                className={props.validPassword ? "" : "error"}
+                className={`${props.validPassword ? "" : "error"} normal`}
                 onChange={e => props.handleChange(e)}
                 value={props.confirmPassword}
               />
@@ -254,6 +258,7 @@ function RegisterView(props) {
                 type="text"
                 id={"confirmationPin"}
                 name={"confirmationPin"}
+                className={"normal"}
                 onChange={e => props.handleChange(e)}
                 value={props.confirmationPin}
               />
@@ -261,35 +266,28 @@ function RegisterView(props) {
           </Row>
           <Row className={"newLine"}>
             <Col md={4}>
-              <label htmlFor="profilePicture" className="required">
-                Profile Picture
-              </label>
-              {props.profilePictureURL === null ? (
-                <div />
-              ) : (
-                <div id={"imagePreview"} className={"b-100"}>
-                  <img
-                    src={props.profilePictureURL}
-                    className={"b-100 force"}
-                    alt={"Preview Profile Picture"}
-                  />
-                </div>
-              )}
-              <input
-                type={"file"}
-                id={"profilePicture"}
-                name={"profilePicture"}
-                placeholder={"Profile Picture"}
-                accept="image/*"
-                onChange={e => props.handleProfilePicture(e)}
-              />
+              <div className="fullWidth" ref={containerRef}>
+                <PictureUploadInput
+                  required
+                  fancyInput
+                  useWebcam
+                  webCamWidth={offsetWidth}
+                  label={"Profile Picture"}
+                  updatePictureFile={props.udpateProfilePicture}
+                />
+              </div>
             </Col>
           </Row>
           <Row className="newLine">
             <Col md={{ span: 4, offset: 4 }}>
-              <button disabled={props.allFieldsValid} id={"cancelButton"}>
+              <LinkButton
+                to={"/dashboard/login"}
+                disabled={props.allFieldsValid}
+                className={"text-center"}
+                id={"cancelButton"}
+              >
                 Cancel
-              </button>
+              </LinkButton>
             </Col>
             <Col md={{ span: 4 }}>
               <button onClick={e => props.handleSubmit(e)} id={"submitButton"}>
@@ -302,26 +300,6 @@ function RegisterView(props) {
             </Col>
           </Row>
         </form>
-        <div className={"fixed-top"}>
-          {props.fileNotImage ? (
-            <Alert
-              variant="danger"
-              onClose={() => {
-                setShow(false);
-                props.dismissImageAlert();
-              }}
-              dismissible
-            >
-              <Alert.Heading>Uploaded File is not an Image</Alert.Heading>
-              <p>
-                The profile picture uploaded is not an image, change the file
-                and try again
-              </p>
-            </Alert>
-          ) : (
-            <div />
-          )}
-        </div>
       </Col>
     </Row>
   );

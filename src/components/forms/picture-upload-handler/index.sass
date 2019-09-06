@@ -1,0 +1,66 @@
+@import assets/sass/fonts
+
+.pictureUploadWrapper
+  .uploadInputWrapper
+    display: flex
+    flex-direction: row
+
+  .upload-picture-label
+    &:last-of-type
+      margin:
+        left: 2.5%
+    @extend .cartogothic
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    width: 45%
+    text-align: center
+    padding: 15px 5px
+      bottom: 0
+    background-color: #E7EAEE
+    height: 180px
+    position: relative
+    border-radius: 5px
+    cursor: pointer
+
+    img
+      margin:
+        bottom: 15px
+
+    input
+      opacity: 0
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      z-index: 80
+
+  .imagePreview, #imagePreview
+    position: relative
+
+    img
+      width: 100%
+
+    .cancel
+      display: block
+      cursor: pointer
+      font-size: 16px
+      padding:
+        top: 9px
+        bottom: 9px
+      background-color: rgba(0, 0, 0, 0.5)
+      color: white
+      @extend .cartogothic
+      text-align: center
+      position: absolute
+      bottom: 0
+      left: 0
+      width: 100%
+      transition:
+        duration: 1s
+        property: background-color
+
+      &:hover
+        background-color: rgba(0, 0, 0, 0.8)
