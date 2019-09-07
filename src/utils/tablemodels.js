@@ -667,11 +667,17 @@ export const officerModel = showModal => [
       <>
         <LinkButton
           small
+          className={"cool-purple-background mr-2"}
+          to={`/dashboard/officers/${row.id}/voters`}
+        >
+          <i className="fas fa-search" />
+        </LinkButton>
+        <LinkButton
+          small
           className={"confirm-background mr-2"}
           to={`/dashboard/voters/${row.id}`}
         >
           <i className="fas fa-info-circle" />
-          Full info
         </LinkButton>
         <LinkButton
           small
@@ -680,7 +686,6 @@ export const officerModel = showModal => [
           onClick={e => showModal(e, row.id)}
         >
           <i className="fas fa-trash-alt" />
-          Delete
         </LinkButton>
       </>
     ),
@@ -801,5 +806,163 @@ export const pinModel = [
   {
     name: "Date Created",
     selector: "created_at.created_at",
+  },
+];
+export const viewVotersModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+  },
+  {
+    name: "Actions",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"confirm-background mr-2"}
+        to={`/dashboard/officer/voters/${row.voter.id}`}
+      >
+        <i className="fas fa-info-circle" />
+        Full info
+      </LinkButton>
+    ),
+    minWidth: "120px",
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"profile-picture"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.voter.picture}`}
+        alt={row.voter.name}
+        height={"45px"}
+      />
+    ),
+    maxWidth: "55px",
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "voter.name",
+    minWidth: "210px",
+  },
+  {
+    name: "Gender",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.voter.gender} fixedWidth={70}>
+        {row.voter.gender === "male" && <i className="fas fa-male" />}
+        {row.voter.gender === "female" && <i className="fas fa-female" />}
+        {capitalize(row.voter.gender)}
+      </IconBadge>
+    ),
+    maxWidth: "80px",
+  },
+  {
+    name: "Date of Birth",
+    sortable: true,
+    selector: "voter.dob.dob_string",
+    minWidth: "140px",
+  },
+  {
+    name: "Marital Status",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.voter.marital_status} fixedWidth={70}>
+        {capitalize(row.voter.marital_status)}
+      </IconBadge>
+    ),
+    minWidth: "160px",
+  },
+  {
+    name: "LGA",
+    sortable: true,
+    selector: "voter.lga.name",
+  },
+  {
+    name: "State",
+    sortable: true,
+    selector: "voter.lga.state.name",
+  },
+];
+export const viewVotersOfficialModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+  },
+  {
+    name: "Actions",
+    sortable: false,
+    cell: row => (
+      <LinkButton
+        small
+        className={"confirm-background mr-2"}
+        to={`/dashboard/voters/${row.voter.id}`}
+      >
+        <i className="fas fa-info-circle" />
+        Full info
+      </LinkButton>
+    ),
+    minWidth: "120px",
+  },
+  {
+    name: "",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"profile-picture"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.voter.picture}`}
+        alt={row.voter.name}
+        height={"45px"}
+      />
+    ),
+    maxWidth: "55px",
+  },
+  {
+    name: "Name",
+    sortable: true,
+    selector: "voter.name",
+    minWidth: "210px",
+  },
+  {
+    name: "Gender",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.voter.gender} fixedWidth={70}>
+        {row.voter.gender === "male" && <i className="fas fa-male" />}
+        {row.voter.gender === "female" && <i className="fas fa-female" />}
+        {capitalize(row.voter.gender)}
+      </IconBadge>
+    ),
+    maxWidth: "80px",
+  },
+  {
+    name: "Date of Birth",
+    sortable: true,
+    selector: "voter.dob.dob_string",
+    minWidth: "140px",
+  },
+  {
+    name: "Marital Status",
+    sortable: true,
+    cell: row => (
+      <IconBadge className={row.voter.marital_status} fixedWidth={70}>
+        {capitalize(row.voter.marital_status)}
+      </IconBadge>
+    ),
+    minWidth: "160px",
+  },
+  {
+    name: "LGA",
+    sortable: true,
+    selector: "voter.lga.name",
+  },
+  {
+    name: "State",
+    sortable: true,
+    selector: "voter.lga.state.name",
   },
 ];

@@ -37,7 +37,7 @@ function BrokenLink(props) {
       <ul className={"no-style m-0 p-0 h-menu"}>
         <li>
           <LinkButton
-            className={"button"}
+            className={"button confirm-background"}
             backgroundColor={"#279871"}
             to={`/dashboard`}
           >

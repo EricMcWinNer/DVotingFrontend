@@ -12,9 +12,10 @@ import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
 import voters from "assets/img/icons/voter.png";
 
-function SingleVoterRouteView(props) {
+function VoterProfile(props) {
   let rolesView;
-  if (!props.componentIsLoading) {
+  const userManager = props.userManager;
+  if (!props.componentIsLoading && props.voter !== null) {
     rolesView = JSON.parse(props.voter.roles)
       .reverse()
       .map((role, index) => (
@@ -182,10 +183,43 @@ function SingleVoterRouteView(props) {
                   <p>{props.voter.created_at.created_at}</p>
                 </div>
               </Row>
-              <Row className={"mt-4"}>
+              {props.officer !== null && userManager.isOfficial() && (
+                <Row>
+                  <div className={"detail"}>
+                    <p className="detailTitle">
+                      <i className="fas fa-calendar-plus" />
+                      Registered By:
+                    </p>
+                    <p>
+                      <LinkButton
+                        small
+                        className={"cool-purple-background"}
+                        to={`/dashboard/voters/${props.officer.officer.id}`}
+                      >
+                        {props.officer.officer.name}
+                      </LinkButton>
+                    </p>
+                  </div>
+                </Row>
+              )}
+              <Row className={"mt-4 justify-content-between"}>
+                {props.officerView !== undefined && (
+                  <LinkButton
+                    className={"cool-purple-background float-right ml-0"}
+                    to={`/dashboard/officer/voters/${props.voter.id}/edit`}
+                  >
+                    <i className="fas fa-pencil-alt" />
+                    Edit Voter
+                  </LinkButton>
+                )}
+
                 <LinkButton
-                  className={"reject-background ml-0"}
-                  to={"/dashboard/voters"}
+                  className={`reject-background ml-0`}
+                  to={
+                    props.officerView === undefined
+                      ? "/dashboard/voters"
+                      : "dashboard/officer/voters"
+                  }
                 >
                   <i className="fas fa-chevron-left" />
                   Back to voters
@@ -199,4 +233,4 @@ function SingleVoterRouteView(props) {
   );
 }
 
-export default SingleVoterRouteView;
+export default VoterProfile;

@@ -5,11 +5,11 @@ import OfficerHomeRoute from "./dashboard-officers-home";
 import CreateOfficerRoute from "./dashboard-officers-create";
 import ConfirmOfficerCreationRoute from "./dashboard-officers-create-confirm";
 import DeleteOfficerRoute from "./dashboard-officers-delete";
-import NewVoterRoute from "./dashboard-officers-voters-new";
+import ViewVotersRegistered from "./dashboard-officers-view-voters";
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
 
-class OfficerRoutes extends Component {
+class OfficersRoutes extends Component {
   constructor(props) {
     super(props);
   }
@@ -53,14 +53,14 @@ class OfficerRoutes extends Component {
           render={props => <DeleteOfficerRoute user={user} {...props} />}
         />
         <RestrictedRoute
-          isAuthorized={UserManager.isOfficer(user)}
+          isAuthorized={UserManager.isOfficial(user)}
           exact
-          path={`${this.props.match.path}/voters/new`}
-          render={props => <NewVoterRoute user={user} {...props} />}
+          path={`${this.props.match.path}/:id/voters`}
+          render={props => <ViewVotersRegistered user={user} {...props} />}
         />
       </Switch>
     );
   }
 }
 
-export default OfficerRoutes;
+export default OfficersRoutes;
