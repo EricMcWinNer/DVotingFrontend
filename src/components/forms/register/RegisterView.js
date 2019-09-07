@@ -289,6 +289,8 @@ function RegisterView(props) {
                   webCamWidth={offsetWidth}
                   label={"Profile Picture"}
                   updatePictureFile={props.udpateProfilePicture}
+                  forcefullyRemovePreview={props.forcefullyRemovePreview}
+                  forcefullyShowPreview={props.forcefullyShowPreview}
                 />
               </div>
             </Col>

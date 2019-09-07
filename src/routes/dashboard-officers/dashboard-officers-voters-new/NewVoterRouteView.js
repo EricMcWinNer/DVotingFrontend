@@ -32,9 +32,9 @@ function NewVoterRouteView(props) {
             Fill in the form with the correct user details to register the user.
           </p>
           <RegisterForm
-            url={`${process.env.REACT_APP_API_PATH}/api/officers/register`}
-            signInRedirect={props.signInRedirect}
+            url={`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/register`}
             officerMode
+            stayOnPage
             {...props}
           />
         </BaseCard>

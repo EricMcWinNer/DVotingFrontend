@@ -45,8 +45,41 @@ class RegisterController extends Component {
       alertType: "",
       alertCallBack: null,
       webcamWidth: "",
+      forcefullyRemovePreview: false,
     };
   }
+
+  forcefullyShowPreview = () => {
+    this.setState({ forcefullyRemovePreview: false });
+  };
+
+  initializeRoute = () => {
+    console.log("I got here");
+    this.setState({
+      lastName: "",
+      otherNames: "",
+      gender: "",
+      maritalStatus: "",
+      email: "",
+      phoneNumber: "",
+      dob: "",
+      occupation: "",
+      stateOfOrigin: "",
+      lgaOfOrigin: "",
+      address1: "",
+      address2: "",
+      password: "",
+      confirmPassword: "",
+      confirmationPin: "",
+      profilePictureFile: null,
+      showAlert: false,
+      alertTitle: "",
+      alertMessage: "",
+      alertType: "",
+      alertCallBack: null,
+      forcefullyRemovePreview: true,
+    });
+  };
 
   componentDidMount() {
     this._mounted = true;
@@ -158,6 +191,7 @@ class RegisterController extends Component {
           password: this.state.password,
           confirmPassword: this.state.confirmPassword,
           confirmationPin: this.state.confirmationPin,
+          ...this.props.customValues,
         };
         const json = JSON.stringify(userInfo);
         const data = new FormData();
@@ -213,7 +247,14 @@ class RegisterController extends Component {
                   "error"
                 );
               else {
-                this.props.signInRedirect();
+                this.displayAlert(
+                  "Success!",
+                  "Account registered successfully.",
+                  "success",
+                  this.props.stayOnPage === undefined
+                    ? this.props.signInRedirect
+                    : this.initializeRoute
+                );
               }
             });
           })
@@ -255,6 +296,7 @@ class RegisterController extends Component {
         udpateProfilePicture={this.udpateProfilePicture}
         calcWidth={this.calcWidth}
         pictureContainer={this.pictureContainer}
+        forcefullyShowPreview={this.forcefullyShowPreview}
       />
     );
   }
