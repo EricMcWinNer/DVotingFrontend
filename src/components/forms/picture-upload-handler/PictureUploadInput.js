@@ -32,6 +32,7 @@ class PictureUploadInput extends Component {
 
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
+    this.props.forcefullyShowPreview();
     this.setState({ webCamPicture: imageSrc, previewWebCamPicture: true });
   };
 
@@ -50,9 +51,6 @@ class PictureUploadInput extends Component {
     const width = window.outerWidth - (window.outerWidth / 100) * 30;
     const aspectRatio = window.outerWidth / window.outerHeight;
     const height = width / aspectRatio;
-    console.log(window.innerWidth, width);
-    console.log(aspectRatio, "Aspect Ratio");
-    console.log(height, "Height");
     this.setState({ webCamWidth: width, webCamHeight: height });
   };
 
@@ -85,7 +83,10 @@ class PictureUploadInput extends Component {
   cancelPicture = () => {
     this.props.updatePictureFile(null);
     this.setState({
-      pictureUrl: null,
+      pictureUrl:
+        this.props.defaultPictureUrl === undefined
+          ? null
+          : this.props.defaultPictureUrl,
       pictureFile: null,
       webCamPicture: null,
     });
@@ -115,6 +116,7 @@ class PictureUploadInput extends Component {
           isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
         if (isSuccess) {
           this.setState({ pictureFile: e.target.files[0] });
+          this.props.forcefullyShowPreview();
           this.props.updatePictureFile(e.target.files[0]);
           let reader = new FileReader();
           //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
@@ -148,7 +150,8 @@ class PictureUploadInput extends Component {
         >
           {this.props.label}
         </label>
-        {this.state.pictureUrl === null ? (
+        {this.props.forcefullyRemovePreview ||
+        this.state.pictureUrl === null ? (
           <div />
         ) : (
           <div id={"imagePreview"} className={"b-100"}>

@@ -45,12 +45,70 @@ class RegisterController extends Component {
       alertType: "",
       alertCallBack: null,
       webcamWidth: "",
+      forcefullyRemovePreview: false,
     };
   }
 
+  forcefullyShowPreview = () => {
+    this.setState({ forcefullyRemovePreview: false });
+  };
+
+  initializeRoute = () => {
+    console.log("I got here");
+    this.setState({
+      lastName: "",
+      otherNames: "",
+      gender: "",
+      maritalStatus: "",
+      email: "",
+      phoneNumber: "",
+      dob: "",
+      occupation: "",
+      stateOfOrigin: "",
+      lgaOfOrigin: "",
+      address1: "",
+      address2: "",
+      password: "",
+      confirmPassword: "",
+      confirmationPin: "",
+      profilePictureFile: null,
+      showAlert: false,
+      alertTitle: "",
+      alertMessage: "",
+      alertType: "",
+      alertCallBack: null,
+      forcefullyRemovePreview: true,
+    });
+  };
+
   componentDidMount() {
     this._mounted = true;
-    this.getStates();
+    if (this.props.editMode) {
+      const voter = this.props.voter;
+      const maritalStatus = [
+        "single",
+        "married",
+        "divorced",
+        "widowed",
+      ].findIndex(item => item === voter.marital_status);
+      this.getStates(voter.state_id);
+      const { name } = voter;
+      const nameArray = name.split(" ");
+      this.setState({
+        lastName: nameArray[0],
+        otherNames: `${nameArray[1]} ${nameArray[2]}`,
+        gender: voter.gender == "male" ? 0 : 1,
+        maritalStatus: maritalStatus,
+        email: voter.email,
+        phoneNumber: voter.phone_number,
+        dob: new Date(voter.dob.dob),
+        occupation: voter.occupation,
+        stateOfOrigin: voter.state_id,
+        lgaOfOrigin: voter.lga_id,
+        address1: voter.address1,
+        address2: voter.address2,
+      });
+    } else this.getStates();
   }
 
   udpateProfilePicture = picture => {
@@ -81,12 +139,23 @@ class RegisterController extends Component {
     });
   };
 
-  getStates = () => {
+  getStates = (stateId = null) => {
     if (this._mounted) {
       axios
-        .get(`${process.env.REACT_APP_API_PATH}/api/misc/states`)
+        .get(
+          stateId !== null
+            ? `${process.env.REACT_APP_API_PATH}/api/misc/state/${stateId}`
+            : `${process.env.REACT_APP_API_PATH}/api/misc/states`
+        )
         .then(res => {
-          this.setState({ states: res.data.states, statesLoading: false });
+          if (stateId === null)
+            this.setState({ states: res.data.states, statesLoading: false });
+          else
+            this.setState({
+              states: res.data.states,
+              lgas: res.data.lgas,
+              statesLoading: false,
+            });
         })
         .catch(err => {
           console.log(err);
@@ -158,6 +227,7 @@ class RegisterController extends Component {
           password: this.state.password,
           confirmPassword: this.state.confirmPassword,
           confirmationPin: this.state.confirmationPin,
+          ...this.props.customValues,
         };
         const json = JSON.stringify(userInfo);
         const data = new FormData();
@@ -213,7 +283,18 @@ class RegisterController extends Component {
                   "error"
                 );
               else {
-                this.props.signInRedirect();
+                this.displayAlert(
+                  "Success!",
+                  this.props.editMode === undefined
+                    ? "Account registered successfully."
+                    : "Account updated successfully",
+                  "success",
+                  this.props.stayOnPage === undefined
+                    ? this.props.signInRedirect
+                    : this.props.editMode === undefined
+                    ? this.initializeRoute
+                    : null
+                );
               }
             });
           })
@@ -244,6 +325,7 @@ class RegisterController extends Component {
     return (
       <RegisterView
         {...this.state}
+        {...this.props}
         handleSubmit={this.handleSubmit}
         handleChange={this.handleChange}
         handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
@@ -254,6 +336,7 @@ class RegisterController extends Component {
         udpateProfilePicture={this.udpateProfilePicture}
         calcWidth={this.calcWidth}
         pictureContainer={this.pictureContainer}
+        forcefullyShowPreview={this.forcefullyShowPreview}
       />
     );
   }

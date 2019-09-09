@@ -8,16 +8,34 @@ function OfficialLinks(props) {
     <>
       <li
         className={
-          contains(props.location, "/dashboard/officer/voter") ? "selected" : ""
+          contains(props.location, "/dashboard/officer/register")
+            ? "selected"
+            : ""
         }
       >
-        <Link to={"/dashboard/officer/voter/new"}>
+        <Link to={"/dashboard/officer/register/voter"}>
           <img
             src={register}
             alt={"Register New Voter"}
             className={"sidebarIcon"}
           />
           Register New voter
+        </Link>
+      </li>
+      <li
+        className={
+          contains(props.location, "/dashboard/officer/voters")
+            ? "selected"
+            : ""
+        }
+      >
+        <Link to={"/dashboard/officer/voters"}>
+          <img
+            src={register}
+            alt={"View Registered Voters"}
+            className={"sidebarIcon"}
+          />
+          View Registered Voters
         </Link>
       </li>
     </>
