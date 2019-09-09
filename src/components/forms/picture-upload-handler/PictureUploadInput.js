@@ -51,9 +51,6 @@ class PictureUploadInput extends Component {
     const width = window.outerWidth - (window.outerWidth / 100) * 30;
     const aspectRatio = window.outerWidth / window.outerHeight;
     const height = width / aspectRatio;
-    console.log(window.innerWidth, width);
-    console.log(aspectRatio, "Aspect Ratio");
-    console.log(height, "Height");
     this.setState({ webCamWidth: width, webCamHeight: height });
   };
 
@@ -86,7 +83,10 @@ class PictureUploadInput extends Component {
   cancelPicture = () => {
     this.props.updatePictureFile(null);
     this.setState({
-      pictureUrl: null,
+      pictureUrl:
+        this.props.defaultPictureUrl === undefined
+          ? null
+          : this.props.defaultPictureUrl,
       pictureFile: null,
       webCamPicture: null,
     });

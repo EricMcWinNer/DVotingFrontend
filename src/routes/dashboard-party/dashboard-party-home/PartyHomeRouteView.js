@@ -26,8 +26,8 @@ function PartyHomeRouteView(props) {
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       ...datum,
     }));
-    if (!props.user.roles.includes("official")) {
-      politicalPartiesModel.splice(1, 1);
+    if (!userManager.isOfficial()) {
+      partiesModel.splice(1, 1);
     }
   }
   return props.componentIsLoading ? (
@@ -92,7 +92,7 @@ function PartyHomeRouteView(props) {
           <p className="subtitle poppins">
             Below is a list of all political parties registered in the
             application.
-            {props.user.roles.includes("official") && (
+            {userManager.isOfficial() && (
               <>You can create more parties using the link provided below.</>
             )}
           </p>
@@ -140,7 +140,7 @@ function PartyHomeRouteView(props) {
             )}
           </div>
           <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
-            {props.user.roles.includes("official") && (
+            {userManager.isOfficial() && (
               <li>
                 <LinkButton
                   id={"manage-election-button"}

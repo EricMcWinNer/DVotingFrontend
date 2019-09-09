@@ -51,7 +51,7 @@ function ViewRegisteredVotersRouteView(props) {
           <div className={"searchTools"}>
             <ul className={"o-auto fullWidth clearfix"}>
               <li className="float-right">
-                <label htmlFor={"searchNeedle"}>Search:</label>
+                <label htmlFor={"searchNeedle"}>Search by name:</label>
                 <input
                   type={"search"}
                   name={"searchNeedle"}
@@ -59,7 +59,7 @@ function ViewRegisteredVotersRouteView(props) {
                   ref={props.searchNeedle}
                   className={"searchCandidate"}
                   onKeyUp={e => handleKeyUp(e)}
-                  placeholder={"Search for a voter"}
+                  placeholder={"Search for a voter by name"}
                 />
                 <button
                   className="closeSearch"

@@ -235,34 +235,38 @@ function RegisterView(props) {
             </Col>
           </Row>
           <Row className={"newLine"}>
-            <Col md={4}>
-              <label htmlFor="password" className="required">
-                Password
-              </label>
-              <input
-                id={"password"}
-                type="password"
-                name={"password"}
-                placeholder={"Password"}
-                className={`${props.validPassword ? "" : "error"} normal`}
-                onChange={e => props.handleChange(e)}
-                value={props.password}
-              />
-            </Col>
-            <Col md={4}>
-              <label htmlFor="confirmPassword" className="required">
-                Confirm password
-              </label>
-              <input
-                type="password"
-                id={"confirmPassword"}
-                name={"confirmPassword"}
-                placeholder={"Confirm Password"}
-                className={`${props.validPassword ? "" : "error"} normal`}
-                onChange={e => props.handleChange(e)}
-                value={props.confirmPassword}
-              />
-            </Col>
+            {props.editMode === undefined && (
+              <>
+                <Col md={4}>
+                  <label htmlFor="password" className="required">
+                    Password
+                  </label>
+                  <input
+                    id={"password"}
+                    type="password"
+                    name={"password"}
+                    placeholder={"Password"}
+                    className={`${props.validPassword ? "" : "error"} normal`}
+                    onChange={e => props.handleChange(e)}
+                    value={props.password}
+                  />
+                </Col>
+                <Col md={4}>
+                  <label htmlFor="confirmPassword" className="required">
+                    Confirm password
+                  </label>
+                  <input
+                    type="password"
+                    id={"confirmPassword"}
+                    name={"confirmPassword"}
+                    placeholder={"Confirm Password"}
+                    className={`${props.validPassword ? "" : "error"} normal`}
+                    onChange={e => props.handleChange(e)}
+                    value={props.confirmPassword}
+                  />
+                </Col>
+              </>
+            )}
             {props.officerMode === undefined && (
               <Col md={4}>
                 <label htmlFor="confirmationPin" className="required">
@@ -286,6 +290,11 @@ function RegisterView(props) {
                   required
                   fancyInput
                   useWebcam
+                  defaultPictureUrl={
+                    props.editMode !== undefined
+                      ? `${process.env.REACT_APP_API_PATH}/storage/${props.voter.picture}`
+                      : undefined
+                  }
                   webCamWidth={offsetWidth}
                   label={"Profile Picture"}
                   updatePictureFile={props.udpateProfilePicture}
@@ -298,7 +307,11 @@ function RegisterView(props) {
           <Row className="newLine">
             <Col md={{ span: 4, offset: 4 }}>
               <LinkButton
-                to={"/dashboard/login"}
+                to={
+                  props.cancelUrl === undefined
+                    ? "/dashboard/login"
+                    : props.cancelUrl
+                }
                 disabled={props.allFieldsValid}
                 className={"text-center"}
                 id={"cancelButton"}

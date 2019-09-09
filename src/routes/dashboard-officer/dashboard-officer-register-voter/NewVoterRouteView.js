@@ -33,6 +33,7 @@ function NewVoterRouteView(props) {
           </p>
           <RegisterForm
             url={`${process.env.REACT_APP_API_PATH}/api/dashboard/officers/register`}
+            cancelUrl={"/dashboard"}
             officerMode
             stayOnPage
             {...props}
