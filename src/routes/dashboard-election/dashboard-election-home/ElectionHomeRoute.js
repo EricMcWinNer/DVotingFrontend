@@ -23,30 +23,33 @@ class ElectionHomeRoute extends Component {
   componentDidMount() {
     this._mounted = true;
     this.initializeRoute();
+    this._updateRoute = setInterval(this.initializeRoute, 1000 * 60);
   }
 
   initializeRoute = () => {
     if (this._mounted) {
       this.setState({ componentIsLoading: true });
       axios.defaults.withCredentials = true;
-      axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
-        method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid == "true") {
-          this.setState({
-            loggedIn: res.data.isSessionValid == "true",
-            election: res.data.election,
-            created_by: res.data.created_by,
-            string_dates: res.data.string_dates,
-            componentIsLoading: false,
-          });
-        } else this.props.history.push("/login");
-      });
+      const req = axios
+        .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
+        .then(res => {
+          if (res.data.isSessionValid == "true") {
+            this.setState({
+              loggedIn: res.data.isSessionValid == "true",
+              election: res.data.election,
+              created_by: res.data.created_by,
+              string_dates: res.data.string_dates,
+              componentIsLoading: false,
+            });
+          } else this.props.history.push("/login");
+        });
+      return req;
     }
   };
 
   componentWillUnmount() {
     this._mounted = false;
+    clearInterval(this._updateRoute);
   }
 
   finalizeElection = e => {

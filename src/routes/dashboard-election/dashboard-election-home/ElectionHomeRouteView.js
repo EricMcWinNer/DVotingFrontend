@@ -60,7 +60,7 @@ function ElectionHomeRouteView(props) {
           {props.user.roles.includes("official") ? " Manage" : " View"} Election
         </title>
       </Helmet>
-      <Col md={{ span: 7 }}>
+      <Col md={{ span: 7, offset: 1 }}>
         <BaseCard id={"manageElection"} className={"poppins"}>
           <div className="title clearfix o-auto">
             <div className="float-left">

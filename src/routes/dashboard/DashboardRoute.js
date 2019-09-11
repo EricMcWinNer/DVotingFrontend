@@ -83,11 +83,8 @@ class DashboardRoute extends Component {
     if (this._mounted) {
       this.getNotifications();
       this._notifications = setInterval(() => {
-        if (this._mounted) {
-          this.getNotifications();
-        } else clearInterval(this._notifications);
-        console.log("updated");
-      }, 1000 * 60);
+        this.getNotifications();
+      }, 1000 * 15);
     }
   };
 

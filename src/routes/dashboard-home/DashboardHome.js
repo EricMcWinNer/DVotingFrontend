@@ -21,27 +21,36 @@ class DashboardHome extends Component {
 
   componentDidMount() {
     this._mounted = true;
-    axios.defaults.withCredentials = true;
-    axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/home`, {
-      method: "get",
-    }).then(res => {
-      if (res.data.isSessionValid == "true") {
-        this.setState({
-          loggedIn: res.data.isSessionValid == "true",
-          election: res.data.election.original.election,
-          voters: res.data.voters,
-          parties: res.data.parties,
-          candidates: res.data.candidates,
-          officers: res.data.officers,
-          componentIsLoading: false,
-          officer_info: res.data.officer_info,
-        });
-      } else this.props.history.push("/login");
-    });
+    this.updateDashboard();
+    this._dashboardInterval = setInterval(this.updateDashboard, 1000 * 60);
   }
+
+  updateDashboard = () => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios
+        .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/home`)
+        .then(res => {
+          if (res.data.isSessionValid == "true") {
+            this.setState({
+              loggedIn: res.data.isSessionValid == "true",
+              election: res.data.election.original.election,
+              voters: res.data.voters,
+              parties: res.data.parties,
+              candidates: res.data.candidates,
+              officers: res.data.officers,
+              componentIsLoading: false,
+              officer_info: res.data.officer_info,
+            });
+          } else this.props.history.push("/login");
+        });
+      return req;
+    }
+  };
 
   componentWillUnmount() {
     this._mounted = false;
+    clearInterval(this._dashboardInterval);
   }
 
   render() {

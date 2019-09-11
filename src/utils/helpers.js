@@ -70,7 +70,7 @@ export function dateStringParser(string) {
   ];
   if (time - epoch < 1000 * 60) return "just now";
   else if (time - epoch < 3600 * 1000)
-    return parseInt((time - epoch) / 60000) + " mins ago";
+    return "about " + parseInt((time - epoch) / 60000) + " mins ago";
   else if (time - epoch < 86400 * 1000)
     return (
       "today, " +
