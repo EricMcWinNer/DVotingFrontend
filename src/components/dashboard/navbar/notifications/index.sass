@@ -1,0 +1,89 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+#notifications
+  .dropdown-btn
+    position: relative
+
+    .notifCount
+      position: absolute
+      bottom: 12px
+      left: 12px
+
+  .notifIcon
+    width: 30px
+    display: inline-block
+    height: 30px
+    border-radius: 3px
+    margin:
+      right: 15px
+
+  .dropDown
+    display: inline-block
+    position: relative
+
+  .dropdown-content
+    display: none
+    border-top: 2px solid $themeColor
+    position: absolute
+    border-radius: 2px
+    top: 120%
+    right: 0
+    background-color: #fff
+    min-width: 320px
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2)
+    z-index: 600
+    max-height: 450px
+
+    ul
+      margin: 0
+      padding: 0
+      list-style: none
+      width: 100%
+
+      li
+        text-align: left
+        display: block
+        margin: 0
+        padding: 15px 20px
+        width: 100% !important
+        border-bottom: 1px solid #eee
+        box-shadow: inset 0 0px 2px 0px rgba(0, 0, 0, 0.25)
+
+        .notificationBody
+          display: flex
+          justify-content: flex-start
+          margin-bottom: 10px
+          align-items: center
+
+        .time
+          @extend .poppins
+          color: #666
+          font:
+            size: 12px
+
+        .markAsRead
+          color: rgba(39, 152, 113, 0.75)
+          cursor: pointer
+
+        a
+          transition-duration: 0s
+          color: $themeColor
+          @extend .poppins
+
+        &:hover
+          background-color: rgba(0, 0, 0, 0.13)
+
+
+      li.unread
+        background-color: rgba(255, 165, 0, 0.15)
+
+        .time, a
+          font-weight: bold
+
+        &:hover
+          background-color: rgba(255, 165, 0, 0.33)
+
+
+  .show-dropDown
+    display: block

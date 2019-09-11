@@ -12,7 +12,7 @@
     bottom: 0
   margin: 0
   clear: both
-  overflow: auto
+  position: relative
 
   .logoContainer
     display: inline-block
@@ -30,11 +30,11 @@
   .iconsList
     margin-right: 10px
 
-  ul
+  ul.navLists
     list-style: none
     display: inline-block
 
-    li
+    & > li
       display: inline-block
       max-width: 150px
       height: 100%
@@ -45,7 +45,11 @@
         vertical-align: middle
         width: 0
         height: 100%
-      a
+      button
+        border: none
+        background-color: transparent
+        display: inline
+      a, button
         vertical-align: middle
         transition:
           property: color

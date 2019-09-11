@@ -42,7 +42,12 @@ function DashBoardRouteView(props) {
             user={props.user}
           />
           <div className={"mainContent"}>
-            <NavBar logOut={props.logOut} className={"sticky-top"} />
+            <NavBar
+              logOut={props.logOut}
+              notifications={props.notifications}
+              className={"sticky-top"}
+              setNotificationsAsRead={props.setNotificationsAsRead}
+            />
             <div className="dashboardContent">
               <Switch>
                 <Route
