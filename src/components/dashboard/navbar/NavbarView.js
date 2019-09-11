@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 
 import "./navbar.sass";
 import LogoWithText from "components/logo/withtext";
+import Notifications from "./notifications";
 
 function NavbarView(props) {
   return (
     <div id={"navbar"}>
       <div>
-        <ul>
+        <ul className={"navLists"}>
           <li id={"brand"}>
             <span className={"helper"} />
             <Link to={"/home"}>
@@ -16,14 +17,11 @@ function NavbarView(props) {
             </Link>
           </li>
         </ul>
-        <ul className="float-right iconsList">
-          <li className={"text-center"}>
-            <Link to={"#"}>
-              {/*<img src={ring} className={"navbarIcons text-muted"} alt={"Notifications"}/>*/}
-              <i className="fas navbarIcons fa-bell" />
-              <p className="mb-0 text-muted">Notifications</p>
-            </Link>
-          </li>
+        <ul className="float-right navLists iconsList">
+          <Notifications
+            setNotificationsAsRead={props.setNotificationsAsRead}
+            notifications={props.notifications}
+          />
           <li className={"text-center"}>
             <Link to={"/logout"} onClick={e => props.logOut(e)}>
               {/*<img src={exit} className={"navbarIcons"} alt={"Log out"}/>*/}

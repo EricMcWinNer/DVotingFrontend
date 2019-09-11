@@ -116,7 +116,8 @@ class PictureUploadInput extends Component {
           isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
         if (isSuccess) {
           this.setState({ pictureFile: e.target.files[0] });
-          this.props.forcefullyShowPreview();
+          if (this.props.forcefullyShowPreview !== undefined)
+            this.props.forcefullyShowPreview();
           this.props.updatePictureFile(e.target.files[0]);
           let reader = new FileReader();
           //TODO WRITE CODE TO CHECK FOR ASPECT RATIO ON FRONTEND
@@ -150,21 +151,27 @@ class PictureUploadInput extends Component {
         >
           {this.props.label}
         </label>
-        {this.props.forcefullyRemovePreview ||
+        {(this.props.forcefullyRemovePreview !== undefined &&
+          this.props.forcefullyRemovePreview) ||
         this.state.pictureUrl === null ? (
           <div />
         ) : (
-          <div id={"imagePreview"} className={"b-100"}>
+          <div
+            id={"imagePreview"}
+            className={`${this.props.fancyInput ? "b-100" : "limitedWidth"}`}
+          >
             <img
               src={this.state.pictureUrl}
               alt={this.props.label}
               className={"uploadedImage-Preview"}
             />
-            {this.props.fancyInput && (
-              <div onClick={() => this.cancelPicture()} className={"cancel"}>
-                Cancel
-              </div>
-            )}
+            {/*
+            {this.props.fancyInput && (*/}
+            <div onClick={() => this.cancelPicture()} className={"cancel"}>
+              Cancel
+            </div>
+            {/*
+            )}*/}
           </div>
         )}
         {this.state.showWebcam && (
@@ -212,35 +219,52 @@ class PictureUploadInput extends Component {
             )}
           </BasicModal>
         )}
-        <div className="uploadInputWrapper">
-          <div className={`${this.props.fancyInput && "upload-picture-label"}`}>
-            <img src={upload} alt={"Click or drag and drop here"} />
-            Click or drag and drop here
-            <div className={"label-overlay"}>
-              <input
-                type={"file"}
-                id={"pictureUpload"}
-                name={"pictureUpload"}
-                className={`basecard-input ${
-                  this.props.fancyInput ? "invisible-input" : ""
-                }`}
-                accept="image/*"
-                onChange={e => this.handlePictureChange(e)}
-                required={this.props.required}
-                ref={this.pictureUploadRef}
-              />
-            </div>
-          </div>
-          {this.props.useWebcam && (
+        {this.props.fancyInput === undefined ? (
+          <input
+            type={"file"}
+            id={"pictureUpload"}
+            name={"pictureUpload"}
+            className={`basecard-input ${
+              this.props.fancyInput ? "invisible-input" : ""
+            }`}
+            accept="image/*"
+            onChange={e => this.handlePictureChange(e)}
+            required={this.props.required}
+            ref={this.pictureUploadRef}
+          />
+        ) : (
+          <div className="uploadInputWrapper">
             <div
-              className={`upload-picture-label`}
-              onClick={() => this.displayWebcam()}
+              className={`${this.props.fancyInput && "upload-picture-label"}`}
             >
-              <img src={webcam} alt={"Take a picture with webcam"} />
-              Take a picture with webcam
+              <img src={upload} alt={"Click or drag and drop here"} />
+              Click or drag and drop here
+              <div className={"label-overlay"}>
+                <input
+                  type={"file"}
+                  id={"pictureUpload"}
+                  name={"pictureUpload"}
+                  className={`basecard-input ${
+                    this.props.fancyInput ? "invisible-input" : ""
+                  }`}
+                  accept="image/*"
+                  onChange={e => this.handlePictureChange(e)}
+                  required={this.props.required}
+                  ref={this.pictureUploadRef}
+                />
+              </div>
             </div>
-          )}
-        </div>
+            {this.props.useWebcam && (
+              <div
+                className={`upload-picture-label`}
+                onClick={() => this.displayWebcam()}
+              >
+                <img src={webcam} alt={"Take a picture with webcam"} />
+                Take a picture with webcam
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   }
