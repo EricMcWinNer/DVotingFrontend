@@ -4,6 +4,7 @@ import axios from "axios";
 import "./index.sass";
 import CreatePartyFormView from "./CreatePartyFormView";
 import UserManager from "security/UserManager";
+import PictureUploadInput from "components/forms/picture-upload-handler/PictureUploadInput";
 
 class CreatePartyFormController extends Component {
   constructor(props) {
@@ -19,9 +20,24 @@ class CreatePartyFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      stayOnPage: false,
+      forcefullyCancel: false,
     };
     this._userManager = new UserManager(this.props.user);
   }
+
+  initializeForms = () => {
+    this.setState({
+      partyName: "",
+      acronym: "",
+      partyLogoFile: null,
+      forcefullyCancel: true,
+    });
+  };
+
+  removeForcefullyCancel = () => {
+    this.setState({ forcefullyCancel: false });
+  };
 
   componentDidMount() {
     this._mounted = true;
@@ -58,6 +74,13 @@ class CreatePartyFormController extends Component {
         [name]: value,
       });
     }
+  };
+
+  handleCheckBoxChange = e => {
+    const { name, checked } = e.target;
+    this.setState({
+      [name]: checked,
+    });
   };
 
   updatePartyLogo = picture => {
@@ -137,8 +160,9 @@ class CreatePartyFormController extends Component {
                 "Success!",
                 "Political party created successfully",
                 "success",
-                this.redirectToPartyHome
+                this.state.stayOnPage ? null : this.redirectToPartyHome
               );
+              if (this.state.stayOnPage) this.initializeForms();
             }
           }
         });
@@ -154,6 +178,8 @@ class CreatePartyFormController extends Component {
         onChange={this.handleChange}
         userManager={this._userManager}
         closeErrorModal={this.closeErrorModal}
+        handleCheckBoxChange={this.handleCheckBoxChange}
+        removeForcefullyCancel={this.removeForcefullyCancel}
         {...this.state}
         {...this.props}
       />

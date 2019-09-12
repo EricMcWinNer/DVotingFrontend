@@ -24,11 +24,16 @@ function NotificationsComponent(props) {
     props.notifications === null
       ? null
       : props.notifications.data.map((notification, index) => {
-          const notificationHelper = new NotificationHelper(notification);
+          const notificationHelper = new NotificationHelper(
+            notification,
+            props.notifications.election
+          );
           return (
             <li
               key={index}
-              className={`${notification.read_at === null ? "unread" : "read"}`}
+              className={`${
+                notification.read_at === null ? "unread" : "read"
+              } ${notificationHelper.faded()}`}
             >
               <div className={"notificationBody"}>
                 <img

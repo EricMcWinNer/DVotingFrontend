@@ -23,12 +23,15 @@ class ElectionHomeRoute extends Component {
   componentDidMount() {
     this._mounted = true;
     this.initializeRoute();
-    this._updateRoute = setInterval(this.initializeRoute, 1000 * 60);
+    this._updateRoute = setInterval(
+      () => this.initializeRoute(false),
+      1000 * 60
+    );
   }
 
-  initializeRoute = () => {
+  initializeRoute = (affectLoader = true) => {
     if (this._mounted) {
-      this.setState({ componentIsLoading: true });
+      if (affectLoader) this.setState({ componentIsLoading: true });
       axios.defaults.withCredentials = true;
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)

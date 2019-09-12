@@ -54,7 +54,6 @@ class RegisterController extends Component {
   };
 
   initializeRoute = () => {
-    console.log("I got here");
     this.setState({
       lastName: "",
       otherNames: "",

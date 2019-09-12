@@ -1,7 +1,6 @@
 import React from "react";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import ReactTooltip from "react-tooltip";
 
 import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
@@ -19,25 +18,26 @@ export const politicalPartiesModel = modalFunction => [
     cell: row => (
       <>
         <LinkButton
+          data-tip={"Edit this political party"}
           small
           to={`/dashboard/party/${row.id}/edit`}
           className={"confirm-background mr-2"}
         >
           <i className="fas fa-pencil-ruler" />
-          Edit
         </LinkButton>
         <LinkButton
+          data-tip={"Delete this political party"}
           small
           to={`/dashboard/party/${row.id}/delete`}
           onClick={e => modalFunction(e, row.id)}
           className={"reject-background"}
         >
           <i className="far fa-trash-alt" />
-          Delete
         </LinkButton>
+        <ReactTooltip place="top" type="dark" effect="solid" />
       </>
     ),
-    maxWidth: "200px",
+    maxWidth: "110px",
   },
   {
     name: "Logo",
@@ -206,61 +206,37 @@ export const candidatesModel = modalCallback => [
     sortable: false,
     cell: row => (
       <>
-        <OverlayTrigger
-          placement={"top"}
-          overlay={
-            <Tooltip id={`tooltip-info-${row.serial}`}>
-              View the full information of the candidate
-            </Tooltip>
-          }
+        <LinkButton
+          data-tip={"View information this about candidate"}
+          small
+          className={"confirm-background center only-icon text-center mr-2"}
+          to={`/dashboard/voters/${row.user_id}`}
         >
-          <LinkButton
-            small
-            className={"confirm-background center only-icon text-center mr-2"}
-            to={`/dashboard/voters/${row.user_id}`}
-          >
-            <i className="fas fa-info-circle" />
-          </LinkButton>
-        </OverlayTrigger>
+          <i className="fas fa-info-circle" />
+        </LinkButton>
 
-        <OverlayTrigger
-          placement={"top"}
-          trigger={"hover"}
-          overlay={
-            <Tooltip id={`tooltip-edit-${row.serial}`}>
-              Edit the candidate's information
-            </Tooltip>
-          }
+        <LinkButton
+          data-tip={"Edit this candidate information"}
+          small
+          className={"logo-background center only-icon text-center mr-2"}
+          to={`/dashboard/candidates/${row.id}/edit`}
         >
-          <LinkButton
-            small
-            className={"logo-background only-icon text-center mr-2"}
-            to={`/dashboard/candidates/${row.id}/edit`}
-          >
-            <i className="fas fa-user-edit" />
-          </LinkButton>
-        </OverlayTrigger>
+          <i className="fas fa-user-edit" />
+        </LinkButton>
 
-        <OverlayTrigger
-          placement={"top"}
-          overlay={
-            <Tooltip id={`tooltip-delete-${row.serial}`}>
-              <b>Delete</b> this candidate
-            </Tooltip>
-          }
+        <LinkButton
+          data-tip={"Delete this candidate"}
+          small
+          className={"reject-background center only-icon text-center mr-2"}
+          to={`/dashboard/candidates/${row.id}/delete`}
+          onClick={e => modalCallback(e, row.id)}
         >
-          <LinkButton
-            small
-            className={"reject-background only-icon text-center mr-2"}
-            to={`/dashboard/candidates/${row.id}/delete`}
-            onClick={e => modalCallback(e, row.id)}
-          >
-            <i className="fas fa-trash-alt" />
-          </LinkButton>
-        </OverlayTrigger>
+          <i className="fas fa-trash-alt" />
+        </LinkButton>
+        <ReactTooltip place="top" type="dark" effect="solid" />
       </>
     ),
-    minWidth: "200px",
+    minWidth: "110px",
   },
   {
     name: "",
@@ -406,25 +382,26 @@ export const officialModel = modalFunction => [
     cell: row => (
       <>
         <LinkButton
+          data-tip={"View this electoral official's full information"}
           small
           className={"confirm-background mr-2"}
           to={`/dashboard/voters/${row.id}`}
         >
           <i className="fas fa-info-circle" />
-          Full info
         </LinkButton>
         <LinkButton
+          data-tip={"Delete this electoral official"}
           small
           className={"reject-background mr-2"}
           to={`/dashboard/officials/${row.id}/delete`}
           onClick={e => modalFunction(e, row.id)}
         >
           <i className="fas fa-trash-alt" />
-          Delete
         </LinkButton>
+        <ReactTooltip place="top" type="dark" effect="solid" />
       </>
     ),
-    minWidth: "200px",
+    minWidth: "110px",
   },
   {
     name: "Picture",
@@ -666,6 +643,7 @@ export const officerModel = showModal => [
     cell: row => (
       <>
         <LinkButton
+          data-tip={"View voters registered by this officer"}
           small
           className={"cool-purple-background mr-2"}
           to={`/dashboard/officers/${row.id}/voters`}
@@ -673,6 +651,7 @@ export const officerModel = showModal => [
           <i className="fas fa-search" />
         </LinkButton>
         <LinkButton
+          data-tip={"View this officer's full information"}
           small
           className={"confirm-background mr-2"}
           to={`/dashboard/voters/${row.id}`}
@@ -680,6 +659,7 @@ export const officerModel = showModal => [
           <i className="fas fa-info-circle" />
         </LinkButton>
         <LinkButton
+          data-tip={"Delete this officer"}
           small
           className={"reject-background mr-2"}
           to={`/dashboard/officers/${row.id}/delete`}
@@ -687,6 +667,7 @@ export const officerModel = showModal => [
         >
           <i className="fas fa-trash-alt" />
         </LinkButton>
+        <ReactTooltip place="top" type="dark" effect="solid" />
       </>
     ),
     minWidth: "200px",

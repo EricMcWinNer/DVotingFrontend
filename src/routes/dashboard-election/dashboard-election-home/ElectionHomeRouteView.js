@@ -33,19 +33,39 @@ function ElectionHomeRouteView(props) {
               <h4 className={"nullCardTitle"}>
                 No Election has been configured
               </h4>
-              <p className={"mt-4"}>
-                In order to use this section you have to create and configure an
-                election.
-              </p>
+              {userManager.isOfficial() ? (
+                <p className={"mt-4"}>
+                  In order to use this section you have to create and configure
+                  an election.
+                </p>
+              ) : (
+                <p className={"mt-4"}>
+                  You will be notified when an election has been created.
+                </p>
+              )}
+
               <ul className={"no-style m-0 p-0 h-menu"}>
-                <li>
-                  <Link
-                    id={"create-election-button"}
-                    to={`${props.match.path}/create`}
-                  >
-                    Create
-                  </Link>
-                </li>
+                {userManager.isOfficial() ? (
+                  <li>
+                    <Link
+                      id={"create-election-button"}
+                      to={`${props.match.path}/create`}
+                    >
+                      Create
+                    </Link>
+                  </li>
+                ) : (
+                  <li>
+                    <LinkButton
+                      id={"create-election-button"}
+                      className={"confirm-background"}
+                      to={`/dashboard/`}
+                    >
+                      <i className="fas fa-chevron-left" />
+                      Back to Home
+                    </LinkButton>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
