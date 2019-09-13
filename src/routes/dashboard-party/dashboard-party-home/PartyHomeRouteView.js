@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./index.sass";
-import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
+import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card";

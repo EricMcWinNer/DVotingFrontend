@@ -6,8 +6,9 @@ import deleted from "assets/img/icons/delete.png";
 import { dateStringParser } from "utils/helpers";
 
 class NotificationHelper {
-  constructor(notification) {
+  constructor(notification, election) {
     this._notification = notification;
+    this._election = election;
   }
 
   getIcon() {
@@ -23,7 +24,7 @@ class NotificationHelper {
       case "election_deleted":
         return deleted;
       default:
-        return `${process.env.REACT_APP_API_PATH}/storage/${this._notification.icon}`;
+        return `${process.env.REACT_APP_API_PATH}/storage/${this._notification.data.icon}`;
     }
   }
 
@@ -38,9 +39,19 @@ class NotificationHelper {
       case "election_updated":
         return dateStringParser(this._notification.data.election.updated_at);
       case "election_deleted":
-        return "string";
+        return dateStringParser(this._notification.data.election.deleted_at);
+      case "candidate_created":
+        return dateStringParser(this._notification.data.candidate.created_at);
+      case "candidate_updated":
+        return dateStringParser(this._notification.data.candidate.updated_at);
+      case "officer_created":
+      case "officer_deleted":
+        return dateStringParser(this._notification.data.officer.updated_at);
+      case "official_created":
+      case "official_deleted":
+        return dateStringParser(this._notification.data.official.updated_at);
       default:
-        return "string";
+        return dateStringParser(new Date());
     }
   }
 
@@ -55,9 +66,80 @@ class NotificationHelper {
       case "election_updated":
         return "/dashboard/election";
       case "election_deleted":
-        return "string";
+        return "/dashboard/election";
+      case "candidate_created":
+        return "/dashboard/candidates";
+      case "candidate_updated":
+        return "/dashboard/candidates";
+      case "candidate_deleted":
+        return "/dashboard/candidates";
+      case "officer_created":
+      case "officer_deleted":
+        return "/dashboard/officers";
+      case "official_created":
+      case "official_deleted":
+        return "/dashboard/officials";
       default:
-        return "string";
+        return "#";
+    }
+  }
+
+  faded() {
+    switch (this._notification.data.type) {
+      case "election_completed":
+        return this._election === null ||
+          this._election.id !== this._notification.data.election.id
+          ? "faded"
+          : "";
+      case "election_created":
+        return this._election === null ||
+          this._election.id !== this._notification.data.election.id
+          ? "faded"
+          : "";
+      case "election_started":
+        return this._election === null ||
+          this._election.id !== this._notification.data.election.id
+          ? "faded"
+          : "";
+      case "election_updated":
+        return this._election === null ||
+          this._election.id !== this._notification.data.election.id
+          ? "faded"
+          : "";
+      case "election_deleted":
+        return this._election !== null &&
+          this._election.id !== this._notification.data.election.id
+          ? "faded"
+          : "";
+      case "candidate_created":
+        return this._election === null ||
+          this._election.id !== this._notification.data.candidate.election_id
+          ? "faded"
+          : "";
+      case "candidate_deleted":
+        return this._election === null ||
+          this._election.id !== this._notification.data.candidate.election_id
+          ? "faded"
+          : "";
+      case "candidate_updated":
+        return this._election === null ||
+          this._election.id !== this._notification.data.candidate.election_id
+          ? "faded"
+          : "";
+      case "officer_created":
+      case "officer_deleted":
+        return this._election === null ||
+          this._election.id !== this._notification.data.officer.election_id
+          ? "faded"
+          : "";
+      case "official_created":
+      case "official_deleted":
+        return this._election === null ||
+          this._election.id !== this._notification.data.official.election_id
+          ? "faded"
+          : "";
+      default:
+        return "";
     }
   }
 }

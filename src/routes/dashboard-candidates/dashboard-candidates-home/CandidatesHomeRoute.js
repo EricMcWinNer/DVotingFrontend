@@ -195,6 +195,10 @@ class CandidatesHomeRoute extends Component {
     this.props.history.push("/dashboard/candidates/create");
   };
 
+  redirectToHome = () => {
+    this.props.history.push("/dashboard/");
+  };
+
   closeNoCandidatesModal = () => {
     this.setState({ showNoCandidateModal: false });
   };
@@ -210,6 +214,7 @@ class CandidatesHomeRoute extends Component {
         searchNeedle={this.searchNeedle}
         userManager={this._userManager}
         redirectToCreate={this.redirectToCreate}
+        redirectToHome={this.redirectToHome}
         closeNoCandidatesModal={this.closeNoCandidatesModal}
         closeDeleteModal={this.closeDeleteModal}
         showDeleteModal={this.showDeleteModal}

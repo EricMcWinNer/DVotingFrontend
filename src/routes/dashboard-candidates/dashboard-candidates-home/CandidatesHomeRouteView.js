@@ -21,8 +21,8 @@ function CandidatesHomeRouteView(props) {
       serial: (props.currentPage - 1) * props.perPage + (index + 1),
       ...candidate,
     }));
-    if (!props.user.roles.includes("official")) {
-      candidatesModel.splice(1, 1);
+    if (!userManager.isOfficial()) {
+      candidateColumns.splice(1, 1);
     }
   }
   const handleKeyUp = e => {
@@ -111,8 +111,7 @@ function CandidatesHomeRouteView(props) {
               </li>
             )}
           </ul>
-          {userManager.isOfficial() &&
-            !props.componentIsLoading &&
+          {!props.componentIsLoading &&
             props.showNoCandidateModal &&
             candidatesData.length === 0 && (
               <SweetAlert
@@ -120,12 +119,18 @@ function CandidatesHomeRouteView(props) {
                 allowEscape
                 closeOnClickOutside
                 title="No Candidates!"
-                onConfirm={props.redirectToCreate}
+                onConfirm={
+                  userManager.isOfficial()
+                    ? props.redirectToCreate
+                    : props.redirectToHome
+                }
                 onCancel={props.closeNoCandidatesModal}
               >
                 <span className="cartogothic">
                   There is no candidate registered. Click the link below to
-                  create one
+                  {userManager.isOfficial()
+                    ? " create one"
+                    : " go back to home"}
                 </span>
               </SweetAlert>
             )}

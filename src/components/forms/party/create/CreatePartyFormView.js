@@ -68,9 +68,30 @@ function CreatePartyFormView(props) {
                 />
               </div>
               <PictureUploadInput
+                forcefullyCancel={props.forcefullyCancel}
                 label={"Party Logo:"}
                 updatePictureFile={props.updatePartyLogo}
+                removeForcefullyCancel={props.removeForcefullyCancel}
               />
+              <div className="fullWidth my-3 inputGroup">
+                <div className="custom-control d-flex align-items-center custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    id="customCheck"
+                    name="stayOnPage"
+                    checked={props.stayOnPage}
+                    onChange={props.handleCheckBoxChange}
+                  />
+                  <label
+                    className="custom-control-label cartogothic"
+                    htmlFor="customCheck"
+                  >
+                    Stay on page after creating
+                  </label>
+                </div>
+              </div>
+
               <div className="fullWidth clearfix">
                 <button type={"submit"} className={"submitForm"}>
                   {props.formIsSubmitting ? (

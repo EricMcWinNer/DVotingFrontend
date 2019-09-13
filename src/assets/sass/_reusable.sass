@@ -78,6 +78,17 @@ ul.h-menu
 .cool-blue-background
   background-color: #007bff
 
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before
+  background-color: $themeColor
+
+.custom-control-input:checked ~ .custom-control-label::before
+  background-color: $themeColor
+  border-color: $themeColor
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before
+  border-color: $themeColor
+
+
 @for $var from 1 through 100
   .b-#{$var}
     min-width: 0% + $var
