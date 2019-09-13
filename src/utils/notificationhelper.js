@@ -146,7 +146,7 @@ class NotificationHelper {
   }
 
   isFromCurrentElection() {
-    return this.faded() !== "faded";
+    return this.faded() === "";
   }
 }
 

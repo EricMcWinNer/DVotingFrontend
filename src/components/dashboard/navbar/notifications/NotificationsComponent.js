@@ -60,7 +60,7 @@ function NotificationsComponent(props) {
                 <div className="time">{notificationHelper.getTime()}</div>
                 <ReactTooltip
                   id={`notification-${index}`}
-                  disabled={notificationHelper.isFromCurrentElection()}
+                  disable={notificationHelper.isFromCurrentElection()}
                   place={"left"}
                 />
               </div>
