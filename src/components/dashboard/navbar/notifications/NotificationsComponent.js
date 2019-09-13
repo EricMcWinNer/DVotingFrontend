@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 
 import "./index.sass";
 
@@ -26,7 +27,8 @@ function NotificationsComponent(props) {
       : props.notifications.data.map((notification, index) => {
           const notificationHelper = new NotificationHelper(
             notification,
-            props.notifications.election
+            props.notifications.election,
+            index
           );
           return (
             <li
@@ -35,17 +37,33 @@ function NotificationsComponent(props) {
                 notification.read_at === null ? "unread" : "read"
               } ${notificationHelper.faded()}`}
             >
-              <div className={"notificationBody"}>
-                <img
-                  src={notificationHelper.getIcon()}
-                  alt={notification.data.message}
-                  className={"notifIcon"}
+              <div
+                data-for={`notification-${index}`}
+                data-tip="This notification belongs to an inactive election"
+              >
+                <div className={"notificationBody"}>
+                  <img
+                    src={notificationHelper.getIcon()}
+                    alt={notification.data.message}
+                    className={"notifIcon"}
+                  />
+                  <Link
+                    to={
+                      notificationHelper.isFromCurrentElection()
+                        ? notificationHelper.getLink()
+                        : "#"
+                    }
+                  >
+                    {notification.data.message}
+                  </Link>
+                </div>
+                <div className="time">{notificationHelper.getTime()}</div>
+                <ReactTooltip
+                  id={`notification-${index}`}
+                  disabled={notificationHelper.isFromCurrentElection()}
+                  place={"left"}
                 />
-                <Link to={notificationHelper.getLink()}>
-                  {notification.data.message}
-                </Link>
               </div>
-              <div className="time">{notificationHelper.getTime()}</div>
             </li>
           );
         });

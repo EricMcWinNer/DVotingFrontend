@@ -53,6 +53,10 @@ class CreateCandidateFormController extends Component {
     this.props.history.push("/dashboard/candidates");
   };
 
+  redirectToElection = () => {
+    this.props.history.push("/dashboard/election");
+  };
+
   closeErrorModal = () => {
     this.setState({
       showErrorAlert: false,
@@ -129,7 +133,7 @@ class CreateCandidateFormController extends Component {
                   "No Pending Election",
                   "A candidate can only be created when there is a pending election",
                   "error",
-                  this.redirectToCandidates
+                  this.redirectToElection
                 );
               else if (res.data.err === "partyNotExist")
                 this.showAlert(

@@ -69,9 +69,10 @@ export function dateStringParser(string) {
     "Dec",
   ];
   if (time - epoch < 1000 * 60) return "just now";
-  else if (time - epoch < 3600 * 1000)
-    return "about " + parseInt((time - epoch) / 60000) + " mins ago";
-  else if (time - epoch < 86400 * 1000)
+  else if (time - epoch < 3600 * 1000) {
+    let min = parseInt((time - epoch) / 60000);
+    return "about " + min + ` min${min < 2 ? "" : "s"} ago`;
+  } else if (time - epoch < 86400 * 1000)
     return (
       "today, " +
       pad(date.getHours(), 2) +
@@ -101,4 +102,29 @@ export function dateStringParser(string) {
       " " +
       date.getFullYear()
     );
+}
+
+export function sentenceCase(string, ...otherExempts) {
+  let exempts;
+  exempts =
+    otherExempts === undefined || otherExempts === null
+      ? ["for", "is", "of", "a", "the"]
+      : ["for", "is", "of", "a", "the", ...otherExempts];
+  const stringArray = string.split(" ");
+  for (let i = 0; i < stringArray.length; i++) {
+    let shouldCapitalize = false;
+    if (i === 0) shouldCapitalize = true;
+    else {
+      for (let j = 0; j < exempts.length; j++) {
+        shouldCapitalize =
+          stringArray[i].toLowerCase() !== exempts[j].toLowerCase();
+        if (!shouldCapitalize) break;
+      }
+    }
+    if (shouldCapitalize) stringArray[i] = capitalize(stringArray[i]);
+    else {
+      stringArray[i] = stringArray[i].toLowerCase();
+    }
+  }
+  return stringArray.join(" ");
 }

@@ -6,9 +6,10 @@ import deleted from "assets/img/icons/delete.png";
 import { dateStringParser } from "utils/helpers";
 
 class NotificationHelper {
-  constructor(notification, election) {
+  constructor(notification, election, index) {
     this._notification = notification;
     this._election = election;
+    this._index = index;
   }
 
   getIcon() {
@@ -107,8 +108,9 @@ class NotificationHelper {
           ? "faded"
           : "";
       case "election_deleted":
-        return this._election !== null &&
-          this._election.id !== this._notification.data.election.id
+        return this._index !== 0 ||
+          (this._election !== null &&
+            this._election.id !== this._notification.data.election.id)
           ? "faded"
           : "";
       case "candidate_created":
@@ -141,6 +143,10 @@ class NotificationHelper {
       default:
         return "";
     }
+  }
+
+  isFromCurrentElection() {
+    return this.faded() !== "faded";
   }
 }
 

@@ -173,7 +173,7 @@ function SelectNewOfficerRouteView(props) {
               cancelBtnBsStyle="default"
               title={`${props.officerIsLoading ? "" : "Are you sure?"}`}
               onCancel={props.closeCreateModal}
-              onConfirm={props.createOfficerConfirm}
+              onConfirm={props.handleModalConfirmation}
             >
               {props.officerIsLoading ? (
                 <SubRouteLoader className={"mt-5 mb-5"} />
