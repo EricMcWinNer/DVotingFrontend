@@ -8,7 +8,7 @@ import createIcon from "assets/img/icons/create.png";
 import Row from "react-bootstrap/Row";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
-import { capitalizeWords } from "utils/helpers";
+import { capitalizeWords, sentenceCase } from "utils/helpers";
 import Helmet from "react-helmet";
 import PictureUploadInput from "components/forms/picture-upload-handler";
 
@@ -50,7 +50,7 @@ function CreatePartyFormView(props) {
                   id={"partyName"}
                   type="text"
                   name={"partyName"}
-                  value={capitalizeWords(props.partyName)}
+                  value={props.partyName}
                   onChange={props.onChange}
                   placeholder={"e.g People's Democratic Party"}
                 />

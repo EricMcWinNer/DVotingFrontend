@@ -40,6 +40,8 @@ class DashboardRoute extends Component {
           if (res.data.isSessionValid == "false") {
             this.props.history.push("/login");
           } else {
+            const notifications = res.data.notifications;
+
             this.setState({ notifications: res.data.notifications });
           }
         });
@@ -61,17 +63,8 @@ class DashboardRoute extends Component {
           if (res.data.isSessionValid == "false") {
             this.props.history.push("/login");
           } else {
-            this.setState(state => {
-              const {
-                unreadNotificationsCount,
-                ...notifications
-              } = state.notifications;
-              return {
-                notifications: {
-                  unreadNotificationsCount: 0,
-                  ...notifications,
-                },
-              };
+            this.setState({
+              notifications: res.data.notifications,
             });
           }
         });

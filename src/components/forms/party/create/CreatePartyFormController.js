@@ -5,6 +5,7 @@ import "./index.sass";
 import CreatePartyFormView from "./CreatePartyFormView";
 import UserManager from "security/UserManager";
 import PictureUploadInput from "components/forms/picture-upload-handler/PictureUploadInput";
+import { sentenceCase } from "utils/helpers";
 
 class CreatePartyFormController extends Component {
   constructor(props) {
@@ -70,6 +71,7 @@ class CreatePartyFormController extends Component {
       tagName.toLowerCase() === "select" ||
       type === "date"
     ) {
+      if (name === "partyName") value = sentenceCase(value);
       this.setState({
         [name]: value,
       });
