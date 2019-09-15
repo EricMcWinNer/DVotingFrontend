@@ -1,8 +1,10 @@
 import React from "react";
 import Countdown from "react-countdown-now";
 
-import "components/dashboard/countdown-timer/index.sass";
+import "./index.sass";
 import { pad } from "utils/helpers";
+import LinkButton from "components/buttons/react-router-link-button";
+import voting from "assets/img/icons/voting.png";
 
 //TODO - CONDITIONALLY RENDER A LINK TO CREATE AN ELECTION AND A COUNTDOWN FOR ELECTION FINISHING OR THAT NO ELECTION EXISTS IF THE PERSON IS NOT AN OFFICIAL
 
@@ -45,13 +47,29 @@ function CountdownTimer(props) {
                 </li>
               </ul>
             </div>
+            {status === "ongoing" && (
+              <div className={"voter-call-to-action"}>
+                <LinkButton
+                  className={"confirm-background"}
+                  to={"/dashboard/vote"}
+                >
+                  <img src={voting} alt={"Vote Now!"} />
+                  Vote Now
+                </LinkButton>
+              </div>
+            )}
             <p className={"mt-3 mb-0 countdown-title"}>{countDownText}</p>
           </div>
         );
       }
     };
     return (
-      <Countdown zeroPadTime={2} date={countDownDate} renderer={renderer} />
+      <Countdown
+        zeroPadTime={2}
+        date={countDownDate}
+        onComplete={() => setTimeout(props.updateDashboard, 3000)}
+        renderer={renderer}
+      />
     );
   } else return <div />;
 }

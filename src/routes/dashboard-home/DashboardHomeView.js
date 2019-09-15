@@ -57,7 +57,10 @@ function DashboardHomeView(props) {
           </Row>
           <Row className={"rowMargin"}>
             <Col md={6}>
-              <CountdownTimer election={props.election} />
+              <CountdownTimer
+                updateDashboard={props.updateDashboard}
+                election={props.election}
+              />
             </Col>
             {userManager.isOfficer() && (
               <Col md={3}>

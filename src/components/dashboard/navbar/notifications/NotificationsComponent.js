@@ -69,15 +69,22 @@ function NotificationsComponent(props) {
         });
 
   return (
-    <li id={"notifications"} className={"text-center"}>
+    <div
+      id={"notifications"}
+      className={`text-center nav-item${
+        props.notifications !== null &&
+        props.notifications.election !== null &&
+        props.notifications.election.status === "ongoing"
+          ? ""
+          : " ml-auto"
+      }`}
+    >
       <div className="dropDown">
         <Link
           onClick={e => toggleDropdown(e)}
           className={"dropdown-btn"}
           to={"#"}
         >
-          <i className="fas navbarIcons fa-bell" />
-          <p className="mb-0 text-muted">Notifications</p>
           {props.notifications !== null &&
             props.notifications.unreadNotificationsCount >= 1 && (
               <span className={"badge notifCount badge-success"}>
@@ -86,6 +93,8 @@ function NotificationsComponent(props) {
                   : props.notifications.unreadNotificationsCount}
               </span>
             )}
+          <i className="fas navbarIcons fa-bell" />
+          <p className="mb-0 text-muted">Notifications</p>
         </Link>
         <div
           ref={dropDownContent}
@@ -95,7 +104,7 @@ function NotificationsComponent(props) {
           <ul>{notificationLinks}</ul>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 
