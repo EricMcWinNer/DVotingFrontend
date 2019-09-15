@@ -16,6 +16,8 @@ import OfficialHomeContainer from "routes/dashboard-officials";
 import OfficersHomeContainer from "routes/dashboard-officers";
 import OfficerContainer from "routes/dashboard-officer";
 import PinHomeContainer from "routes/dashboard-pins";
+import VoteContainer from "routes/dashboard-vote";
+import ResultsContainer from "routes/dashboard-results";
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
 
@@ -40,6 +42,9 @@ function DashBoardRouteView(props) {
             name={lastAndFirstName}
             location={props.location.pathname}
             user={props.user}
+            election={
+              props.notifications === null ? null : props.notifications.election
+            }
           />
           <div className={"mainContent"}>
             <NavBar
@@ -107,6 +112,14 @@ function DashBoardRouteView(props) {
                   path={`${props.match.path}/pins`}
                   isAuthorized={UserManager.isOfficial(user)}
                   render={props => <PinHomeContainer user={user} {...props} />}
+                />
+                <Route
+                  path={`${props.match.path}/vote`}
+                  render={props => <VoteContainer user={user} {...props} />}
+                />
+                <Route
+                  path={`${props.match.path}/results`}
+                  render={props => <ResultsContainer user={user} {...props} />}
                 />
               </Switch>
             </div>

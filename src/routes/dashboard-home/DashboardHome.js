@@ -55,7 +55,11 @@ class DashboardHome extends Component {
 
   render() {
     return (
-      <DashboardHomeView userManager={this._userManager} {...this.state} />
+      <DashboardHomeView
+        userManager={this._userManager}
+        updateDashboard={this.updateDashboard}
+        {...this.state}
+      />
     );
   }
 }

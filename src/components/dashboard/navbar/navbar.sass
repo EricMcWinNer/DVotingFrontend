@@ -7,63 +7,53 @@
   background-color: white
   box-shadow: -4px 0 4px 7px rgba(0, 0, 0, 0.45)
   height: 78px
-  padding: 10px
-    top: 15px
-    bottom: 0
+  padding: 0 40px
   margin: 0
   clear: both
   position: relative
-
-  .logoContainer
-    display: inline-block
+  display: flex
+  align-items: center
 
   #brand
-    margin-top: 8px
     a
       color: #333
+
+  .nav-item
+    margin: 0 15px
+
+    a
+      transition:
+        property: color
+        duration: 1s
+
+      &:hover
+        text-decoration: none
+
+        i, p
+          color: $themeColor
+
+    p
+      font-size: 14px
+      margin:
+        top: 5px
+      @extend .openSans
 
   .navbarIcons
     font:
       size: 19px
     color: #333
 
-  .iconsList
-    margin-right: 10px
+  img
+    width: 30px
 
-  ul.navLists
-    list-style: none
-    display: inline-block
+  .navbar-vote
+    font-weight: bold
+    padding:
+      left: 20px
+      right: 20px
+    img
+      width: 24px
+      margin-right: 10px
 
-    & > li
-      display: inline-block
-      max-width: 150px
-      height: 100%
-      margin:
-        left: 15px
-        right: 15px
-      span.helper
-        vertical-align: middle
-        width: 0
-        height: 100%
-      button
-        border: none
-        background-color: transparent
-        display: inline
-      a, button
-        vertical-align: middle
-        transition:
-          property: color
-          duration: 1s
-        &:hover
-          text-decoration: none
-          i, p
-            color: $themeColor
 
-      p
-        font-size: 14px
-        margin:
-          top: 5px
-        @extend .openSans
 
-      img
-        width: 30px
