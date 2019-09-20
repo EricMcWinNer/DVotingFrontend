@@ -116,8 +116,8 @@ class CreateCandidateFormController extends Component {
             } else if (res.data.completed === false) {
               if (res.data.err === "officialCantBeCandidate")
                 this.showAlert(
-                  "User already an Official",
-                  "Users who already have a role besides just voter cannot be candidates",
+                  "User has already been assigned a role",
+                  "Users who electoral officials or polling officers cannot be candidates",
                   "error",
                   this.redirectToCandidates
                 );

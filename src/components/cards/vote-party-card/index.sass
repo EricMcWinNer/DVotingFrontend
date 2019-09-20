@@ -1,0 +1,83 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+.vote-party-card
+  border-top: solid 6px transparent
+  transition-duration: .6s
+  transition-property: border-color, border-top-left-radius, border-top-right-radius
+  display: flex
+  flex-direction: column
+  position: relative
+
+  .candidateContainer
+    display: flex
+    flex-direction: row
+    margin-bottom: 15px
+
+  & + .vote-button
+    margin:
+      left: auto
+      right: auto
+    width: 150px
+    text-align: center
+    font-weight: bold
+
+  &:hover
+    border-color: $themeColor
+    border-top:
+      left-radius: 0
+      right-radius: 0
+
+  .selectedOverlay
+    z-index: -1
+    opacity: 0
+    transition-duration: .9s
+    transition-property: opacity
+    width: 100%
+    height: 100%
+    position: absolute
+    top: 0
+    left: 0
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    border-radius: 0 0 9px 9px
+    background-color: rgba(0, 0, 0, .7)
+    display: flex
+
+  &.selected
+    border-top: solid 6px $themeColor
+    border-top:
+      left-radius: 0
+      right-radius: 0
+
+    .selectedOverlay
+      z-index: 4
+      opacity: 1
+
+      img
+        height: 80px
+        width: auto
+
+      p
+        margin-top: 25px
+        color: #fff
+        text-shadow: 0 0 2px #333, 0 0 4px #fff
+        font:
+          size: 25px
+          weight: bold
+        @extend .poppins
+
+
+  display: flex
+  cursor: pointer
+
+  .party-logo
+    height: 100px
+    margin: 0 auto
+
+  .party-acronym
+    margin: 15px auto 0
+    font:
+      size: 20px
+    @extend .cartogothic
