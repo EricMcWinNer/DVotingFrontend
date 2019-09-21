@@ -5,7 +5,7 @@ import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card/BaseCard";
 import BrokenLink from "components/cards/broken-link-card";
-import fingerpint from "assets/img/icons/fingerprints.png";
+import vote from "assets/img/icons/voting.png";
 import VotePartyCard from "components/cards/vote-party-card";
 import AlreadyVoted from "components/cards/already-voted-card";
 import Row from "react-bootstrap/Row";
@@ -35,11 +35,11 @@ function VoteHomeRouteView(props) {
         <title>{process.env.REACT_APP_NAME} | Vote Now!</title>
       </Helmet>
       <Col md={{ span: 12 }}>
-        <BaseCard id={"nullCard"}>
+        <BaseCard id={"voteHomeCard"}>
           <div className="title clearfix o-auto">
             <div className="float-left">
               <img
-                src={fingerpint}
+                src={vote}
                 alt="No parties found"
                 className={"title-icon small"}
               />

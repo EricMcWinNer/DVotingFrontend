@@ -24,17 +24,21 @@
     opacity: 0
     z-index: -99
     display: flex
+    background-color: #f9f9f9
+    border-color: #ddd
     transition: opacity 1s 0s, z-index 0s 0s
 
     .title
       display: flex
       flex-flow: row
       margin-bottom: 15px
+
       h3
         font:
           size: 22px
           weight: 700
         @extend .montserrat
+
       img
         height: 30px
 
@@ -73,7 +77,7 @@
       display: flex
       opacity: 1
       z-index: 99
-      transition: opacity 1s 0s, z-index 0s 0s
+      transition: opacity .5s 0s, z-index 0s 0s
 
 
   .selectedOverlay
