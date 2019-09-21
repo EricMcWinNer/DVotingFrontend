@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import VoteHome from "./dashboard-vote-home";
+import ForwardVote from "./dashboard-vote-forward";
 
 class VoteRoutes extends Component {
   componentDidMount() {
@@ -20,6 +21,11 @@ class VoteRoutes extends Component {
           exact
           path={`${this.props.match.path}`}
           render={props => <VoteHome user={user} {...props} />}
+        />
+        <Route
+          exact
+          path={`${this.props.match.path}/:id/forward`}
+          render={props => <ForwardVote user={user} {...props} />}
         />
       </Switch>
     );

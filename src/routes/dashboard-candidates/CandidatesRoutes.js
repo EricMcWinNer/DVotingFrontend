@@ -13,7 +13,7 @@ class CandidatesRoutes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      componentIsLoading: true
+      componentIsLoading: true,
     };
   }
 
