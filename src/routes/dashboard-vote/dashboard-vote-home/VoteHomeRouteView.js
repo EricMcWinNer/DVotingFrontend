@@ -7,6 +7,7 @@ import BaseCard from "components/cards/base-card/BaseCard";
 import BrokenLink from "components/cards/broken-link-card";
 import fingerpint from "assets/img/icons/fingerprints.png";
 import VotePartyCard from "components/cards/vote-party-card";
+import AlreadyVoted from "components/cards/already-voted-card";
 import Row from "react-bootstrap/Row";
 import SweetAlert from "react-bootstrap-sweetalert";
 
@@ -28,7 +29,7 @@ function VoteHomeRouteView(props) {
     <SubRouteLoader />
   ) : props.election === null || props.election.status !== "ongoing" ? (
     <BrokenLink />
-  ) : (
+  ) : !props.voted ? (
     <Row id={"votesHome"}>
       <Helmet>
         <title>{process.env.REACT_APP_NAME} | Vote Now!</title>
@@ -73,6 +74,8 @@ function VoteHomeRouteView(props) {
         </BaseCard>
       </Col>
     </Row>
+  ) : (
+    <AlreadyVoted />
   );
 }
 

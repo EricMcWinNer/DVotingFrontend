@@ -6,13 +6,54 @@
   transition-duration: .6s
   transition-property: border-color, border-top-left-radius, border-top-right-radius
   display: flex
+  cursor: pointer
   flex-direction: column
   position: relative
 
-  .candidateContainer
+  .candidateOverlay
+    position: absolute
+    top: 90%
+    left: 0
+    padding: 25px
+    width: auto
+    flex-direction: column
+    flex-wrap: nowrap
+    text-wrap: none
+    min-width: 320px
+    max-width: 500px
+    opacity: 0
+    z-index: -99
     display: flex
-    flex-direction: row
-    margin-bottom: 15px
+    transition: opacity 1s 0s, z-index 0s 0s
+
+    .title
+      display: flex
+      flex-flow: row
+      margin-bottom: 15px
+      h3
+        font:
+          size: 22px
+          weight: 700
+        @extend .montserrat
+      img
+        height: 30px
+
+    .candidate
+      margin-bottom: 15px
+
+      .candidate-info
+        display: flex
+        flex-direction: column
+
+        .candidate-campaign-picture
+          height: 64px
+          margin:
+            right: 15px
+            bottom: 15px
+
+    h3
+      @extend .cartogothic
+      font-size: 21px
 
   & + .vote-button
     margin:
@@ -27,6 +68,13 @@
     border-top:
       left-radius: 0
       right-radius: 0
+
+    .candidateOverlay
+      display: flex
+      opacity: 1
+      z-index: 99
+      transition: opacity 1s 0s, z-index 0s 0s
+
 
   .selectedOverlay
     z-index: -1
@@ -51,6 +99,7 @@
       left-radius: 0
       right-radius: 0
 
+
     .selectedOverlay
       z-index: 4
       opacity: 1
@@ -61,16 +110,13 @@
 
       p
         margin-top: 25px
-        color: #fff
-        text-shadow: 0 0 2px #333, 0 0 4px #fff
+        color: #fffffd
+        text-shadow: 0 0 1px #333, 0 0 2px #bbac8b
         font:
           size: 25px
           weight: bold
         @extend .poppins
 
-
-  display: flex
-  cursor: pointer
 
   .party-logo
     height: 100px

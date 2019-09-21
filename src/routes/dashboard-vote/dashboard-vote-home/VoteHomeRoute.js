@@ -16,6 +16,7 @@ class VoteHomeRoute extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      voted: false,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -84,6 +85,7 @@ class VoteHomeRoute extends Component {
   };
 
   getParties = () => {
+    this.setState({ componentIsLoading: true });
     axios.defaults.withCredentials = true;
     const req = axios
       .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/vote`)
@@ -93,6 +95,7 @@ class VoteHomeRoute extends Component {
         } else {
           this.setState({
             parties: res.data.parties,
+            voted: res.data.voted,
             componentIsLoading: false,
           });
         }

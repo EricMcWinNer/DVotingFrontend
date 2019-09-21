@@ -2,13 +2,10 @@ import React from "react";
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
 import foreground from "assets/img/icons/foreground-fingerprint.png";
-import Candidate from "./candidate";
+import Candidates from "./candidate";
 import LinkButton from "components/buttons/react-router-link-button";
 
 function VotePartyCard(props) {
-  const candidates = props.party.candidates.map((candidate, index) => (
-    <Candidate candidate={candidate} key={index} />
-  ));
   return (
     <div className={"d-flex justify-content-center flex-column"}>
       <BaseCard
@@ -18,7 +15,7 @@ function VotePartyCard(props) {
         onClick={e => props.handleClick(e, props.party.id)}
         data-acronym={props.party.acronym}
       >
-        <div className="candidateContainer fullWidth">{candidates}</div>
+        {/*<div className="candidateContainer fullWidth">{candidates}</div>*/}
         <div className="fullHeight d-flex flex-column fullWidth force">
           <img
             src={`${process.env.REACT_APP_API_PATH}/storage/${props.party.logo}`}
@@ -32,6 +29,10 @@ function VotePartyCard(props) {
           <img src={foreground} alt={props.party.acronym} />
           <p>{props.party.acronym}</p>
         </div>
+        <Candidates
+          className={"candidateOverlay"}
+          candidates={props.party.candidates}
+        />
       </BaseCard>
       {props.selectedParty === props.party.id && (
         <LinkButton
