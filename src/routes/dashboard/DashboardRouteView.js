@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import "./index.sass";
 import FullScreenLoader from "components/loaders/fullscreen";
 import SideBar from "components/dashboard/sidebar";
+import ResponsiveSideBar from "components/dashboard/responsive-sidebar";
 import NavBar from "components/dashboard/navbar";
 import DashboardHome from "routes/dashboard-home";
 import ElectionRouteContainer from "routes/dashboard-election";
@@ -38,15 +39,35 @@ function DashBoardRouteView(props) {
           </title>
         </Helmet>
         <div className="main">
-          <SideBar
-            name={lastAndFirstName}
-            location={props.location.pathname}
-            user={props.user}
-            election={
-              props.notifications === null ? null : props.notifications.election
-            }
-          />
-          <div className={"mainContent"}>
+          {props.responsiveSidebar ? (
+            <ResponsiveSideBar
+              name={lastAndFirstName}
+              location={props.location.pathname}
+              user={props.user}
+              election={
+                props.notifications === null
+                  ? null
+                  : props.notifications.election
+              }
+            />
+          ) : (
+            <SideBar
+              name={lastAndFirstName}
+              location={props.location.pathname}
+              user={props.user}
+              election={
+                props.notifications === null
+                  ? null
+                  : props.notifications.election
+              }
+            />
+          )}
+
+          <div
+            className={`mainContent${
+              props.responsiveSidebar ? " responsive" : ""
+            }`}
+          >
             <NavBar
               logOut={props.logOut}
               notifications={props.notifications}

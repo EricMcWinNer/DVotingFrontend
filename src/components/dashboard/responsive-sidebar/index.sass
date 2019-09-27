@@ -1,0 +1,68 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+$backgroundUrl: 'assets/img/dashboard/sidebar-background.jpg'    
+
+#responsiveSideBar
+  background:
+    image: url('~#{$backgroundUrl}')
+    size: cover
+    position: center
+  z-index: 10
+  height: 100%
+  padding-bottom: 15px
+  width: 65px
+  position: fixed
+  top: 0
+  left: 0
+  overflow-x: hidden
+  padding-top: 30px
+  display: flex
+  flex-direction: column
+
+  .menu-link
+      height: 78px
+      width: 100%
+      display: flex
+      justify-content: center
+      align-content: center
+
+  .sidebar-item
+    display: flex
+    width: 100%
+    justify-content: center
+    padding:
+      top: 8px
+      bottom: 8px
+    margin:
+      top: 10px
+      bottom: 10px
+    img
+      width: 20px
+    &.selected
+      background-color: $themeColor
+    &:hover
+      transition: .4s
+      transition-property: background-color
+      background-color: rgba(47, 206, 135, 0.23)
+      &.selected
+        background-color: $themeColor
+
+  &::before
+    content: ""
+    position: fixed
+    display: block
+    top: 0
+    left: 0
+    width: 65px
+    height: 100%
+    z-index: 4
+    background-color: rgba(0, 0, 0, 0.9)
+
+  .overlay
+    position: relative
+    z-index: 10
+    margin:
+      bottom: 10%
+
+  

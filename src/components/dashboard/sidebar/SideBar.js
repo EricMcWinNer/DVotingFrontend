@@ -65,7 +65,7 @@ function SideBar(props) {
                     <Link to={"/dashboard/vote"}>
                       <img
                         src={voting}
-                        alt={"Vote Now"}
+                        alt={"Vote now"}
                         className={"sidebarIcon"}
                       />
                       Vote now
@@ -83,7 +83,7 @@ function SideBar(props) {
                     <Link to={"/dashboard/results"}>
                       <img
                         src={results}
-                        alt={"Real-time Results"}
+                        alt={"Election Results"}
                         className={"sidebarIcon"}
                       />
                       {(props.election.status === "ongoing" &&

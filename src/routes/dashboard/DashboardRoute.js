@@ -10,6 +10,7 @@ class DashboardRoute extends Component {
       componentIsLoading: true,
       user: {},
       notifications: null,
+      responsiveSidebar: true
     };
   }
 
