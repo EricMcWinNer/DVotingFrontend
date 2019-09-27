@@ -3,6 +3,7 @@ import edit from "assets/img/icons/edited.png";
 import finish from "assets/img/icons/finished.png";
 import start from "assets/img/icons/started.png";
 import deleted from "assets/img/icons/delete.png";
+import vote from "assets/img/icons/voting.png";
 import { dateStringParser } from "utils/helpers";
 
 class NotificationHelper {
@@ -24,6 +25,8 @@ class NotificationHelper {
         return edit;
       case "election_deleted":
         return deleted;
+      case "voted_successfully":
+        return vote;
       default:
         return `${process.env.REACT_APP_API_PATH}/storage/${this._notification.data.icon}`;
     }
@@ -51,8 +54,10 @@ class NotificationHelper {
       case "official_created":
       case "official_deleted":
         return dateStringParser(this._notification.data.official.updated_at);
+      case "voted_successfully":
+        return dateStringParser(this._notification.data.voted_at);
       default:
-        return dateStringParser(new Date());
+        return "pussy";
     }
   }
 
@@ -80,6 +85,8 @@ class NotificationHelper {
       case "official_created":
       case "official_deleted":
         return "/dashboard/officials";
+      case "voted_successfully":
+        return "/dashboard/results";
       default:
         return "#";
     }

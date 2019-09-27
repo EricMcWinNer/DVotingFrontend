@@ -46,7 +46,11 @@ class ForwardVoteRoute extends Component {
 
   render() {
     return (
-      <ForwardVoteRouteView userManager={this._userManager} {...this.state} />
+      <ForwardVoteRouteView
+        userManager={this._userManager}
+        {...this.props}
+        {...this.state}
+      />
     );
   }
 }

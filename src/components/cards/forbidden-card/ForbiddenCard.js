@@ -25,12 +25,7 @@ function ForbiddenCard(props) {
       </p>
       <ul className={"no-style m-0 mt-4 o-auto fullWidth clearfix p-0 h-menu"}>
         <li className={"mr-3 float-left"}>
-          <LinkButton
-            medium
-            className={"logo-background"}
-            onClick={props.finalizeElection}
-            to={"/dashboard/"}
-          >
+          <LinkButton medium className={"logo-background"} to={"/dashboard/"}>
             <i className="fas fa-chevron-left" />
             Back to home
           </LinkButton>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import "components/cards/analytic-card/index.sass";
+import "./index.sass";
 
 function AnalyticCard(props) {
   return (
@@ -13,14 +13,14 @@ function AnalyticCard(props) {
         <div className="float-right">
           <img
             src={props.icon}
-            className={"analyticsIcon"}
+            className={`analyticsIcon${props.largerIcon && " largerIcon"}`}
             alt={"Analytics Name"}
           />
         </div>
       </div>
       <div className={"footerContainer"}>
         <p className="text-muted poppins mt-3 mb-0">
-          <i className="fas fa-history" /> {props.subtitle}
+          {!props.noClock && <i className="fas fa-history" />} {props.subtitle}
         </p>
       </div>
     </div>

@@ -41,3 +41,29 @@
   z-index: 15
   background:
     color: rgba(255, 255, 255, 0.85)
+
+.searchTools
+  select
+    height: 40px
+    min-width: 200px
+    border: 1px solid #ddd
+    @extend .cartogothic
+    display: inline-block !important
+    font-size: 0.875rem
+    padding:
+      right: 25px
+
+  label
+    @extend .cartogothic
+    color: #444
+
+  ul
+    margin: 0
+    padding: 0
+    list-style: none
+
+    li
+      display: inline-block
+
+      &:not(.float-right)
+        margin-right: 10px

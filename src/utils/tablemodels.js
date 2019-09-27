@@ -1,7 +1,7 @@
 import React from "react";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import ReactTooltip from "react-tooltip";
-
+import ProgressBar from "components/progress-bar";
 import IconBadge from "components/badges/icon-badge";
 import { capitalize } from "utils/helpers";
 
@@ -757,9 +757,11 @@ export const pinModel = [
         <IconBadge className={`cool-purple-background`}>None</IconBadge>
       ) : (
         <LinkButton
-          className={"confirm-background"}
+          small
+          className={"confirm-background cartogothic"}
           to={`/dashboard/voters/${row.used_by.id}`}
         >
+          <i className={"fas fa-search"} />
           View User
         </LinkButton>
       ),
@@ -776,7 +778,7 @@ export const pinModel = [
       return (
         <LinkButton
           small
-          className={"confirm-background"}
+          className={"confirm-background cartogothic"}
           to={`/dashboard/voters/${row.created_by.id}`}
         >
           {`${name[0]} ${name[1]}`}
@@ -957,5 +959,45 @@ export const viewVotersOfficialModel = [
     name: "State",
     sortable: true,
     selector: "lga.state.name",
+  },
+];
+export const resultsModel = [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+  },
+  {
+    name: "Logo",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"party-logo"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.logo}`}
+        alt={row.name}
+      />
+    ),
+    maxWidth: "45px",
+  },
+  {
+    name: "Acronym",
+    selector: "acronym",
+    sortable: true,
+    maxWidth: "45px",
+  },
+  {
+    name: "Name",
+    selector: "name",
+    sortable: true,
+  },
+  {
+    name: "Number of votes",
+    selector: "votes_count",
+    sortable: true,
+  },
+  {
+    name: "Percentage of votes",
+    sortable: true,
+    cell: row => <ProgressBar progress={row.percentage_of_votes} />,
   },
 ];
