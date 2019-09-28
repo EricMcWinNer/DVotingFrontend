@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import OfficerHomeRoute from "./dashboard-officers-home";
 import CreateOfficerRoute from "./dashboard-officers-create";
