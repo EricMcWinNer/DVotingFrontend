@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import VoterHome from "routes/dashboard-voters/dashboard-voter-home";
 import SingleVoter from "routes/dashboard-voters/dashboard-single-voter";
+import NotFound from "components/cards/not-found-card";
 
 class VoterRoutes extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class VoterRoutes extends Component {
           exact
           render={props => <VoterHome user={this.props.user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Login from "routes/login";
 import Register from "routes/register";
@@ -30,9 +30,12 @@ class EntryPoint extends Component {
     return (
       <Router>
         <CssBaseline />
-        <Route path={"/login"} component={Login} />
-        <Route path={"/register"} component={Register} />
-        <Route path={"/dashboard"} component={Dashboard} />
+        <Switch>
+          <Route exact path={"/"} component={Dashboard} />
+          <Route path={"/login"} component={Login} />
+          <Route path={"/register"} component={Register} />
+          <Route path={"/dashboard"} component={Dashboard} />
+        </Switch>
       </Router>
     );
   }

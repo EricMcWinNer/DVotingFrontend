@@ -7,6 +7,7 @@ import PartyCreateRoute from "routes/dashboard-party/dashboard-party-create/Crea
 import PartyEditRoute from "routes/dashboard-party/dashboard-party-edit/EditPartyRoute";
 import PartyDeleteRoute from "routes/dashboard-party/dashboard-party-delete/DeletePartyRoute";
 import UserManager from "security/UserManager";
+import NotFound from "components/cards/not-found-card";
 
 class PartyRoutes extends Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class PartyRoutes extends Component {
           isAuthorized={UserManager.isOfficial(user)}
           render={props => <PartyDeleteRoute user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

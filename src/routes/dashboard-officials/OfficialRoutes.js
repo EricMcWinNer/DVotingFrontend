@@ -5,6 +5,7 @@ import OfficialHomeRoute from "./dashboard-officials-home";
 import CreateOfficialRoute from "./dashboard-officials-create";
 import ConfirmOfficialCreateRoute from "./dashboard-officials-create-confirm";
 import DeleteOfficialRoute from "./dashboard-officials-delete";
+import NotFound from "components/cards/not-found-card";
 
 class OfficialRoutes extends Component {
   constructor(props) {
@@ -50,7 +51,8 @@ class OfficialRoutes extends Component {
           exact
           path={`${this.props.match.path}/:id/delete`}
           render={props => <DeleteOfficialRoute user={user} {...props} />}
-        />
+        />+
+        <Route component={NotFound} />
       </Switch>
     );
   }

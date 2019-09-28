@@ -8,6 +8,7 @@ import CreateNewCandidateRoute from "./dashboard-candidates-create";
 import DeleteCandidateRoute from "./dashboard-candidates-delete";
 import EditCandidateRoute from "./dashboard-candidates-edit";
 import UserManager from "security/UserManager";
+import NotFound from "components/cards/not-found-card";
 
 class CandidatesRoutes extends Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class CandidatesRoutes extends Component {
           isAuthorized={UserManager.isOfficial(user)}
           render={props => <DeleteCandidateRoute user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

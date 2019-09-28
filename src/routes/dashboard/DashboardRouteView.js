@@ -21,6 +21,7 @@ import VoteContainer from "routes/dashboard-vote";
 import ResultsContainer from "routes/dashboard-results";
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
+import NotFound from "components/cards/not-found-card";
 
 function DashBoardRouteView(props) {
   const mainContent = React.createRef();
@@ -175,6 +176,7 @@ function DashBoardRouteView(props) {
                   path={`${props.match.path}/results`}
                   render={props => <ResultsContainer user={user} {...props} />}
                 />
+                <Route component={NotFound} />
               </Switch>
             </div>
             <div />
