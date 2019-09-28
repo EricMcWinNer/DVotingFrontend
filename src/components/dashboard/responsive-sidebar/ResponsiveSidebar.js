@@ -1,7 +1,6 @@
 import React from "react";
 import ReactTooltip from "react-tooltip";
 import { Link } from "react-router-dom";
-import LinkButton from "components/buttons/react-router-link-button";
 import OfficialLinks from "./OfficialLinks";
 import VoterLinks from "./VoterLinks";
 import OfficerLinks from "./OfficerLinks";
@@ -14,11 +13,19 @@ import UserManager from "security/UserManager";
 import "./index.sass";
 
 function ResponsiveSidebar(props) {
+  const responsiveSideBar = React.createRef();
   const userManager = new UserManager(props.user);
   return (
-    <div id={"responsiveSideBar"}>
+    <div
+      ref={responsiveSideBar}
+      className={props.clickCount % 2 !== 0 ? "tuama" : ""}
+      id={"responsiveSideBar"}
+    >
       <div className={"overlay"}>
-        <div className={"menu-link"}>
+        <div
+          className={"menu-link"}
+          onClick={() => props.setClickCount(props.clickCount + 1)}
+        >
           <div className={"hamburger"}>
             <div />
             <div />
@@ -26,7 +33,7 @@ function ResponsiveSidebar(props) {
           </div>
         </div>
         <div
-          data-tip={"Dashboard home"}
+          data-tip={"Dashboard Home"}
           className={`sidebar-item${
             props.location === "/dashboard" || props.location === "/dashboard/"
               ? " selected"
@@ -36,7 +43,7 @@ function ResponsiveSidebar(props) {
           <Link to={"/dashboard"}>
             <img
               src={speedometer}
-              alt={"Dashboard home"}
+              alt={"Dashboard Home"}
               className={"sidebarIcon"}
             />
           </Link>
@@ -45,7 +52,7 @@ function ResponsiveSidebar(props) {
           <>
             {props.election.status === "ongoing" && (
               <div
-                data-tip={"Vote now"}
+                data-tip={"Vote Now"}
                 className={`sidebar-item${
                   contains(props.location, "/dashboard/vote") ? " selected" : ""
                 }`}
@@ -53,7 +60,7 @@ function ResponsiveSidebar(props) {
                 <Link to={"/dashboard/vote"}>
                   <img
                     src={voting}
-                    alt={"Vote now"}
+                    alt={"Vote Now"}
                     className={"sidebarIcon"}
                   />
                 </Link>
@@ -64,9 +71,9 @@ function ResponsiveSidebar(props) {
               <div
                 data-tip={
                   (props.election.status === "ongoing" &&
-                    "Real-time results") ||
+                    "Real-time Results") ||
                   (props.election.status === "completed" &&
-                    "View election results")
+                    "View Election Results")
                 }
                 className={`sidebar-item${
                   props.location === "/dashboard/results" ? " selected" : ""
@@ -75,7 +82,7 @@ function ResponsiveSidebar(props) {
                 <Link to={"/dashboard/results"}>
                   <img
                     src={results}
-                    alt={"Election Results"}
+                    alt={"View Election Results"}
                     className={"sidebarIcon"}
                   />
                 </Link>

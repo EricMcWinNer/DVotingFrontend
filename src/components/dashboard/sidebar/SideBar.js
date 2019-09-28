@@ -16,8 +16,23 @@ import { contains } from "utils/helpers";
 function SideBar(props) {
   const userManager = new UserManager(props.user);
   return (
-    <div id={"sidebar"}>
+    <div
+      id={"sidebar"}
+      className={`${props.responsive ? "responsive" : ""}${
+        props.clickCount % 2 !== 0 && props.responsive ? " slideIn" : ""
+      }`}
+    >
       <div className="overlay">
+        {props.responsive && (
+          <div className={"fullWidth closeContainer"}>
+            <div
+              className={"closeX"}
+              onClick={() => props.setClickCount(props.clickCount + 1)}
+            >
+              <span className="x">&times;</span> <span className={"text"}>Close</span>
+            </div>
+          </div>
+        )}
         <UserInfo name={props.name} user={props.user} />
 
         {props.election !== null && props.election.status === "ongoing" && (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Helmet from "react-helmet";
 import Container from "react-bootstrap/Container";
 import { Route, Switch } from "react-router-dom";
@@ -23,6 +23,9 @@ import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
 
 function DashBoardRouteView(props) {
+  const mainContent = React.createRef();
+  const modalRef = React.createRef();
+  const [clickCount, setClickCount] = useState(0);
   const nameArray = props.componentIsLoading ? [] : props.user.name.split(" ");
   const firstName = nameArray[1];
   const lastAndFirstName = nameArray[0] + " " + nameArray[1];
@@ -32,6 +35,32 @@ function DashBoardRouteView(props) {
     <FullScreenLoader />
   ) : (
     <Container className={"vpHeight"} fluid>
+      <div
+        id={"mainModal"}
+        ref={modalRef}
+        className={`modal-sidebar-overlay${
+          clickCount % 2 !== 0 ? " show" : ""
+        }`}
+        onClick={e => {
+          const { tagName, id } = e.target;
+          if (id === modalRef.current.id || tagName.toLowerCase() === "a")
+            setClickCount(clickCount + 1);
+        }}
+      >
+        {props.responsiveSidebar && (
+          <SideBar
+            responsive
+            clickCount={clickCount}
+            setClickCount={setClickCount}
+            name={lastAndFirstName}
+            location={props.location.pathname}
+            user={props.user}
+            election={
+              props.notifications === null ? null : props.notifications.election
+            }
+          />
+        )}
+      </div>
       <div id={"dashBoardView"}>
         <Helmet>
           <title>
@@ -42,8 +71,11 @@ function DashBoardRouteView(props) {
           {props.responsiveSidebar ? (
             <ResponsiveSideBar
               name={lastAndFirstName}
+              mainContent={mainContent}
               location={props.location.pathname}
               user={props.user}
+              clickCount={clickCount}
+              setClickCount={setClickCount}
               election={
                 props.notifications === null
                   ? null
@@ -64,9 +96,10 @@ function DashBoardRouteView(props) {
           )}
 
           <div
+            ref={mainContent}
             className={`mainContent${
               props.responsiveSidebar ? " responsive" : ""
-            }`}
+            }${clickCount % 2 !== 0 ? " slideOut" : ""}`}
           >
             <NavBar
               logOut={props.logOut}
