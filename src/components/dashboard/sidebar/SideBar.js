@@ -16,8 +16,23 @@ import { contains } from "utils/helpers";
 function SideBar(props) {
   const userManager = new UserManager(props.user);
   return (
-    <div id={"sidebar"}>
+    <div
+      id={"sidebar"}
+      className={`${props.responsive ? "responsive" : ""}${
+        props.clickCount % 2 !== 0 && props.responsive ? " slideIn" : ""
+      }`}
+    >
       <div className="overlay">
+        {props.responsive && (
+          <div className={"fullWidth closeContainer"}>
+            <div
+              className={"closeX"}
+              onClick={() => props.setClickCount(props.clickCount + 1)}
+            >
+              <span className="x">&times;</span> <span className={"text"}>Close</span>
+            </div>
+          </div>
+        )}
         <UserInfo name={props.name} user={props.user} />
 
         {props.election !== null && props.election.status === "ongoing" && (
@@ -65,7 +80,7 @@ function SideBar(props) {
                     <Link to={"/dashboard/vote"}>
                       <img
                         src={voting}
-                        alt={"Vote Now"}
+                        alt={"Vote now"}
                         className={"sidebarIcon"}
                       />
                       Vote now
@@ -83,7 +98,7 @@ function SideBar(props) {
                     <Link to={"/dashboard/results"}>
                       <img
                         src={results}
-                        alt={"Real-time Results"}
+                        alt={"Election Results"}
                         className={"sidebarIcon"}
                       />
                       {(props.election.status === "ongoing" &&

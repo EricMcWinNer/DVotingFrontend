@@ -6,6 +6,7 @@ import RestrictedRoute from "components/routes/restricted-route";
 import CreateElectionRoute from "routes/dashboard-election/dashboard-election-create";
 import EditElectionRoute from "routes/dashboard-election/dashboard-election-edit";
 import UserManager from "security/UserManager";
+import NotFound from "components/cards/not-found-card";
 
 class ElectionRoutes extends Component {
   constructor(props) {
@@ -42,6 +43,7 @@ class ElectionRoutes extends Component {
           isAuthorized={UserManager.isOfficial(user)}
           render={props => <EditElectionRoute user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

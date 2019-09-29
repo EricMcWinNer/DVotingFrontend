@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-
+import NotFound from "components/cards/not-found-card";
 import ResultsHome from "./dashboard-results-home";
 
 class ResultRoutes extends Component {
@@ -21,6 +21,7 @@ class ResultRoutes extends Component {
           path={`${this.props.match.path}`}
           render={props => <ResultsHome user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

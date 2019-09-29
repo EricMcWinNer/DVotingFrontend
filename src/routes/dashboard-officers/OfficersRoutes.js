@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import OfficerHomeRoute from "./dashboard-officers-home";
 import CreateOfficerRoute from "./dashboard-officers-create";
@@ -8,6 +8,7 @@ import DeleteOfficerRoute from "./dashboard-officers-delete";
 import ViewVotersRegistered from "./dashboard-officers-view-voters";
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
+import NotFound from "components/cards/not-found-card";
 
 class OfficersRoutes extends Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class OfficersRoutes extends Component {
           path={`${this.props.match.path}/:id/voters`}
           render={props => <ViewVotersRegistered user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

@@ -80,7 +80,7 @@ function ElectionHomeRouteView(props) {
           {props.user.roles.includes("official") ? " Manage" : " View"} Election
         </title>
       </Helmet>
-      <Col md={{ span: 7, offset: 1 }}>
+      <Col md={11}>
         <BaseCard id={"manageElection"} className={"poppins"}>
           <div className="title clearfix o-auto">
             <div className="float-left">
@@ -102,7 +102,7 @@ function ElectionHomeRouteView(props) {
             {props.user.roles.includes("official") ? "manage" : "view"} the
             details of the current election
           </p>
-          <div className={"detail mt-3"}>
+          <div className={"detail mt-4"}>
             <p className="detailTitle">Election Name:</p>
             <p>{props.election.name}</p>
           </div>
@@ -130,6 +130,7 @@ function ElectionHomeRouteView(props) {
               </p>
             </div>
           )}
+          <div className={"mt-4"} />
           <ul
             className={"no-style m-0 mt-4 o-auto fullWidth clearfix p-0 h-menu"}
           >

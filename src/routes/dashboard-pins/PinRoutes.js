@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import UserManager from "security/UserManager";
 import PinHomeRoute from "./dashboard-pins-home";
 import CreatePinRoute from "./dashboard-pins-create";
+import NotFound from "components/cards/not-found-card";
 
 class PinRoutes extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class PinRoutes extends Component {
             <CreatePinRoute userManager={this._userManager} {...props} />
           )}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

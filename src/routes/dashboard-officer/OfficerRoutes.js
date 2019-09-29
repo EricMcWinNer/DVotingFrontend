@@ -5,6 +5,7 @@ import RegisterVoter from "./dashboard-officer-register-voter";
 import ViewRegisteredVoters from "./dashboard-officer-voters-view";
 import ReadVoterInfo from "./dashboard-officer-voters-read";
 import EditVoterInfo from "./dashboard-officer-voter-edit";
+import NotFound from "components/cards/not-found-card";
 
 class OfficersRoutes extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class OfficersRoutes extends Component {
           path={`${this.props.match.path}/voters/:id/edit`}
           render={props => <EditVoterInfo user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import VoteHome from "./dashboard-vote-home";
 import ForwardVote from "./dashboard-vote-forward";
+import NotFound from "components/cards/not-found-card";
 
 class VoteRoutes extends Component {
   componentDidMount() {
@@ -27,6 +28,7 @@ class VoteRoutes extends Component {
           path={`${this.props.match.path}/:id/forward`}
           render={props => <ForwardVote user={user} {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

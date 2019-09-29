@@ -54,7 +54,7 @@ function PinsHomeRouteView(props) {
               <li>
                 <LinkButton
                   id={"manage-election-button"}
-                  className={"logo-background mt-3"}
+                  className={"cool-purple-background mt-3"}
                   to={`/dashboard/pins/create`}
                 >
                   <i className="fas fa-plus-circle" />

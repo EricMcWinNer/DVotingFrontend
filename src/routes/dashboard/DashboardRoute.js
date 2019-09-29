@@ -10,6 +10,7 @@ class DashboardRoute extends Component {
       componentIsLoading: true,
       user: {},
       notifications: null,
+      responsiveSidebar: true,
     };
   }
 
@@ -27,7 +28,13 @@ class DashboardRoute extends Component {
       } else this.props.history.push("/login");
     });
     this.notificationsKickStarter();
+    this.setState({ responsiveSidebar: window.innerWidth < 1370 });
+    window.addEventListener("resize", this.handleResize);
   }
+
+  handleResize = () => {
+    this.setState({ responsiveSidebar: window.innerWidth < 1370 });
+  };
 
   getNotifications = () => {
     if (this._mounted) {
@@ -101,6 +108,7 @@ class DashboardRoute extends Component {
   componentWillUnmount() {
     this._mounted = false;
     clearInterval(this._notifications);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   logOut = e => {

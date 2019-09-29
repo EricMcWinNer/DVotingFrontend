@@ -72,10 +72,17 @@ export function dateStringParser(string) {
   else if (time - epoch < 3600 * 1000) {
     let min = parseInt((time - epoch) / 60000);
     return "about " + min + ` min${min < 2 ? "" : "s"} ago`;
-  } else if (time - epoch < 86400 * 1000)
+  } else if (date.getDate() === now.getDate() && time - epoch < 86400 * 1000)
     return (
       "today, " +
-      pad(date.getHours(), 2) +
+      pad(
+        date.getHours() > 12
+          ? date.getHours() - 12
+          : date.getHours() === 0
+          ? 12
+          : date.getHours(),
+        2
+      ) +
       ":" +
       pad(date.getMinutes(), 2) +
       ` ${date.getHours() > 11 ? "pm" : "am"}`
@@ -83,7 +90,14 @@ export function dateStringParser(string) {
   else if (time - epoch < 2 * (86400 * 1000))
     return (
       "yesterday, " +
-      pad(date.getHours(), 2) +
+      pad(
+        date.getHours() > 12
+          ? date.getHours() - 12
+          : date.getHours() === 0
+          ? 12
+          : date.getHours(),
+        2
+      ) +
       ":" +
       pad(date.getMinutes(), 2) +
       ` ${date.getHours() > 11 ? "pm" : "am"}`
@@ -108,8 +122,8 @@ export function sentenceCase(string, ...otherExempts) {
   let exempts;
   exempts =
     otherExempts === undefined || otherExempts === null
-      ? ["for", "is", "of", "a", "the"]
-      : ["for", "is", "of", "a", "the", ...otherExempts];
+      ? ["for", "is", "of", "a", "the", "in"]
+      : ["for", "is", "of", "a", "the", "in", ...otherExempts];
   const stringArray = string.split(" ");
   for (let i = 0; i < stringArray.length; i++) {
     let shouldCapitalize = false;

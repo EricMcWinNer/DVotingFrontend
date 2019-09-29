@@ -24,6 +24,60 @@ $backgroundUrl: 'assets/img/dashboard/sidebar-background.jpg'
   /* Disable horizontal scroll */
   padding-top: 20px
 
+  .closeContainer
+    display: flex
+    padding: 20px
+    position: relative
+    align-items: center
+    z-index: 90000
+    .closeX
+      color: white
+      font-size: 35px
+      display: flex
+      align-items: center
+      cursor: pointer
+      transition-property: background-color
+      transition-duration: .5s
+      padding: 0 16px
+      @extend .montserrat
+      &:hover
+        background-color: $themeColor 
+      .x
+        padding: 0
+        margin: 0
+      .text
+        font-size: 16px
+        margin-left: 5px
+        font-weight: bold
+  
+  &.responsive
+    position: relative
+    width: 300px
+    transition-delay: 0s
+    transition-duration: 1s
+    transition-property: left
+    left: -150%
+
+    &::before
+      transition-delay: 0s
+      transition-duration: 1s
+      transition-property: left
+      width: 300px
+      left: -150%
+
+  &.slideIn
+    transition-delay: 1s
+    transition-duration: 1s
+    transition-property: left
+    left: 0
+
+    &::before
+      transition-delay: 1s
+      transition-duration: 1s
+      transition-property: left
+      left: 0
+
+
   &::-webkit-scrollbar
     width: 1em
 

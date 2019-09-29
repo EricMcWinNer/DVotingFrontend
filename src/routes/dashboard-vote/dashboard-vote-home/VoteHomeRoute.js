@@ -40,7 +40,7 @@ class VoteHomeRoute extends Component {
         } else {
           this.setState({
             election: res.data.election,
-            componentIsLoading: res.data.election === null,
+            componentIsLoading: res.data.election !== null,
           });
         }
       });
