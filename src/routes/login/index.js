@@ -1,1 +1,1 @@
-export { default } from "routes/login/LoginRoute.js";
+export { default } from "./LoginRoutes";

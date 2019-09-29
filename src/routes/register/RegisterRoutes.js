@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import RegisterOfficial from "./register-official";
 import RegisterOfficer from "./register-officer";
+import NotFound from "routes/error-pages/404";
 
 class RegisterRoutes extends Component {
   componentDidMount() {
@@ -26,6 +27,7 @@ class RegisterRoutes extends Component {
           path={`${this.props.match.path}/officer`}
           render={props => <RegisterOfficer {...props} />}
         />
+        <Route component={NotFound} />
       </Switch>
     );
   }

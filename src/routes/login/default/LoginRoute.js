@@ -8,7 +8,7 @@ class LoginRoute extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      componentIsLoading: true
+      componentIsLoading: true,
     };
   }
 
@@ -17,7 +17,7 @@ class LoginRoute extends Component {
     SessionManager.isUserSignedIn().then(res => {
       this.setState(
         {
-          loggedIn: res.data.isSessionValid == "true"
+          loggedIn: res.data.isSessionValid == "true",
         },
         () => {
           if (res.data.isSessionValid == "true")

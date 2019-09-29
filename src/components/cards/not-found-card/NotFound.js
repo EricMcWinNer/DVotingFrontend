@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 
 import "./index.sass";
-import brokenLink from "assets/img/icons/broken-link.png";
+import notFound from "assets/img/icons/404-error.png";
 import BaseCard from "components/cards/base-card";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 function NotFound(props) {
@@ -14,13 +14,13 @@ function NotFound(props) {
       <div className="title clearfix o-auto">
         <div className="float-left">
           <img
-            src={brokenLink}
-            alt="Broken Link"
+            src={notFound}
+            alt="404 Not Found"
             className={"title-icon small"}
           />
         </div>
         <div className="float-left">
-          <p className={"title"}>Not Found</p>
+          <p className={"title"}>404 Not Found</p>
         </div>
       </div>
       <p className="subtitle poppins">

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import NotFound from "routes/error-pages/404";
 import Login from "routes/login";
 import Register from "routes/register";
 import Dashboard from "routes/dashboard";
@@ -35,6 +36,7 @@ class EntryPoint extends Component {
           <Route path={"/login"} component={Login} />
           <Route path={"/register"} component={Register} />
           <Route path={"/dashboard"} component={Dashboard} />
+          <Route component={NotFound} />
         </Switch>
       </Router>
     );
