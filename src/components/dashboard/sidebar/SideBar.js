@@ -64,7 +64,7 @@ function SideBar(props) {
                   alt={"Dashboard home"}
                   className={"sidebarIcon"}
                 />
-                Dashboard home
+                Dashboard Home
               </Link>
             </li>
             {props.election !== null && (
@@ -83,7 +83,7 @@ function SideBar(props) {
                         alt={"Vote now"}
                         className={"sidebarIcon"}
                       />
-                      Vote now
+                      Vote Now
                     </Link>
                   </li>
                 )}
@@ -102,9 +102,9 @@ function SideBar(props) {
                         className={"sidebarIcon"}
                       />
                       {(props.election.status === "ongoing" &&
-                        "Real-time results") ||
+                        "Real-time Results") ||
                         (props.election.status === "completed" &&
-                          "View election results")}
+                          "View Election Results")}
                     </Link>
                   </li>
                 )}

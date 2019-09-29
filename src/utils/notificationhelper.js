@@ -137,16 +137,10 @@ class NotificationHelper {
           : "";
       case "officer_created":
       case "officer_deleted":
-        return this._election === null ||
-          this._election.id !== this._notification.data.officer.election_id
-          ? "faded"
-          : "";
+        return "";
       case "official_created":
       case "official_deleted":
-        return this._election === null ||
-          this._election.id !== this._notification.data.official.election_id
-          ? "faded"
-          : "";
+        return "";
       default:
         return "";
     }

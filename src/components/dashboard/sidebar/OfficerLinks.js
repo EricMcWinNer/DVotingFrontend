@@ -2,8 +2,9 @@ import React from "react";
 import { contains } from "utils/helpers";
 import { Link } from "react-router-dom";
 import register from "assets/img/icons/register.png";
+import search from "assets/img/icons/seo.png";
 
-function OfficialLinks(props) {
+function OfficerLinks(props) {
   return (
     <>
       <li
@@ -31,7 +32,7 @@ function OfficialLinks(props) {
       >
         <Link to={"/dashboard/officer/voters"}>
           <img
-            src={register}
+            src={search}
             alt={"View Registered Voters"}
             className={"sidebarIcon"}
           />
@@ -42,4 +43,4 @@ function OfficialLinks(props) {
   );
 }
 
-export default OfficialLinks;
+export default OfficerLinks;
