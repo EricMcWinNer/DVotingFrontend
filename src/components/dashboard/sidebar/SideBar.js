@@ -29,7 +29,8 @@ function SideBar(props) {
               className={"closeX"}
               onClick={() => props.setClickCount(props.clickCount + 1)}
             >
-              <span className="x">&times;</span> <span className={"text"}>Close</span>
+              <span className="x">&times;</span>{" "}
+              <span className={"text"}>Close</span>
             </div>
           </div>
         )}
@@ -72,9 +73,7 @@ function SideBar(props) {
                 {props.election.status === "ongoing" && (
                   <li
                     className={
-                      contains(props.location, "/dashboard/vote")
-                        ? "selected"
-                        : ""
+                      props.location === "/dashboard/vote" ? "selected" : ""
                     }
                   >
                     <Link to={"/dashboard/vote"}>
