@@ -13,8 +13,10 @@ class ElectionHomeRoute extends Component {
       created_by: "",
       componentIsLoading: true,
       finalizing: false,
+      fireFinalizeModal: false,
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
+      fireFinalizeSuccessModal: false,
       electionIsDeleting: false,
     };
     this._userManager = new UserManager(this.props.user);
@@ -83,6 +85,13 @@ class ElectionHomeRoute extends Component {
     }
   };
 
+  showFinalizeModal = e => {
+    if (this._mounted) {
+      e.preventDefault();
+      this.setState({ fireFinalizeModal: true });
+    }
+  };
+
   showDeleteModal = e => {
     if (this._mounted) {
       e.preventDefault();
@@ -140,6 +149,7 @@ class ElectionHomeRoute extends Component {
         userManager={this._userManager}
         closeDeleteModal={this.closeDeleteModal}
         showDeleteModal={this.showDeleteModal}
+        showFinalizeModal={this.showFinalizeModal}
         deleteElection={this.deleteElection}
         handleModalConfirmation={this.handleModalConfirmation}
         {...this.props}

@@ -8,6 +8,7 @@ class ResultsHomeRoute extends Component {
     super(props);
     this.state = {
       componentIsLoading: true,
+      noResults: false,
       election: null,
       totalVotes: 0,
       lastVoteCast: "",
@@ -163,6 +164,7 @@ class ResultsHomeRoute extends Component {
                 numberOfParties: res.data.number_of_parties,
                 totalParties: res.data.total_parties,
                 states: res.data.states,
+                noResults: res.data.no_results,
               },
               () => {
                 this.getPieChart(this.state.totalParties);
@@ -189,6 +191,7 @@ class ResultsHomeRoute extends Component {
           this.pieData = res.data.parties;
           this.setState({
             pieChartIsLoading: false,
+            noResults: res.data.no_results,
           });
         });
       return req;
@@ -204,6 +207,7 @@ class ResultsHomeRoute extends Component {
           this.votesData = res.data.parties;
           this.setState({
             votesIsLoading: false,
+            noResults: res.data.no_results,
           });
         });
       return req;

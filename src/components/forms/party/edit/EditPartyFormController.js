@@ -149,7 +149,7 @@ class EditPartyFormController extends Component {
           } else if (res.data.completed === true) {
             this.showAlert(
               "Success!",
-              "Political party created successfully",
+              "Political party edited successfully",
               "success",
               this.redirectToPartyHome
             );

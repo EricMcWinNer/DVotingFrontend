@@ -140,7 +140,7 @@ function ElectionHomeRouteView(props) {
                   <li className={"mr-3 float-left"}>
                     <LinkButton
                       className={"logo-background"}
-                      onClick={props.finalizeElection}
+                      onClick={e => props.showFinalizeModal(e)}
                       to={"#"}
                     >
                       {props.finalizing ? (
@@ -206,15 +206,50 @@ function ElectionHomeRouteView(props) {
               )}
             </SweetAlert>
           )}
+          {userManager.isOfficial() && props.fireFinalizeModal && (
+            <SweetAlert
+              warning={!props.finalizing}
+              custom={props.finalizing}
+              allowEscape
+              closeOnClickOutside={!props.finalizing}
+              showCancel={!props.finalizing}
+              showConfirm={!props.finalizing}
+              confirmBtnText={`${props.finalizing ? "" : "Yes, finalize it!"}`}
+              confirmBtnBsStyle="danger"
+              cancelBtnBsStyle="default"
+              title={`${props.finalizing ? "" : "Are you sure?"}`}
+              onCancel={props.closeDeleteModal}
+              onConfirm={props.finalizeElection}
+            >
+              {props.finalizing ? (
+                <SubRouteLoader className={"mt-5 mb-5"} />
+              ) : (
+                `This action will finalize the election. This means it's results and data will no longer be publicly visible. This action cannot be undone.`
+              )}
+            </SweetAlert>
+          )}
           {userManager.isOfficial() && props.fireDeleteSuccessModal && (
             <SweetAlert
               success
               allowEscape
               closeOnClickOutside
-              title="Success?"
+              title="Success!"
               onConfirm={props.handleModalConfirmation}
+              cancelBtnBsStyle="default"
             >
               Election deleted successfully
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireFinalizeSuccessModal && (
+            <SweetAlert
+              success
+              allowEscape
+              closeOnClickOutside
+              title="Success!"
+              onConfirm={props.handleModalConfirmation}
+              cancelBtnBsStyle="default"
+            >
+              Election finalized successfully
             </SweetAlert>
           )}
         </BaseCard>
