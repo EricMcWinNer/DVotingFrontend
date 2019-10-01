@@ -17,6 +17,7 @@ class ResultsHomeRoute extends Component {
       numberOfParties: 0,
       totalParties: 0,
       pieChartIsLoading: true,
+      areaIsLoading: true,
       votesIsLoading: true,
       currentPage: 0,
       totalPages: 0,
@@ -30,6 +31,8 @@ class ResultsHomeRoute extends Component {
       selectedLga: "",
       selectStateObject: null,
       selectedLgaObject: null,
+      timeLeft: null,
+      duration: null,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -38,8 +41,11 @@ class ResultsHomeRoute extends Component {
 
   votesData = [];
 
+  areaData = [];
+
   componentDidMount() {
     this._mounted = true;
+
     this.getElection()
       .then(this.initializeRoute)
       .then(this.getVotesData);
@@ -165,6 +171,8 @@ class ResultsHomeRoute extends Component {
                 totalParties: res.data.total_parties,
                 states: res.data.states,
                 noResults: res.data.no_results,
+                duration: res.data.duration,
+                timeLeft: res.data.time_left,
               },
               () => {
                 this.getPieChart(this.state.totalParties);
@@ -189,10 +197,13 @@ class ResultsHomeRoute extends Component {
         )
         .then(res => {
           this.pieData = res.data.parties;
-          this.setState({
-            pieChartIsLoading: false,
-            noResults: res.data.no_results,
-          });
+          this.setState(
+            {
+              pieChartIsLoading: false,
+              noResults: res.data.no_results,
+            },
+            this.getAreaData
+          );
         });
       return req;
     }
@@ -214,12 +225,28 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  getAreaData = () => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios
+        .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/area`)
+        .then(res => {
+          this.areaData = res.data.data;
+          this.setState({
+            areaIsLoading: false,
+          });
+        });
+      return req;
+    }
+  };
+
   render() {
     return (
       <ResultsHomeRouteView
         userManager={this._userManager}
         pieData={this.pieData}
         votesData={this.votesData}
+        areaData={this.areaData}
         handleFilterSelect={this.handleFilterSelect}
         {...this.props}
         {...this.state}

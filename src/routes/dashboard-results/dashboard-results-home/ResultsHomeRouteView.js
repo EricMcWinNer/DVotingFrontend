@@ -1,4 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  BarChart,
+  Bar,
+  linearGradient,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import Helmet from "react-helmet";
 import DataTable from "react-data-table-component";
 import "./index.sass";
@@ -10,6 +20,7 @@ import AnalyticCard from "components/cards/analytic-card";
 import NoElectionCard from "components/cards/no-election-card";
 import NoOngoingElectionCard from "components/cards/only-ongoing-election-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
+import highlights from "assets/img/icons/news.png";
 import { dateStringParser, sentenceCase } from "utils/helpers";
 import mostVotes from "assets/img/icons/raise-hand.png";
 import totalVotes from "assets/img/icons/ballot.png";
@@ -17,9 +28,26 @@ import votesTableIcon from "assets/img/icons/started.png";
 import { resultsModel } from "utils/tablemodels";
 import { VictoryPie, VictoryTheme, VictoryContainer } from "victory";
 import LinkButton from "components/buttons/react-router-link-button";
+import piechart from "assets/img/icons/pie-chart.png";
+import barchart from "assets/img/icons/bars-chart.png";
+import duration from "assets/img/icons/schedule.png";
+
 
 function ResultHomeRouteView(props) {
   const [stateRadius, setStateRadius] = useState(0);
+  const [stateAreaWidth, setStateAreaWidth] = useState(0);
+  const [stateAreaHeight, setStateAreaHeight] = useState(0);
+  const areaChart = React.useRef();
+
+  useEffect(() => {
+    if (areaChart.current !== null) {
+      setStateAreaWidth(areaChart.current ? areaChart.current.offsetWidth : 0);
+      setStateAreaHeight(
+        areaChart.current ? areaChart.current.offsetHeight - 100 : 0
+      );
+    }
+    // eslint-disable-next-line
+  }, [areaChart.current]);
   let voteTableData, states, lgas;
   if (!props.componentIsLoading && props.noResults !== true) {
     if (!props.votesIsLoading) {
@@ -70,68 +98,105 @@ function ResultHomeRouteView(props) {
               In this section you can see the real-time results of the ongoing
               election
             </p>
-            <div className={"results-container"}>
-              <div>
-                <AnalyticCard
-                  largerIcon
-                  icon={totalVotes}
-                  title={"Total Votes Cast"}
-                  number={props.totalVotes}
-                  subtitle={`Last vote cast ${dateStringParser(
-                    props.lastVoteCast
-                  )}`}
-                />
+            <BaseCard>
+              <div className="title mb-2 clearfix o-auto">
+                <div className="float-left">
+                  <img
+                    src={highlights}
+                    alt="Results"
+                    className={"title-icon smaller"}
+                  />
+                </div>
+                <div className="float-left">
+                  <p className={"title"}>
+                    {sentenceCase(`election highlights`)}
+                  </p>
+                </div>
               </div>
-              <div>
-                <AnalyticCard
-                  largerIcon
-                  icon={mostVotes}
-                  title={"Total Parties"}
-                  number={`${props.totalParties}`}
-                  subtitle={
-                    <>
-                      <i className="fas fa-person-booth" />{" "}
-                      {`${props.numberOfParties} parties received votes out of ${props.totalParties}`}
-                    </>
-                  }
-                  noClock
-                />
+              <div className={"results-container"}>
+                <div>
+                  <AnalyticCard
+                    largerIcon
+                    icon={totalVotes}
+                    title={"Total Votes Cast"}
+                    number={props.totalVotes}
+                    subtitle={`Last vote cast ${dateStringParser(
+                      props.lastVoteCast
+                    )}`}
+                  />
+                </div>
+
+                <div>
+                  <AnalyticCard
+                    largerIcon
+                    icon={mostVotes}
+                    title={"Total Parties"}
+                    number={`${props.totalParties}`}
+                    subtitle={
+                      <>
+                        <i className="fas fa-person-booth" />{" "}
+                        {`${props.numberOfParties} parties received votes out of ${props.totalParties}`}
+                      </>
+                    }
+                    noClock
+                  />
+                </div>
+                <div>
+                  <AnalyticCard
+                    largerIcon
+                    icon={duration}
+                    title={"Election Duration"}
+                    number={props.duration}
+                    subtitle={props.timeLeft}
+                  />
+                </div>
+                <div>
+                  <AnalyticCard
+                    largerIcon
+                    icon={`${process.env.REACT_APP_API_PATH}/storage/${props.mostVotedParty.logo}`}
+                    title={"Most Voted Party"}
+                    number={`${props.mostVotedParty.textifiedTotal}`}
+                    noClock
+                    subtitle={
+                      <>
+                        <i className="fas fa-sort-amount-up" />{" "}
+                        {`About ${props.mostVotedParty.percentage} of all votes cast`}
+                      </>
+                    }
+                  />
+                </div>
+                <div>
+                  <AnalyticCard
+                    largerIcon
+                    icon={`${process.env.REACT_APP_API_PATH}/storage/${props.leastVotedParty.logo}`}
+                    title={"Least Voted Party"}
+                    number={`${props.leastVotedParty.textifiedTotal}`}
+                    noClock
+                    subtitle={
+                      <>
+                        <i className="fas fa-sort-amount-down" />
+                        {`About ${props.leastVotedParty.percentage} of all votes cast`}
+                      </>
+                    }
+                  />
+                </div>
               </div>
-              <div>
-                <AnalyticCard
-                  largerIcon
-                  icon={`${process.env.REACT_APP_API_PATH}/storage/${props.mostVotedParty.logo}`}
-                  title={"Most Voted Party"}
-                  number={`${props.mostVotedParty.textifiedTotal}`}
-                  noClock
-                  subtitle={
-                    <>
-                      <i className="fas fa-sort-amount-up" />{" "}
-                      {`About ${props.mostVotedParty.percentage} of all votes cast`}
-                    </>
-                  }
-                />
-              </div>
-              <div>
-                <AnalyticCard
-                  largerIcon
-                  icon={`${process.env.REACT_APP_API_PATH}/storage/${props.leastVotedParty.logo}`}
-                  title={"Least Voted Party"}
-                  number={`${props.leastVotedParty.textifiedTotal}`}
-                  noClock
-                  subtitle={
-                    <>
-                      <i className="fas fa-sort-amount-down" />
-                      {`About ${props.leastVotedParty.percentage} of all votes cast`}
-                    </>
-                  }
-                />
-              </div>
-            </div>
+            </BaseCard>
             <div className={"charts-grid"}>
               <div className={"pie-chart-container"}>
                 <BaseCard id={"pie"} className={"chart-container"}>
-                  <p className="title cartogothic">Distribution of Votes</p>
+                  <div className="title mb-2 clearfix o-auto">
+                    <div className="float-left">
+                      <img
+                        src={piechart}
+                        alt="Results"
+                        className={"title-icon smaller"}
+                      />
+                    </div>
+                    <div className="float-left">
+                      <p className="title cartogothic">Distribution of Votes</p>
+                    </div>
+                  </div>
                   <VictoryPie
                     containerComponent={
                       <VictoryContainer padding={{ top: 0 }} />
@@ -218,6 +283,83 @@ function ResultHomeRouteView(props) {
                   </p>
                 </BaseCard>
               </div>
+              <BaseCard className={"area-chart-container chart-container"}>
+                <div ref={areaChart} className={"fullWidth fullHeight force"}>
+                  <div className="title mb-2 clearfix o-auto">
+                    <div className="float-left">
+                      <img
+                        src={barchart}
+                        alt="Results"
+                        className={"title-icon smaller"}
+                      />
+                    </div>
+                    <div className="float-left">
+                      <p className="title cartogothic">
+                        {sentenceCase(`Number of votes over the last 7 days 
+                    ${
+                      props.election.status === "ongoing"
+                        ? ""
+                        : " of the election"
+                    }`)}
+                      </p>
+                    </div>
+                  </div>
+                  {stateAreaWidth !== 0 && stateAreaHeight !== 0 && (
+                    <ResponsiveContainer width={stateAreaWidth} height={"80%"}>
+                      <BarChart
+                        data={props.areaData}
+                        margin={{ top: 15, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <defs>
+                          <linearGradient
+                            id="colorUv"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#279871"
+                              stopOpacity={0.8}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#279871"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <XAxis
+                          dataKey="name"
+                          padding={{ left: 0, right: 10 }}
+                          tickMargin={2}
+                          label={{
+                            value: "Day of the Week",
+                            position: "insideBottom",
+                            offset: -3,
+                          }}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          label={{
+                            value: "No of Votes",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <Tooltip />
+                        <Bar type="monotone" dataKey="uv" fill="#279871" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </div>
+                <p className={"sub-title text-muted poppins"}>
+                  <i className="fas fa-chart-bar" />
+                  Showing number of votes for the last 7 days of the election
+                </p>
+              </BaseCard>
             </div>
 
             <BaseCard className={"margin-30"}>
@@ -333,7 +475,11 @@ function ResultHomeRouteView(props) {
           There are no results because no one has voted yet. Click the link
           below to vote
         </h4>
-        <LinkButton to={"/dashboard/vote"} medium className={"confirm-background"}>
+        <LinkButton
+          to={"/dashboard/vote"}
+          medium
+          className={"confirm-background"}
+        >
           <i className={"fas fa-vote-yea"} />
           Vote Now
         </LinkButton>

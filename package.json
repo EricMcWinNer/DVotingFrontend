@@ -17,7 +17,7 @@
     "react-datetime-picker": "^2.7.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
-    "react-minimal-pie-chart": "^5.0.1",
+    "react-progressbar-semicircle": "^1.2.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-tooltip": "^3.11.1",
