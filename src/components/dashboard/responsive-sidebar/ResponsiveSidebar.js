@@ -54,7 +54,7 @@ function ResponsiveSidebar(props) {
               <div
                 data-tip={"Vote Now"}
                 className={`sidebar-item${
-                  contains(props.location, "/dashboard/vote") ? " selected" : ""
+                  props.location === "/dashboard/vote" ? " selected" : ""
                 }`}
               >
                 <Link to={"/dashboard/vote"}>

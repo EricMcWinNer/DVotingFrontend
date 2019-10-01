@@ -1,0 +1,64 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+#not-found
+    min-height: 100vh
+    background-color: white
+    padding-bottom: 15px
+    .container
+        min-height: calc(100vh - 30vh)
+    .grid-wrapper
+        min-height: calc(100vh - 30vh)
+        display: flex
+        align-items: center
+    .back-home
+        font-size: 15px
+        margin-top: 25px
+        text-decoration: underline
+        transition: .9s
+        padding: 13px 10px
+        
+        &:hover
+            transition: .9s
+            color: white
+            background-color: #111
+            box-shadow: 0 3px 8px rgba(0,0,0,0.45)
+        &:hover, &:focus, &:visited
+            text-decoration: none
+        i
+            margin-right: 6px
+
+    .text-404
+        display: flex
+        flex-flow: column
+        justify-content: center
+        height: 100%
+        h2
+            @extend .poppins
+            font-size: 35px
+            margin-bottom: 20px
+            font-weight: 700
+        p
+            @extend .poppins
+    .grid-container
+        display: grid
+        grid-template-columns: 5fr 7fr
+    .nav-404
+        height: 70px
+        display: flex
+        background-color: white
+        align-items: center
+        padding: 0 45px 
+        img
+            height: 35px
+        a
+            @extend .cartogothic
+            text-decoration: none
+            &:hover, &:focus, &:visited
+                text-decoration: none
+            
+            span
+                margin-left: 10px
+                font:
+                    size: 20px
+                color: #333

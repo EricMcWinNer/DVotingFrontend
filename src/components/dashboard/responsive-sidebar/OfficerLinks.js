@@ -3,12 +3,13 @@ import ReactTooltip from "react-tooltip";
 import { contains } from "utils/helpers";
 import { Link } from "react-router-dom";
 import register from "assets/img/icons/register.png";
+import search from "assets/img/icons/seo.png";
 
 function OfficerLinks(props) {
   return (
     <>
       <div
-        data-tip={"Register new voter"}
+        data-tip={"Register New Voter"}
         className={`sidebar-item${
           contains(props.location, "/dashboard/officer/register")
             ? " selected"
@@ -24,7 +25,7 @@ function OfficerLinks(props) {
         </Link>
       </div>
       <div
-        data-tip={"View registered voters"}
+        data-tip={"View Registered Voters"}
         className={`sidebar-item${
           contains(props.location, "/dashboard/officer/voters")
             ? " selected"
@@ -33,7 +34,7 @@ function OfficerLinks(props) {
       >
         <Link to={"/dashboard/officer/voters"}>
           <img
-            src={register}
+            src={search}
             alt={"View Registered Voters"}
             className={"sidebarIcon"}
           />

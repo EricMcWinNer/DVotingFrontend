@@ -147,7 +147,7 @@ class EditCandidateFormController extends Component {
               } else if (res.data.err === "noPendingElection") {
                 this.showAlert(
                   "No Pending Election",
-                  "A candidate can only be created when there is a pending election",
+                  "A candidate can only be created or edited when there is a pending election",
                   "error",
                   this.redirectToCandidates
                 );

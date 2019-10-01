@@ -10,9 +10,9 @@ function VoterLinks(props) {
   return (
     <>
       <div
-      data-tip={"Manage Election"}
+        data-tip={"Manage Election"}
         className={`sidebar-item${
-          contains(props.location, "/dashboard/election") ? "selected" : ""
+          contains(props.location, "/dashboard/election") ? " selected" : ""
         }`}
       >
         <Link to={"/dashboard/election"}>
@@ -24,7 +24,7 @@ function VoterLinks(props) {
         </Link>
       </div>
       <div
-      data-tip={"Manage Political Parties"}
+        data-tip={"Manage Political Parties"}
         className={`sidebar-item${
           contains(props.location, "/dashboard/party") ? " selected" : ""
         }`}
@@ -38,7 +38,7 @@ function VoterLinks(props) {
         </Link>
       </div>
       <div
-      data-tip={"Manage Candidates"}
+        data-tip={"Manage Candidates"}
         className={`sidebar-item${
           contains(props.location, "/dashboard/candidates") ? " selected" : ""
         }`}
