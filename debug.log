@@ -1,3 +1,11 @@
 [0903/063346.624:ERROR:process_info.cc(359)] UncheckedAllocate
 [0903/063350.089:ERROR:process_info.cc(359)] UncheckedAllocate
 [0903/063401.326:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\Eric McWinNEr\AppData\Local\Google\Chrome\User Data\Crashpad\reports\52ab0b63-3757-41a6-8f31-af895d15d88e.dmp: The process cannot access the file because it is being used by another process. (0x20)
+[1002/044139.378:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.326:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.326:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.326:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.327:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.327:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.327:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1002/044140.327:ERROR:exception_snapshot_win.cc(98)] thread ID 2468 not found in process

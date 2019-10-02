@@ -989,15 +989,128 @@ export const resultsModel = [
     name: "Name",
     selector: "name",
     sortable: true,
+    minWidth: "300px",
   },
   {
     name: "Number of votes",
     selector: "votes_count",
     sortable: true,
+    minWidth: "150px",
   },
   {
     name: "Percentage of votes",
     sortable: true,
     cell: row => <ProgressBar progress={row.percentage_of_votes} />,
+    minWidth: "250px",
+  },
+];
+export const resultsStateModel = stateObject => [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+  },
+  {
+    name: "Logo",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"party-logo"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.logo}`}
+        alt={row.name}
+      />
+    ),
+    maxWidth: "45px",
+  },
+  {
+    name: "Acronym",
+    selector: "acronym",
+    sortable: true,
+    maxWidth: "45px",
+  },
+  {
+    name: "Name",
+    selector: "name",
+    sortable: true,
+    minWidth: "300px",
+  },
+  {
+    name: "Number of votes",
+    selector: "votes_count",
+    sortable: true,
+    minWidth: "150px",
+  },
+  {
+    name: `Percentage of votes in ${stateObject.name}`,
+    sortable: true,
+    cell: row => (
+      <ProgressBar color={"#6F42C1"} progress={row.percentage_of_votes} />
+    ),
+    minWidth: "250px",
+  },
+  {
+    name: "Percentage of votes in Nigeria",
+    sortable: true,
+    cell: row => <ProgressBar progress={row.percentage_of_votes_in_country} />,
+    minWidth: "250px",
+  },
+];
+export const resultsLgaModel = lgaObject => [
+  {
+    name: "S/N",
+    sortable: true,
+    selector: "serial",
+  },
+  {
+    name: "Logo",
+    sortable: false,
+    cell: row => (
+      <img
+        className={"party-logo"}
+        src={`${process.env.REACT_APP_API_PATH}/storage/${row.logo}`}
+        alt={row.name}
+      />
+    ),
+    maxWidth: "45px",
+  },
+  {
+    name: "Acronym",
+    selector: "acronym",
+    sortable: true,
+    maxWidth: "45px",
+  },
+  {
+    name: "Name",
+    selector: "name",
+    sortable: true,
+    minWidth: "300px",
+  },
+  {
+    name: "Number of votes",
+    selector: "votes_count",
+    sortable: true,
+    minWidth: "150px",
+  },
+  {
+    name: `Percentage of votes in ${lgaObject.name}`,
+    sortable: true,
+    cell: row => (
+      <ProgressBar color={"#0366D6"} progress={row.percentage_of_votes} />
+    ),
+    minWidth: "250px",
+  },
+  {
+    name: `Percentage of votes in ${lgaObject.state.name}`,
+    sortable: true,
+    cell: row => (
+      <ProgressBar color={"#6F42C1"} progress={row.percentage_of_votes_in_state} />
+    ),
+    minWidth: "250px",
+  },
+  {
+    name: "Percentage of votes in Nigeria",
+    sortable: true,
+    cell: row => <ProgressBar progress={row.percentage_of_votes_in_country} />,
+    minWidth: "250px",
   },
 ];
