@@ -37,11 +37,14 @@
   .area-chart-container
     grid-column: auto /span 7
 
+    .recharts-default-tooltip
+      @extend .openSans
     .recharts-text
       &.recharts-label
         @extend .poppins
         color: #666
       &.recharts-cartesian-axis-tick-value
+        @extend .openSans
         
 
   #pie
@@ -57,4 +60,17 @@
 
   .margin-30
     margin-top: 30px
+
+  .visualizations
+    display: grid
+    grid-template-columns: repeat(3, minmax(300px, 1fr))
+    column-gap: 15px
+    row-gap: 35px
+    // #total-card
+    //   grid-column: 1 / span 2
+    // .percentCard
+    //   grid-column: auto / span 2
+
+
+
     

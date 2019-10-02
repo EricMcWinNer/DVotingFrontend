@@ -33,6 +33,7 @@ class ResultsHomeRoute extends Component {
       selectedLgaObject: null,
       timeLeft: null,
       duration: null,
+      tableTotal: 0,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -145,6 +146,7 @@ class ResultsHomeRoute extends Component {
             lgaIsLoading: false,
             selectStateObject: res.data.state_object,
             selectedLgaObject: res.data.lga_object,
+            tableTotal: res.data.total_votes,
           }));
         }
       });
@@ -219,6 +221,7 @@ class ResultsHomeRoute extends Component {
           this.setState({
             votesIsLoading: false,
             noResults: res.data.no_results,
+            tableTotal: res.data.table_total,
           });
         });
       return req;
