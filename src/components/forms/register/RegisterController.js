@@ -242,7 +242,6 @@ class RegisterController extends Component {
           withCredentials: true,
         })
           .then(res => {
-            console.log(res);
             this.setState({ formIsSubmitting: false }, () => {
               if (res.data.isValid === false) {
                 if (res.data.field === "password")
