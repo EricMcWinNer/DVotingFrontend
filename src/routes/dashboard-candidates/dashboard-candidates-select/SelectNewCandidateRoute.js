@@ -28,7 +28,7 @@ class SelectNewCandidateRoute extends Component {
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/new`, {
       method: "get",
     }).then(res => {
-      if (res.data.isSessionValid == "false") {
+      if (res.data.isSessionValid === false) {
         this.props.history.push("/login");
       } else {
         this.setState({
@@ -174,7 +174,7 @@ class SelectNewCandidateRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({

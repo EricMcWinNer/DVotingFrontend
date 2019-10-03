@@ -22,10 +22,12 @@ class EditVoterRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/voters/${this._id}/read`
       )
       .then(res => {
-        this.setState({
-          componentIsLoading: false,
-          voter: res.data.voter === null ? null : res.data.voter.voter,
-        });
+        if (res.data.isSessionValid === true)
+          this.setState({
+            componentIsLoading: false,
+            voter: res.data.voter === null ? null : res.data.voter.voter,
+          });
+        else this.props.history.push("/login");
       });
   }
 

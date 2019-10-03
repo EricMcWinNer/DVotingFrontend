@@ -22,7 +22,7 @@ class EditCandidateRoute extends Component {
         method: "get"
       }
     ).then(res => {
-      if (res.data.isSessionValid == "false") {
+      if (res.data.isSessionValid === false) {
         this.props.history.push("/login");
       } else {
         this.setState({

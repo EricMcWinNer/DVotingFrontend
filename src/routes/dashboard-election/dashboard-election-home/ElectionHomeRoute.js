@@ -38,7 +38,7 @@ class ElectionHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
         .then(res => {
-          if (res.data.isSessionValid == "true") {
+          if (res.data.isSessionValid === true) {
             this.setState({
               loggedIn: res.data.isSessionValid == "true",
               election: res.data.election,
@@ -69,7 +69,7 @@ class ElectionHomeRoute extends Component {
         }
       ).then(res => {
         this.setState({ finalizing: false });
-        if (res.data.isSessionValid != "true") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           if (res.data.exists === false)
@@ -114,15 +114,15 @@ class ElectionHomeRoute extends Component {
           axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
             method: "delete",
           }).then(res => {
-            if (res.data.isSessionValid == "false")
+            if (res.data.isSessionValid === false)
               this.props.history.push("/login");
             else {
               this.setState({
                 fireDeleteModal: false,
               });
-              if (res.data.exists === false)
+              if (res.data.exists === true)
                 this.props.history.push("/dashboard/election");
-              else if (res.data.completed === true) {
+              else if (res.data.completed) {
                 this.setState({
                   fireDeleteModal: false,
                   fireDeleteSuccessModal: true,

@@ -44,7 +44,7 @@ class OfficerHomeRoute extends Component {
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState(state => ({
@@ -75,7 +75,7 @@ class OfficerHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -94,7 +94,7 @@ class OfficerHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
       });
@@ -260,7 +260,7 @@ class OfficerHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({

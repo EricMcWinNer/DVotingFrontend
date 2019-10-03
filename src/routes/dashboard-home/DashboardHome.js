@@ -31,9 +31,8 @@ class DashboardHome extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/home`)
         .then(res => {
-          if (res.data.isSessionValid == "true") {
+          if (res.data.isSessionValid === true) {
             this.setState({
-              loggedIn: res.data.isSessionValid == "true",
               election: res.data.election.original.election,
               voters: res.data.voters,
               parties: res.data.parties,

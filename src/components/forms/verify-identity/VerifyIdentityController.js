@@ -83,7 +83,7 @@ class VerifyIdentityController extends Component {
       )
       .then(res => {
         this.setState({ formSubmitting: false });
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           if (res.data.voted)

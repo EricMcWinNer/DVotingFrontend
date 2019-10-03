@@ -39,7 +39,7 @@ class PartyHomeRoute extends Component {
           method: "get",
         }
       ).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -106,7 +106,7 @@ class PartyHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -129,7 +129,7 @@ class PartyHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -148,7 +148,7 @@ class PartyHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
       });

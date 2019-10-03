@@ -62,7 +62,7 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState({
@@ -136,7 +136,7 @@ class ResultsHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.votesData = res.data.parties;
@@ -159,7 +159,7 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results`)
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState(
@@ -198,14 +198,18 @@ class ResultsHomeRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/results/pie/${number}`
         )
         .then(res => {
-          this.pieData = res.data.parties;
-          this.setState(
-            {
-              pieChartIsLoading: false,
-              noResults: res.data.no_results,
-            },
-            this.getAreaData
-          );
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.pieData = res.data.parties;
+            this.setState(
+              {
+                pieChartIsLoading: false,
+                noResults: res.data.no_results,
+              },
+              this.getAreaData
+            );
+          }
         });
       return req;
     }
@@ -217,12 +221,16 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`)
         .then(res => {
-          this.votesData = res.data.parties;
-          this.setState({
-            votesIsLoading: false,
-            noResults: res.data.no_results,
-            tableTotal: res.data.table_total,
-          });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.votesData = res.data.parties;
+            this.setState({
+              votesIsLoading: false,
+              noResults: res.data.no_results,
+              tableTotal: res.data.table_total,
+            });
+          }
         });
       return req;
     }
@@ -234,10 +242,14 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/area`)
         .then(res => {
-          this.areaData = res.data.data;
-          this.setState({
-            areaIsLoading: false,
-          });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.areaData = res.data.data;
+            this.setState({
+              areaIsLoading: false,
+            });
+          }
         });
       return req;
     }

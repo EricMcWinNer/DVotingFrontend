@@ -32,7 +32,7 @@ class CreatePinRoute extends Component {
       const req = axios.get(url);
       req.then(
         res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState({

@@ -11,6 +11,9 @@ class DashboardRoute extends Component {
       user: {},
       notifications: null,
       responsiveSidebar: true,
+      ajaxError: false,
+      ajaxErrorCode: null,
+      ajaxErrorCallback: null,
     };
   }
 
@@ -20,7 +23,7 @@ class DashboardRoute extends Component {
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/home/user`, {
       method: "get",
     }).then(res => {
-      if (res.data.isSessionValid == "true") {
+      if (res.data.isSessionValid === true) {
         this.setState({
           user: res.data.user,
           componentIsLoading: false,
@@ -32,10 +35,12 @@ class DashboardRoute extends Component {
     window.addEventListener("resize", this.handleResize);
   }
 
+  //Fires each the time the window is resized to handle sidebar responsiveness
   handleResize = () => {
     this.setState({ responsiveSidebar: window.innerWidth < 1370 });
   };
 
+  //Method that fetches/refreshes notifications
   getNotifications = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -44,11 +49,9 @@ class DashboardRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/user/notifications`
         )
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === true) {
             this.props.history.push("/login");
           } else {
-            const notifications = res.data.notifications;
-
             this.setState({ notifications: res.data.notifications });
           }
         });
@@ -56,6 +59,7 @@ class DashboardRoute extends Component {
     }
   };
 
+  //Fires each time the notifications are closed to mark all notifications as read
   setNotificationsAsRead = () => {
     if (
       this._mounted &&
@@ -67,7 +71,7 @@ class DashboardRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/user/notifications/readall`
         )
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === true) {
             this.props.history.push("/login");
           } else {
             this.setState({
@@ -79,15 +83,19 @@ class DashboardRoute extends Component {
     }
   };
 
+  //This method gets the notifications the first time and every 
+  //5 seconds later to keep notifications up to date
   notificationsKickStarter = () => {
     if (this._mounted) {
       this.getNotifications();
       this._notifications = setInterval(() => {
         this.getNotifications();
-      }, 1000 * 15);
+      }, 1000 * 5); 
     }
   };
 
+  //This method is fired during special events to keep the user object up to date
+  //and ensure the user has authorization to access restricted routes
   updateUser = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -95,7 +103,7 @@ class DashboardRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/home/user`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "true") {
+        if (res.data.isSessionValid === true) {
           this.setState({
             user: res.data.user,
           });
@@ -117,7 +125,7 @@ class DashboardRoute extends Component {
     axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/logout`, {
       method: "get",
     }).then(res => {
-      if (res.data.success == "true") {
+      if (res.data.success) {
         this.props.history.push("/login");
       }
     });

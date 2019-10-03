@@ -28,7 +28,7 @@ class ForwardVoteRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/vote/${this._id}/forward`
       )
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({

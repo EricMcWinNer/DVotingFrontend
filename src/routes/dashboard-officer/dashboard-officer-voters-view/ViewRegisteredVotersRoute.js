@@ -29,7 +29,7 @@ class ViewRegisteredVotersRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/voters/${this.state.perPage}`
       )
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === true) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -86,7 +86,7 @@ class ViewRegisteredVotersRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (!res.data.isSessionValid) {
           this.props.history.push("/login");
         } else {
           console.log(res.data.voters.data.length, typeof res.data.voters.data);

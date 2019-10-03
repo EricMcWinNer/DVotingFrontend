@@ -35,7 +35,7 @@ class VoteHomeRoute extends Component {
     const req = axios
       .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -90,7 +90,7 @@ class VoteHomeRoute extends Component {
     const req = axios
       .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/vote`)
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({

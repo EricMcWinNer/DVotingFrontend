@@ -22,7 +22,7 @@ class ConfirmOfficerCreationRoute extends Component {
         method: "get",
       }
     ).then(res => {
-      if (res.data.isSessionValid == "false") {
+      if (res.data.isSessionValid === false) {
         this.props.history.push("/login");
       } else {
         this.setState({
@@ -48,13 +48,13 @@ class ConfirmOfficerCreationRoute extends Component {
           method: "post",
         }
       ).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
             creating: false,
           });
-          if (res.data.completed) {
+          if (res.data.completed === true) {
             alert("Polling Officer created successfully");
             this.props.history.push("/dashboard/officers");
           } else {

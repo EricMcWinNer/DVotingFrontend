@@ -46,7 +46,7 @@ class CreateOfficialsRoute extends Component {
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState(state => ({
@@ -77,7 +77,7 @@ class CreateOfficialsRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}/create/confirm`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -96,7 +96,7 @@ class CreateOfficialsRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}/create`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
       });
@@ -262,7 +262,7 @@ class CreateOfficialsRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({

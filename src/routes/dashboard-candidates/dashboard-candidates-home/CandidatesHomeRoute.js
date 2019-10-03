@@ -30,6 +30,8 @@ class CandidatesHomeRoute extends Component {
     this.initializeRoute();
   }
 
+  //This method is run the first time and at other times to keep the route up to date
+  //or refresh the route.
   initializeRoute = (table = false) => {
     if (this._mounted) {
       this.setState({ componentIsLoading: !table, tableLoading: table });
@@ -38,7 +40,7 @@ class CandidatesHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/list/${this.state.perPage}?page=${this.state.currentPage}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -60,6 +62,7 @@ class CandidatesHomeRoute extends Component {
     if (this._mounted) this.setState({ fireDeleteModal: false });
   };
 
+  //Fetches the selected candidate's info by id from the API.
   getCandidate = id => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -67,7 +70,7 @@ class CandidatesHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -79,6 +82,7 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //Deletes the candidate - bye bye :(
   deleteCandidate = id => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -86,7 +90,7 @@ class CandidatesHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
       });
@@ -94,6 +98,7 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //Asks user for confirmation before deleting a candidate.
   showDeleteModal = (e, id) => {
     if (this._mounted) {
       e.preventDefault();
@@ -104,6 +109,8 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //After confirmation this method fires the deleteCandidate method to actually delete
+  //the candidate.
   deleteCandidateConfirm = () => {
     if (this._mounted) {
       this.setState({ candidateIsLoading: true });
@@ -117,6 +124,7 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //Method to actually confirm the user's confirmation.
   handleModalConfirmation = () => {
     if (this._mounted) {
       this.setState({ fireDeleteSuccessModal: false });
@@ -128,12 +136,14 @@ class CandidatesHomeRoute extends Component {
     this._mounted = false;
   }
 
+  //Fires whenever the rows per page of the datatable changes to refresh the table.
   changeRowsPerPage = (rowsPerPage, page) => {
     if (this._mounted) {
       this.setState({ perPage: rowsPerPage }, () => this.changePage(page));
     }
   };
 
+  //Fires whenever the pagination button of the datatable is clicked to refresh the table.
   changePage = currentPage => {
     if (this._mounted) {
       this.setState({ tableLoading: true, currentPage });
@@ -149,6 +159,7 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //Fires whenever the enter button is clicked on the search field to get candidates.
   getSearchResults = needle => {
     if (this._mounted) {
       let url;
@@ -161,6 +172,9 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //Fires after the logic to decide the final route the table data would be fethed
+  //from has been completed. This method is agnostic to the URL the data would be
+  //fetched from. It just receives a URL and populates the table based on that.
   getTableResults = url => {
     if (this._mounted) {
       this.setState({ tableLoading: true });
@@ -168,7 +182,7 @@ class CandidatesHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -184,6 +198,7 @@ class CandidatesHomeRoute extends Component {
     }
   };
 
+  //This method clears the search for candidates and returns the table to it's orginal state.
   clearSearch() {
     if (this._mounted && this.setState.current.value !== "") {
       this.searchNeedle.current.value = "";

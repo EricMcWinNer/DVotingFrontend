@@ -23,7 +23,7 @@ class DeletePartyRoute extends Component {
         method: "get"
       }
     ).then(res => {
-      if (res.data.isSessionValid == "false") {
+      if (res.data.isSessionValid === false) {
         this.props.history.push("/login");
       } else {
         this.setState({
@@ -48,13 +48,13 @@ class DeletePartyRoute extends Component {
           method: "delete"
         }
       ).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
             deleting: false
           });
-          if (res.data.deleted === true) {
+          if (res.data.deleted) {
             alert("Political party deleted successfully");
             this.props.history.push("/dashboard/party");
           }

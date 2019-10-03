@@ -18,7 +18,7 @@ class EditElectionRoute extends Component {
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
       method: "get"
     }).then(res => {
-      if (res.data.isSessionValid == "true") {
+      if (res.data.isSessionValid === true) {
         this.setState({
           election: res.data.election,
           componentIsLoading: false
