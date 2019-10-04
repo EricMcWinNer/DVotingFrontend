@@ -21,12 +21,24 @@ class VoteRoutes extends Component {
         <Route
           exact
           path={`${this.props.match.path}`}
-          render={props => <VoteHome user={user} {...props} />}
+          render={props => (
+            <VoteHome
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route
           exact
           path={`${this.props.match.path}/:id/forward`}
-          render={props => <ForwardVote user={user} {...props} />}
+          render={props => (
+            <ForwardVote
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route component={NotFound} />
       </Switch>

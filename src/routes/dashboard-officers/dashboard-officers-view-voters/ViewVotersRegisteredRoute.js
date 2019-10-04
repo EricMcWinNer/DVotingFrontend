@@ -4,6 +4,8 @@ import "./index.sass";
 import UserManager from "security/UserManager";
 import axios from "axios";
 import ViewRegisteredVotersRouteView from "./ViewVotersRegisteredRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ViewVotersRegisteredRoute extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class ViewVotersRegisteredRoute extends Component {
       perPage: 20,
       totalResults: 0,
       tableLoading: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
     this.searchNeedle = React.createRef();
@@ -44,7 +47,8 @@ class ViewVotersRegisteredRoute extends Component {
             totalResults: res.data.voters.total,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   changeRowsPerPage = (rowsPerPage, page) => {
@@ -75,21 +79,29 @@ class ViewVotersRegisteredRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          console.log(res.data.voters.data.length, typeof res.data.voters.data);
-          this.setState({
-            tableLoading: false,
-            voters: [...res.data.voters.data],
-            currentPage: res.data.voters.current_page,
-            totalPages: res.data.voters.last_page,
-            perPage: res.data.voters.per_page,
-            totalResults: res.data.voters.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid == "false") {
+            this.props.history.push("/login");
+          } else {
+            console.log(
+              res.data.voters.data.length,
+              typeof res.data.voters.data
+            );
+            this.setState({
+              tableLoading: false,
+              voters: [...res.data.voters.data],
+              currentPage: res.data.voters.current_page,
+              totalPages: res.data.voters.last_page,
+              perPage: res.data.voters.per_page,
+              totalResults: res.data.voters.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -125,16 +137,19 @@ class ViewVotersRegisteredRoute extends Component {
 
   render() {
     return (
-      <ViewRegisteredVotersRouteView
-        userManager={this._userManager}
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        searchNeedle={this.searchNeedle}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <ViewRegisteredVotersRouteView
+          userManager={this._userManager}
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          searchNeedle={this.searchNeedle}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

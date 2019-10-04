@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import DashboardRouteView from "./DashboardRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class DashboardRoute extends Component {
   constructor(props) {
@@ -11,9 +13,7 @@ class DashboardRoute extends Component {
       user: {},
       notifications: null,
       responsiveSidebar: true,
-      ajaxError: false,
-      ajaxErrorCode: null,
-      ajaxErrorCallback: null,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -22,14 +22,18 @@ class DashboardRoute extends Component {
     axios.defaults.withCredentials = true;
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/home/user`, {
       method: "get",
-    }).then(res => {
-      if (res.data.isSessionValid === true) {
-        this.setState({
-          user: res.data.user,
-          componentIsLoading: false,
-        });
-      } else this.props.history.push("/login");
-    });
+    })
+      .then(res => {
+        if (res.data.isSessionValid === false)
+          this.props.history.push("/login");
+        else {
+          this.setState({
+            user: res.data.user,
+            componentIsLoading: false,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
     this.notificationsKickStarter();
     this.setState({ responsiveSidebar: window.innerWidth < 1370 });
     window.addEventListener("resize", this.handleResize);
@@ -49,7 +53,7 @@ class DashboardRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/user/notifications`
         )
         .then(res => {
-          if (res.data.isSessionValid === true) {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState({ notifications: res.data.notifications });
@@ -71,7 +75,7 @@ class DashboardRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/user/notifications/readall`
         )
         .then(res => {
-          if (res.data.isSessionValid === true) {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState({
@@ -83,14 +87,14 @@ class DashboardRoute extends Component {
     }
   };
 
-  //This method gets the notifications the first time and every 
+  //This method gets the notifications the first time and every
   //5 seconds later to keep notifications up to date
   notificationsKickStarter = () => {
     if (this._mounted) {
       this.getNotifications();
       this._notifications = setInterval(() => {
         this.getNotifications();
-      }, 1000 * 5); 
+      }, 1000 * 5);
     }
   };
 
@@ -102,13 +106,19 @@ class DashboardRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/home/user`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === true) {
-          this.setState({
-            user: res.data.user,
-          });
-        } else this.props.history.push("/login");
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false)
+            this.props.history.push("/login");
+          else {
+            this.setState({
+              user: res.data.user,
+            });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.updateUser)
+        );
       return req;
     }
   };
@@ -124,22 +134,28 @@ class DashboardRoute extends Component {
     axios.defaults.withCredentials = true;
     axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/logout`, {
       method: "get",
-    }).then(res => {
-      if (res.data.success) {
-        this.props.history.push("/login");
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.success === true) {
+          this.props.history.push("/login");
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, this.logOut));
   };
 
   render() {
     return (
-      <DashboardRouteView
-        logOut={this.logOut}
-        {...this.state}
-        {...this.props}
-        updateUser={this.updateUser}
-        setNotificationsAsRead={this.setNotificationsAsRead}
-      />
+      <>
+        <DashboardRouteView
+          logOut={this.logOut}
+          {...this.state}
+          {...this.props}
+          updateUser={this.updateUser}
+          setNotificationsAsRead={this.setNotificationsAsRead}
+          closeAjaxAlert={this.closeAjaxAlert}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

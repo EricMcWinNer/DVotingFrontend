@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import SelectNewCandidateRouteView from "./SelectNewCandidateRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert"
 
 class SelectNewCandidateRoute extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class SelectNewCandidateRoute extends Component {
       lgas: null,
       selectedState: "",
       selectedLga: "",
+      ...initialAjaxAlertState,
     };
     this.searchNeedle = React.createRef();
   }
@@ -27,22 +30,24 @@ class SelectNewCandidateRoute extends Component {
     axios.defaults.withCredentials = true;
     axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/new`, {
       method: "get",
-    }).then(res => {
-      if (res.data.isSessionValid === false) {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          users: res.data.users.data,
-          currentPage: res.data.users.current_page,
-          totalPages: res.data.users.last_page,
-          perPage: res.data.users.per_page,
-          totalResults: res.data.users.total,
-          states: res.data.states,
-          lgas: res.data.lgas,
-        });
-      }
-    });
+    })
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            users: res.data.users.data,
+            currentPage: res.data.users.current_page,
+            totalPages: res.data.users.last_page,
+            perPage: res.data.users.per_page,
+            totalResults: res.data.users.total,
+            states: res.data.states,
+            lgas: res.data.lgas,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -173,20 +178,25 @@ class SelectNewCandidateRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            users: res.data.users.data,
-            currentPage: res.data.users.current_page,
-            totalPages: res.data.users.last_page,
-            perPage: res.data.users.per_page,
-            totalResults: res.data.users.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              users: res.data.users.data,
+              currentPage: res.data.users.current_page,
+              totalPages: res.data.users.last_page,
+              perPage: res.data.users.per_page,
+              totalResults: res.data.users.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -208,17 +218,20 @@ class SelectNewCandidateRoute extends Component {
 
   render() {
     return (
-      <SelectNewCandidateRouteView
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        handleChange={this.handleChange}
-        handleFilterSelect={this.handleFilterSelect}
-        searchNeedle={this.searchNeedle}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <SelectNewCandidateRouteView
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          handleChange={this.handleChange}
+          handleFilterSelect={this.handleFilterSelect}
+          searchNeedle={this.searchNeedle}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

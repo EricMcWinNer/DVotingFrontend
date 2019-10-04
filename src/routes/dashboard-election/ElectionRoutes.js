@@ -29,19 +29,37 @@ class ElectionRoutes extends Component {
         <Route
           path={`${this.props.match.path}`}
           exact
-          render={props => <ElectionHomeRoute user={user} {...props} />}
+          render={props => (
+            <ElectionHomeRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           path={`${this.props.match.path}/create`}
           exact
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <CreateElectionRoute user={user} {...props} />}
+          render={props => (
+            <CreateElectionRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           path={`${this.props.match.path}/edit`}
           exact
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <EditElectionRoute user={user} {...props} />}
+          render={props => (
+            <EditElectionRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route component={NotFound} />
       </Switch>

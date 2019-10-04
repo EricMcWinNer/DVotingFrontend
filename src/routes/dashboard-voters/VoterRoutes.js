@@ -9,7 +9,7 @@ class VoterRoutes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      componentIsLoading: true
+      componentIsLoading: true,
     };
   }
 
@@ -27,12 +27,24 @@ class VoterRoutes extends Component {
         <Route
           path={`${this.props.match.path}/:id`}
           exact
-          render={props => <SingleVoter user={this.props.user} {...props} />}
+          render={props => (
+            <SingleVoter
+              user={this.props.user}
+              updateUser={this.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route
           path={this.props.match.path}
           exact
-          render={props => <VoterHome user={this.props.user} {...props} />}
+          render={props => (
+            <VoterHome
+              user={this.props.user}
+              updateUser={this.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route component={NotFound} />
       </Switch>

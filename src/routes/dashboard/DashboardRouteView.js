@@ -113,31 +113,53 @@ function DashBoardRouteView(props) {
                 <Route
                   path={`${props.match.path}`}
                   exact
-                  render={props => <DashboardHome user={user} {...props} />}
+                  render={props => (
+                    <DashboardHome
+                      user={user}
+                      updateUser={updateUser}
+                      {...props}
+                    />
+                  )}
                 />
                 <Route
                   path={`${props.match.path}/election`}
                   render={props => (
-                    <ElectionRouteContainer user={user} {...props} />
+                    <ElectionRouteContainer
+                      user={user}
+                      updateUser={updateUser}
+                      {...props}
+                    />
                   )}
                 />
                 <Route
                   path={`${props.match.path}/party`}
                   render={props => (
-                    <PartyRouteContainer user={user} {...props} />
+                    <PartyRouteContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
                   )}
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/voters`}
                   isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
-                    <VotersRouteContainer user={user} {...props} />
+                    <VotersRouteContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
                   )}
                 />
                 <Route
                   path={`${props.match.path}/candidates`}
                   render={props => (
-                    <CandidatesContainer user={user} {...props} />
+                    <CandidatesContainer
+                      user={user}
+                      updateUser={updateUser}
+                      {...props}
+                    />
                   )}
                 />
                 <RestrictedRoute
@@ -155,26 +177,54 @@ function DashBoardRouteView(props) {
                   path={`${props.match.path}/officers`}
                   isAuthorized={UserManager.isOfficial(user)}
                   render={props => (
-                    <OfficersHomeContainer user={user} {...props} />
+                    <OfficersHomeContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
                   )}
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/officer`}
                   isAuthorized={UserManager.isOfficer(user)}
-                  render={props => <OfficerContainer user={user} {...props} />}
+                  render={props => (
+                    <OfficerContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
+                  )}
                 />
                 <RestrictedRoute
                   path={`${props.match.path}/pins`}
                   isAuthorized={UserManager.isOfficial(user)}
-                  render={props => <PinHomeContainer user={user} {...props} />}
+                  render={props => (
+                    <PinHomeContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
+                  )}
                 />
                 <Route
                   path={`${props.match.path}/vote`}
-                  render={props => <VoteContainer user={user} {...props} />}
+                  render={props => (
+                    <VoteContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
+                  )}
                 />
                 <Route
                   path={`${props.match.path}/results`}
-                  render={props => <ResultsContainer user={user} {...props} />}
+                  render={props => (
+                    <ResultsContainer
+                      updateUser={updateUser}
+                      user={user}
+                      {...props}
+                    />
+                  )}
                 />
                 <Route component={NotFound} />
               </Switch>

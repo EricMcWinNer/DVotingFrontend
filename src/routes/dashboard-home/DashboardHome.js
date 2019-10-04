@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import DashboardHomeView from "routes/dashboard-home/DashboardHomeView";
 import axios from "axios";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class DashboardHome extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class DashboardHome extends Component {
       officers: null,
       componentIsLoading: true,
       officer_info: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -31,7 +34,9 @@ class DashboardHome extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/home`)
         .then(res => {
-          if (res.data.isSessionValid === true) {
+          if (res.data.isSessionValid === false)
+            this.props.history.push("/login");
+          else {
             this.setState({
               election: res.data.election.original.election,
               voters: res.data.voters,
@@ -41,8 +46,11 @@ class DashboardHome extends Component {
               componentIsLoading: false,
               officer_info: res.data.officer_info,
             });
-          } else this.props.history.push("/login");
-        });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.updateDashboard)
+        );
       return req;
     }
   };
@@ -54,11 +62,14 @@ class DashboardHome extends Component {
 
   render() {
     return (
-      <DashboardHomeView
-        userManager={this._userManager}
-        updateDashboard={this.updateDashboard}
-        {...this.state}
-      />
+      <>
+        <DashboardHomeView
+          userManager={this._userManager}
+          updateDashboard={this.updateDashboard}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

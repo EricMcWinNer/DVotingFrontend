@@ -3,6 +3,8 @@ import axios from "axios";
 
 import "./index.sass";
 import EditVoterRouteView from "./EditVoterRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class EditVoterRoute extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class EditVoterRoute extends Component {
     this.state = {
       componentIsLoading: true,
       voter: null,
+      ...initialAjaxAlertState,
     };
     this._id = this.props.match.params.id;
   }
@@ -22,13 +25,15 @@ class EditVoterRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/voters/${this._id}/read`
       )
       .then(res => {
-        if (res.data.isSessionValid === true)
+        if (res.data.isSessionValid === false)
+          this.props.history.push("/login");
+        else
           this.setState({
             componentIsLoading: false,
             voter: res.data.voter === null ? null : res.data.voter.voter,
           });
-        else this.props.history.push("/login");
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -36,7 +41,12 @@ class EditVoterRoute extends Component {
   }
 
   render() {
-    return <EditVoterRouteView {...this.state} {...this.props} />;
+    return (
+      <>
+        <EditVoterRouteView {...this.state} {...this.props} />
+        <ErrorAlert state={this.state} />
+      </>
+    );
   }
 }
 

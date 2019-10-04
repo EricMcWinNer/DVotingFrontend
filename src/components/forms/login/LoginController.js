@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import LoginView from "./LoginView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class LoginController extends Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class LoginController extends Component {
     this.state = {
       email: "",
       password: "",
-      formIsSubmitting: false
+      formIsSubmitting: false,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -25,7 +28,7 @@ class LoginController extends Component {
     let { name, value, type } = e.target;
     if (type === "text" || type === "password" || type === "email") {
       this.setState({
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -40,21 +43,21 @@ class LoginController extends Component {
         axios.defaults.withCredentials = true;
         axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/login`, {
           method: "post",
-          data: form
+          data: form,
         })
           .then(res => {
-            if (res.data.status == "error") {
+            if (res.data.status === "error") {
               alert("Your email or password is invalid.");
-            } else if (res.data.isValid == "true") {
+            } else if (res.data.isValid === true) {
               this.props.redirectSignedInUser();
             } else {
               //DO NOTHING
             }
             if (this._mounted) this.setState({ formIsSubmitting: false });
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(res =>
+            fireAjaxErrorAlert(this, res.request.status, null, false)
+          );
       });
     }
   };
@@ -63,11 +66,14 @@ class LoginController extends Component {
 
   render() {
     return (
-      <LoginView
-        {...this.state}
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-      />
+      <>
+        <LoginView
+          {...this.state}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

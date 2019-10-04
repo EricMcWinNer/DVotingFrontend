@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import CreatePinRouteView from "components/forms/pins/create";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class CreatePinRoute extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class CreatePinRoute extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -40,11 +43,12 @@ class CreatePinRoute extends Component {
             });
           }
           return res;
-        },
-        err => {
+        })
+        .catch(res => {
           this.setState({
             creating: false,
           });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
         }
       );
       return req;
@@ -69,14 +73,7 @@ class CreatePinRoute extends Component {
           );
         })
         .catch(res => {
-          if (res.request.status === 404) {
-            this.showAlert(
-              "Error!",
-              "The values you selected were invalid",
-              "error",
-              this.closeErrorModal
-            );
-          }
+          fireAjaxErrorAlert(this, res.request.status, null, false);
         });
     }
   };
@@ -126,13 +123,16 @@ class CreatePinRoute extends Component {
 
   render() {
     return (
-      <CreatePinRouteView
-        handleChange={this.handleChange}
-        handleCreate={this.handleCreate}
-        closeErrorModal={this.closeErrorModal}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <CreatePinRouteView
+          handleChange={this.handleChange}
+          handleCreate={this.handleCreate}
+          closeErrorModal={this.closeErrorModal}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

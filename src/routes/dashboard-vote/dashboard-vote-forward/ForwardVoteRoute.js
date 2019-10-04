@@ -3,6 +3,8 @@ import axios from "axios";
 
 import ForwardVoteRouteView from "./ForwardVoteRouteView";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ForwardVoteRoute extends Component {
   constructor(props) {
@@ -11,6 +13,7 @@ class ForwardVoteRoute extends Component {
       componentIsLoading: true,
       party: null,
       voted: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
     this._id = this.props.match.params.id;
@@ -37,7 +40,9 @@ class ForwardVoteRoute extends Component {
             voted: res.data.voted,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
+      return req;
   };
 
   componentWillUnmount() {
@@ -46,11 +51,14 @@ class ForwardVoteRoute extends Component {
 
   render() {
     return (
-      <ForwardVoteRouteView
-        userManager={this._userManager}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <ForwardVoteRouteView
+          userManager={this._userManager}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

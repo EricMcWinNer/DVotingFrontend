@@ -4,8 +4,9 @@ import axios from "axios";
 import "./index.sass";
 import CreatePartyFormView from "./CreatePartyFormView";
 import UserManager from "security/UserManager";
-import PictureUploadInput from "components/forms/picture-upload-handler/PictureUploadInput";
 import { sentenceCase } from "utils/helpers";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class CreatePartyFormController extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class CreatePartyFormController extends Component {
       alertCallBack: null,
       stayOnPage: false,
       forcefullyCancel: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -49,13 +51,17 @@ class CreatePartyFormController extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid === true) {
-        this.setState({
-          componentIsLoading: false,
-        });
-      } else this.props.history.push("/login");
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false)
+          this.props.history.push("/login");
+        else {
+          this.setState({
+            componentIsLoading: false,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -129,62 +135,69 @@ class CreatePartyFormController extends Component {
         axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/party`, {
           method: "post",
           data: form,
-        }).then(res => {
-          if (res.data.isSessionValid === false)
-            this.props.history.push("/login");
-          else {
-            this.setState({
-              formIsSubmitting: false,
-            });
-            if (res.data.isValid === false) {
-              if (res.data.field === "partyLogo")
+        })
+          .then(res => {
+            if (res.data.isSessionValid === false)
+              this.props.history.push("/login");
+            else {
+              this.setState({
+                formIsSubmitting: false,
+              });
+              if (res.data.isValid === false) {
+                if (res.data.field === "partyLogo")
+                  this.showAlert(
+                    "Invalid Party Logo",
+                    "The party logo you entered is invalid"
+                  );
+                else if (res.data.field === "partyName")
+                  this.showAlert(
+                    "Invalid Party Name",
+                    "The party name you entered is invalid. Please enter one less than 256 characters long"
+                  );
+                else if (res.data.field === "acronym")
+                  this.showAlert(
+                    "Invalid Acronym",
+                    "The acronym you entered is invalid. Please enter one less than 7 characters long"
+                  );
+                else if (res.data.field === "duplicateName")
+                  this.showAlert(
+                    "Duplicate Party Name",
+                    "A political party with this name already exists. Political parties must have unique names."
+                  );
+              } else if (res.data.completed === true) {
                 this.showAlert(
-                  "Invalid Party Logo",
-                  "The party logo you entered is invalid"
+                  "Success!",
+                  "Political party created successfully",
+                  "success",
+                  this.state.stayOnPage ? null : this.redirectToPartyHome
                 );
-              else if (res.data.field === "partyName")
-                this.showAlert(
-                  "Invalid Party Name",
-                  "The party name you entered is invalid. Please enter one less than 256 characters long"
-                );
-              else if (res.data.field === "acronym")
-                this.showAlert(
-                  "Invalid Acronym",
-                  "The acronym you entered is invalid. Please enter one less than 7 characters long"
-                );
-              else if (res.data.field === "duplicateName")
-                this.showAlert(
-                  "Duplicate Party Name",
-                  "A political party with this name already exists. Political parties must have unique names."
-                );
-            } else if (res.data.completed === true) {
-              this.showAlert(
-                "Success!",
-                "Political party created successfully",
-                "success",
-                this.state.stayOnPage ? null : this.redirectToPartyHome
-              );
-              if (this.state.stayOnPage) this.initializeForms();
+                if (this.state.stayOnPage) this.initializeForms();
+              }
             }
-          }
-        });
+          })
+          .catch(res =>
+            fireAjaxErrorAlert(this, res.request.status, null, false)
+          );
       });
     }
   };
 
   render() {
     return (
-      <CreatePartyFormView
-        updatePartyLogo={this.updatePartyLogo}
-        handleSubmit={this.handleSubmit}
-        onChange={this.handleChange}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        handleCheckBoxChange={this.handleCheckBoxChange}
-        removeForcefullyCancel={this.removeForcefullyCancel}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <CreatePartyFormView
+          updatePartyLogo={this.updatePartyLogo}
+          handleSubmit={this.handleSubmit}
+          onChange={this.handleChange}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          handleCheckBoxChange={this.handleCheckBoxChange}
+          removeForcefullyCancel={this.removeForcefullyCancel}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

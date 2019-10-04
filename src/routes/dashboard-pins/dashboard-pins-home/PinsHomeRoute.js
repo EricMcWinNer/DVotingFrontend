@@ -3,6 +3,8 @@ import UserManager from "security/UserManager";
 import axios from "axios";
 
 import PinsHomeRouteView from "./PinsHomeRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class PinHomeRoute extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class PinHomeRoute extends Component {
       perPage: 20,
       totalResults: 0,
       tableLoading: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -29,20 +32,22 @@ class PinHomeRoute extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid === false) {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          pins: res.data.pins.data,
-          componentIsLoading: false,
-          currentPage: res.data.pins.current_page,
-          totalPages: res.data.pins.last_page,
-          perPage: res.data.pins.per_page,
-          totalResults: res.data.pins.total,
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            pins: res.data.pins.data,
+            componentIsLoading: false,
+            currentPage: res.data.pins.current_page,
+            totalPages: res.data.pins.last_page,
+            perPage: res.data.pins.per_page,
+            totalResults: res.data.pins.total,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -85,33 +90,41 @@ class PinHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            pins: res.data.pins.data,
-            tableLoading: false,
-            currentPage: res.data.pins.current_page,
-            totalPages: res.data.pins.last_page,
-            perPage: res.data.pins.per_page,
-            totalResults: res.data.pins.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              pins: res.data.pins.data,
+              tableLoading: false,
+              currentPage: res.data.pins.current_page,
+              totalPages: res.data.pins.last_page,
+              perPage: res.data.pins.per_page,
+              totalResults: res.data.pins.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
   render() {
     return (
-      <PinsHomeRouteView
-        userManager={this._userManager}
-        changeRowsPerPage={this.changeRowsPerPage}
-        changePage={this.changePage}
-        handleFilterSelect={this.handleFilterSelect}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <PinsHomeRouteView
+          userManager={this._userManager}
+          changeRowsPerPage={this.changeRowsPerPage}
+          changePage={this.changePage}
+          handleFilterSelect={this.handleFilterSelect}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

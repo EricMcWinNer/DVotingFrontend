@@ -4,6 +4,8 @@ import UserManager from "security/UserManager";
 
 import CreateElectionFormView from "./CreateElectionFormView";
 import { sentenceCase } from "utils/helpers";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class CreateElectionFormController extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class CreateElectionFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -93,77 +96,84 @@ class CreateElectionFormController extends Component {
         axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
           method: "post",
           data: form,
-        }).then(res => {
-          if (res.data.isSessionValid === false)
-            this.props.history.push("/login");
-          else {
-            this.setState({
-              formIsSubmitting: false,
-            });
-            if (res.data.isValid === false) {
-              if (res.data.field === "electionName") {
+        })
+          .then(res => {
+            if (res.data.isSessionValid === false)
+              this.props.history.push("/login");
+            else {
+              this.setState({
+                formIsSubmitting: false,
+              });
+              if (res.data.isValid === false) {
+                if (res.data.field === "electionName") {
+                  this.showAlert(
+                    "Invalid Election Name",
+                    "The election name you entered is not valid, it must be at least 3 words long"
+                  );
+                } else if (res.data.field === "startDate")
+                  this.showAlert(
+                    "Invalid Start Date",
+                    "The start date you entered is not valid"
+                  );
+                else if (res.data.field === "endDate")
+                  this.showAlert(
+                    "Invalid End Date",
+                    "The end date you entered is not valid"
+                  );
+                else if (res.data.field === "smallStartDate")
+                  this.showAlert(
+                    "Invalid Start Date",
+                    "The start date of an election must be set to at least an hour from now"
+                  );
+                else if (res.data.field === "smallEndDate")
+                  this.showAlert(
+                    "Invalid End Date",
+                    "The end date of an election must be at least one hour ahead of the start date of an election"
+                  );
+                else if (res.data.field === "pastEndDate")
+                  this.showAlert(
+                    "Invalid End Date",
+                    "The end date must be set to the future"
+                  );
+                else if (res.data.field === "invalidDates")
+                  this.showAlert(
+                    "Invalid Dates",
+                    "The dates you entered are invalid"
+                  );
+              } else if (res.data.exists === true)
+                this.props.history.push("/dashboard/election");
+              else if (res.data.completed === true)
                 this.showAlert(
-                  "Invalid Election Name",
-                  "The election name you entered is not valid, it must be at least 3 words long"
+                  "Success!",
+                  "Election created successfully",
+                  "success",
+                  this.redirectToElectionHome
                 );
-              } else if (res.data.field === "startDate")
-                this.showAlert(
-                  "Invalid Start Date",
-                  "The start date you entered is not valid"
-                );
-              else if (res.data.field === "endDate")
-                this.showAlert(
-                  "Invalid End Date",
-                  "The end date you entered is not valid"
-                );
-              else if (res.data.field === "smallStartDate")
-                this.showAlert(
-                  "Invalid Start Date",
-                  "The start date of an election must be set to at least an hour from now"
-                );
-              else if (res.data.field === "smallEndDate")
-                this.showAlert(
-                  "Invalid End Date",
-                  "The end date of an election must be at least one hour ahead of the start date of an election"
-                );
-              else if (res.data.field === "pastEndDate")
-                this.showAlert(
-                  "Invalid End Date",
-                  "The end date must be set to the future"
-                );
-              else if (res.data.field === "invalidDates")
-                this.showAlert(
-                  "Invalid Dates",
-                  "The dates you entered are invalid"
-                );
-            } else if (res.data.exists === true)
-              this.props.history.push("/dashboard/election");
-            else if (res.data.completed === true)
-              this.showAlert(
-                "Success!",
-                "Election created successfully",
-                "success",
-                this.redirectToElectionHome
-              );
-          }
-        });
+            }
+          })
+          .catch(res =>
+            fireAjaxErrorAlert(this, res.request.status, this.handleSubmit)
+          );
       });
     }
   };
 
   render() {
     return (
-      <CreateElectionFormView
-        handleStartDateChange={this.handleStartDateChange}
-        handleEndDateChange={this.handleEndDateChange}
-        onChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        election={this.props.election}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <CreateElectionFormView
+          handleStartDateChange={this.handleStartDateChange}
+          handleEndDateChange={this.handleEndDateChange}
+          onChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          election={this.props.election}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

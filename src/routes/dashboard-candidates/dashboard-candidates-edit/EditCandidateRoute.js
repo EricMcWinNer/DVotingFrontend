@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import EditCandidateForm from "components/forms/candidates/edit";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class EditCandidateRoute extends Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class EditCandidateRoute extends Component {
     this.state = {
       componentIsLoading: true,
       candidate: null,
-      parties: null
+      parties: null,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -19,19 +22,21 @@ class EditCandidateRoute extends Component {
     axios(
       `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${this.props.match.params.id}/edit/init`,
       {
-        method: "get"
+        method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid === false) {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          candidate: res.data.candidate,
-          parties: res.data.parties
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            candidate: res.data.candidate,
+            parties: res.data.parties,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -39,7 +44,16 @@ class EditCandidateRoute extends Component {
   }
 
   render() {
-    return <EditCandidateForm {...this.props} {...this.state} />;
+    return (
+      <>
+        <EditCandidateForm
+          {...this.props}
+          updateUser={this.props.updateUser}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
+    );
   }
 }
 

@@ -3,9 +3,10 @@ import axios from "axios";
 
 import "./index.sass";
 import CreateOfficialsRouteView from "./CreateOfficialsRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 import UserManager from "security/UserManager";
 
-//TODO - WHEN YOU HAVE DATA URL ENCODE THE SEARCH STRINGS
 
 class CreateOfficialsRoute extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class CreateOfficialsRoute extends Component {
       fireCreateModal: false,
       fireCreateSuccessModal: false,
       user: null,
+      ...initialAjaxAlertState,
     };
     this.searchNeedle = React.createRef();
     this._userManager = new UserManager(this.props.user);
@@ -61,7 +63,8 @@ class CreateOfficialsRoute extends Component {
             lgas: table ? state.lgas : res.data.lgas,
           }));
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -84,7 +87,8 @@ class CreateOfficialsRoute extends Component {
             user: res.data.user,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null, false));
       return req;
     }
   };
@@ -99,7 +103,8 @@ class CreateOfficialsRoute extends Component {
         if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null, false));
       return req;
     }
   };
@@ -274,6 +279,10 @@ class CreateOfficialsRoute extends Component {
             totalResults: res.data.users.total,
           });
         }
+      })
+      .catch(res => {
+        this.state({ tableLoading: false });
+        fireAjaxErrorAlert(this, res.request.status, null, false);
       });
     }
   };
@@ -301,6 +310,7 @@ class CreateOfficialsRoute extends Component {
 
   render() {
     return (
+      <>
       <CreateOfficialsRouteView
         clearSearch={this.clearSearch}
         changePage={this.changePage}
@@ -317,6 +327,8 @@ class CreateOfficialsRoute extends Component {
         {...this.props}
         {...this.state}
       />
+      <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

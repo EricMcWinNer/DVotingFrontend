@@ -4,6 +4,8 @@ import axios from "axios";
 import "./index.sass";
 import UserManager from "security/UserManager";
 import EditPartyFormView from "./EditPartyFormView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class EditPartyFormController extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class EditPartyFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -34,16 +37,18 @@ class EditPartyFormController extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          party: res.data.party,
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            party: res.data.party,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -122,7 +127,7 @@ class EditPartyFormController extends Component {
           data: formData,
         }
       ).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           if (res.data.isValid === false) {
@@ -160,21 +165,25 @@ class EditPartyFormController extends Component {
             );
           }
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null, false));
     }
   };
 
   render() {
     return (
-      <EditPartyFormView
-        updatePartyLogo={this.updatePartyLogo}
-        onChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <EditPartyFormView
+          updatePartyLogo={this.updatePartyLogo}
+          onChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

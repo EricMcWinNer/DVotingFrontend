@@ -4,6 +4,8 @@ import axios from "axios";
 import "./index.sass";
 import CandidatesHomeRouteView from "./CandidatesHomeRouteView";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class CandidatesHomeRoute extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class CandidatesHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       candidate: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -39,22 +42,24 @@ class CandidatesHomeRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/list/${this.state.perPage}?page=${this.state.currentPage}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            componentIsLoading: false,
-            tableLoading: false,
-            candidates: res.data.candidates.data,
-            currentPage: res.data.candidates.current_page,
-            totalPages: res.data.candidates.last_page,
-            perPage: res.data.candidates.per_page,
-            totalResults: res.data.candidates.total,
-          });
-        }
-        return req;
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              componentIsLoading: false,
+              tableLoading: false,
+              candidates: res.data.candidates.data,
+              currentPage: res.data.candidates.current_page,
+              totalPages: res.data.candidates.last_page,
+              perPage: res.data.candidates.per_page,
+              totalResults: res.data.candidates.total,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
+      return req;
     }
   };
 
@@ -69,15 +74,17 @@ class CandidatesHomeRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            candidate: res.data.candidate,
-          });
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              candidate: res.data.candidate,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -89,11 +96,15 @@ class CandidatesHomeRoute extends Component {
       const req = axios.delete(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/candidates/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
       return req;
     }
   };
@@ -181,20 +192,25 @@ class CandidatesHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            candidates: res.data.candidates.data,
-            currentPage: res.data.candidates.current_page,
-            totalPages: res.data.candidates.last_page,
-            perPage: res.data.candidates.per_page,
-            totalResults: res.data.candidates.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              candidates: res.data.candidates.data,
+              currentPage: res.data.candidates.current_page,
+              totalPages: res.data.candidates.last_page,
+              perPage: res.data.candidates.per_page,
+              totalResults: res.data.candidates.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -220,24 +236,27 @@ class CandidatesHomeRoute extends Component {
 
   render() {
     return (
-      <CandidatesHomeRouteView
-        getTableResults={this.getTableResults}
-        changePage={this.changePage}
-        clearSearch={this.clearSearch}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        searchNeedle={this.searchNeedle}
-        userManager={this._userManager}
-        redirectToCreate={this.redirectToCreate}
-        redirectToHome={this.redirectToHome}
-        closeNoCandidatesModal={this.closeNoCandidatesModal}
-        closeDeleteModal={this.closeDeleteModal}
-        showDeleteModal={this.showDeleteModal}
-        deleteCandidateConfirm={this.deleteCandidateConfirm}
-        handleModalConfirmation={this.handleModalConfirmation}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <CandidatesHomeRouteView
+          getTableResults={this.getTableResults}
+          changePage={this.changePage}
+          clearSearch={this.clearSearch}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          searchNeedle={this.searchNeedle}
+          userManager={this._userManager}
+          redirectToCreate={this.redirectToCreate}
+          redirectToHome={this.redirectToHome}
+          closeNoCandidatesModal={this.closeNoCandidatesModal}
+          closeDeleteModal={this.closeDeleteModal}
+          showDeleteModal={this.showDeleteModal}
+          deleteCandidateConfirm={this.deleteCandidateConfirm}
+          handleModalConfirmation={this.handleModalConfirmation}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

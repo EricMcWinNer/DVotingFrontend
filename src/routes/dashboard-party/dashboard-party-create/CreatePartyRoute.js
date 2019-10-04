@@ -19,7 +19,7 @@ class CreatePartyRoute extends Component {
   }
 
   render() {
-    return <CreatePartyForm {...this.props} />;
+    return <CreatePartyForm updateUser={this.props.updateUser} {...this.props} />;
   }
 }
 

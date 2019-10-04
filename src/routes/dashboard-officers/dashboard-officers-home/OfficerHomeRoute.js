@@ -3,7 +3,8 @@ import axios from "axios";
 
 import OfficerHomeRouteView from "./OfficerHomeRouteView";
 import UserManager from "security/UserManager";
-import OfficialHomeRouteView from "routes/dashboard-officials/dashboard-officials-home/OfficialHomeRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class OfficerHomeRoute extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class OfficerHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       officer: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
     this.searchNeedle = React.createRef();
@@ -43,23 +45,25 @@ class OfficerHomeRoute extends Component {
           this.state.perPage
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState(state => ({
-            componentIsLoading: false,
-            tableLoading: false,
-            officers: res.data.officers.data,
-            currentPage: res.data.officers.current_page,
-            totalPages: res.data.officers.last_page,
-            perPage: res.data.officers.per_page,
-            totalResults: res.data.officers.total,
-            states: table ? state.states : res.data.states,
-            lgas: table ? state.lgas : res.data.lgas,
-          }));
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState(state => ({
+              componentIsLoading: false,
+              tableLoading: false,
+              officers: res.data.officers.data,
+              currentPage: res.data.officers.current_page,
+              totalPages: res.data.officers.last_page,
+              perPage: res.data.officers.per_page,
+              totalResults: res.data.officers.total,
+              states: table ? state.states : res.data.states,
+              lgas: table ? state.lgas : res.data.lgas,
+            }));
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -74,15 +78,17 @@ class OfficerHomeRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            officer: res.data.officer,
-          });
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              officer: res.data.officer,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -93,11 +99,15 @@ class OfficerHomeRoute extends Component {
       const req = axios.delete(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
       return req;
     }
   };
@@ -259,20 +269,25 @@ class OfficerHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            officers: [...res.data.officers.data],
-            currentPage: res.data.officers.current_page,
-            totalPages: res.data.officers.last_page,
-            perPage: res.data.officers.per_page,
-            totalResults: res.data.officers.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              officers: [...res.data.officers.data],
+              currentPage: res.data.officers.current_page,
+              totalPages: res.data.officers.last_page,
+              perPage: res.data.officers.per_page,
+              totalResults: res.data.officers.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -299,22 +314,25 @@ class OfficerHomeRoute extends Component {
 
   render() {
     return (
-      <OfficerHomeRouteView
-        userManager={this._userManager}
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        handleChange={this.handleChange}
-        handleFilterSelect={this.handleFilterSelect}
-        searchNeedle={this.searchNeedle}
-        closeDeleteModal={this.closeDeleteModal}
-        showDeleteModal={this.showDeleteModal}
-        deleteOfficerConfirm={this.deleteOfficerConfirm}
-        handleModalConfirmation={this.handleModalConfirmation}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <OfficerHomeRouteView
+          userManager={this._userManager}
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          handleChange={this.handleChange}
+          handleFilterSelect={this.handleFilterSelect}
+          searchNeedle={this.searchNeedle}
+          closeDeleteModal={this.closeDeleteModal}
+          showDeleteModal={this.showDeleteModal}
+          deleteOfficerConfirm={this.deleteOfficerConfirm}
+          handleModalConfirmation={this.handleModalConfirmation}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }
