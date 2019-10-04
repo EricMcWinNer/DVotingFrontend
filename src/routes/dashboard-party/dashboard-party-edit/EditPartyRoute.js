@@ -19,7 +19,7 @@ class EditPartyRoute extends Component {
   }
 
   render() {
-    return <EditPartyForm {...this.props} />;
+    return <EditPartyForm updateUser={this.props.updateUser} {...this.props} />;
   }
 }
 

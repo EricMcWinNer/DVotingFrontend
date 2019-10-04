@@ -4,6 +4,7 @@ class UserManager {
     this._passwordVerified = false;
   }
 
+
   returnUser() {
     return this._user;
   }

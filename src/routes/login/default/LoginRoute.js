@@ -2,30 +2,26 @@ import React, { Component } from "react";
 
 import SessionManager from "security/SessionManager";
 import LoginRouteView from "./LoginRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class LoginRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
       componentIsLoading: true,
+      ...initialAjaxAlertState,
     };
   }
 
   componentDidMount() {
     this._mounted = true;
     SessionManager.isUserSignedIn().then(res => {
-      this.setState(
-        {
-          loggedIn: res.data.isSessionValid == "true",
-        },
-        () => {
-          if (res.data.isSessionValid == "true")
-            this.props.history.push("/dashboard");
-          else this.setState({ componentIsLoading: false });
-        }
-      );
-    });
+      if (res.data.isSessionValid === true)
+        this.props.history.push("/dashboard");
+      else this.setState({ componentIsLoading: false });
+    })
+    .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -38,10 +34,13 @@ class LoginRoute extends Component {
 
   render() {
     return (
-      <LoginRouteView
-        componentIsLoading={this.state.componentIsLoading}
-        redirectSignedInUser={this.redirectSignedInUser}
-      />
+      <>
+        <LoginRouteView
+          componentIsLoading={this.state.componentIsLoading}
+          redirectSignedInUser={this.redirectSignedInUser}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

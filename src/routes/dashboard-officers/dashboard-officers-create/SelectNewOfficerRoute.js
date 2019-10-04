@@ -3,7 +3,8 @@ import axios from "axios";
 import UserManager from "security/UserManager";
 
 import SelectNewOfficerRouteView from "./SelectNewOfficerRouteView";
-import CreateOfficialsRouteView from "routes/dashboard-officials/dashboard-officials-create/CreateOfficialsRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class SelectNewOfficerRoute extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class SelectNewOfficerRoute extends Component {
       fireCreateModal: false,
       fireCreateSuccessModal: false,
       user: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
     this.searchNeedle = React.createRef();
@@ -43,23 +45,25 @@ class SelectNewOfficerRoute extends Component {
           this.state.perPage
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState(state => ({
-            componentIsLoading: false,
-            tableLoading: false,
-            eligibleOfficers: res.data.users.data,
-            currentPage: res.data.users.current_page,
-            totalPages: res.data.users.last_page,
-            perPage: res.data.users.per_page,
-            totalResults: res.data.users.total,
-            states: table ? state.states : res.data.states,
-            lgas: table ? state.lgas : res.data.lgas,
-          }));
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState(state => ({
+              componentIsLoading: false,
+              tableLoading: false,
+              eligibleOfficers: res.data.users.data,
+              currentPage: res.data.users.current_page,
+              totalPages: res.data.users.last_page,
+              perPage: res.data.users.per_page,
+              totalResults: res.data.users.total,
+              states: table ? state.states : res.data.states,
+              lgas: table ? state.lgas : res.data.lgas,
+            }));
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -74,15 +78,19 @@ class SelectNewOfficerRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}/create/confirm`
       );
-      req.then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            user: res.data.user,
-          });
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              user: res.data.user,
+            });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getUser)
+        );
       return req;
     }
   };
@@ -93,11 +101,15 @@ class SelectNewOfficerRoute extends Component {
       const req = axios.post(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officers/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
       return req;
     }
   };
@@ -259,20 +271,25 @@ class SelectNewOfficerRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            users: [...res.data.users.data],
-            currentPage: res.data.users.current_page,
-            totalPages: res.data.users.last_page,
-            perPage: res.data.users.per_page,
-            totalResults: res.data.users.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              users: [...res.data.users.data],
+              currentPage: res.data.users.current_page,
+              totalPages: res.data.users.last_page,
+              perPage: res.data.users.per_page,
+              totalResults: res.data.users.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -299,22 +316,25 @@ class SelectNewOfficerRoute extends Component {
 
   render() {
     return (
-      <SelectNewOfficerRouteView
-        userManager={this._userManager}
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        handleChange={this.handleChange}
-        handleFilterSelect={this.handleFilterSelect}
-        searchNeedle={this.searchNeedle}
-        showCreateModal={this.showCreateModal}
-        closeCreateModal={this.closeCreateModal}
-        createOfficerConfirm={this.createOfficerConfirm}
-        handleModalConfirmation={this.handleModalConfirmation}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <SelectNewOfficerRouteView
+          userManager={this._userManager}
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          handleChange={this.handleChange}
+          handleFilterSelect={this.handleFilterSelect}
+          searchNeedle={this.searchNeedle}
+          showCreateModal={this.showCreateModal}
+          closeCreateModal={this.closeCreateModal}
+          createOfficerConfirm={this.createOfficerConfirm}
+          handleModalConfirmation={this.handleModalConfirmation}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

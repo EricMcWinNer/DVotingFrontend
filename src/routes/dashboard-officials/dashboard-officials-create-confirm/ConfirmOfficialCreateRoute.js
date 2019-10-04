@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import ConfirmOfficialCreateRouteView from "./ConfirmOfficialCreateRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ConfirmOfficialCreateRoute extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class ConfirmOfficialCreateRoute extends Component {
       componentIsLoading: true,
       creating: false,
       prospectiveOfficial: null,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -21,16 +24,18 @@ class ConfirmOfficialCreateRoute extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          prospectiveOfficial: res.data.user,
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            prospectiveOfficial: res.data.user,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -48,7 +53,7 @@ class ConfirmOfficialCreateRoute extends Component {
           method: "post",
         }
       ).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -68,11 +73,14 @@ class ConfirmOfficialCreateRoute extends Component {
 
   render() {
     return (
-      <ConfirmOfficialCreateRouteView
-        handleCreate={this.handleCreate}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <ConfirmOfficialCreateRouteView
+          handleCreate={this.handleCreate}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

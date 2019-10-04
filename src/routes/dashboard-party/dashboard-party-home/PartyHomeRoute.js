@@ -3,6 +3,8 @@ import axios from "axios";
 
 import PartyHomeRouteView from "./PartyHomeRouteView";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class PartyHomeRoute extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class PartyHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       party: null,
+      ...initialAjaxAlertState,
     };
     this.searchNeedle = React.createRef();
     this._userManager = new UserManager(this.props.user);
@@ -38,21 +41,23 @@ class PartyHomeRoute extends Component {
         {
           method: "get",
         }
-      ).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            componentIsLoading: false,
-            tableLoading: false,
-            parties: res.data.parties.data,
-            currentPage: res.data.parties.current_page,
-            totalPages: res.data.parties.last_page,
-            perPage: res.data.parties.per_page,
-            totalResults: res.data.parties.total,
-          });
-        }
-      });
+      )
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              componentIsLoading: false,
+              tableLoading: false,
+              parties: res.data.parties.data,
+              currentPage: res.data.parties.current_page,
+              totalPages: res.data.parties.last_page,
+              perPage: res.data.parties.per_page,
+              totalResults: res.data.parties.total,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
     }
   };
 
@@ -105,20 +110,25 @@ class PartyHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            parties: [...res.data.parties.data],
-            currentPage: res.data.parties.current_page,
-            totalPages: res.data.parties.last_page,
-            perPage: res.data.parties.per_page,
-            totalResults: res.data.parties.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              parties: [...res.data.parties.data],
+              currentPage: res.data.parties.current_page,
+              totalPages: res.data.parties.last_page,
+              perPage: res.data.parties.per_page,
+              totalResults: res.data.parties.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -128,15 +138,17 @@ class PartyHomeRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            party: res.data.party,
-          });
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              party: res.data.party,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -147,11 +159,15 @@ class PartyHomeRoute extends Component {
       const req = axios.delete(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/party/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        }
-      });
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
       return req;
     }
   };
@@ -213,20 +229,23 @@ class PartyHomeRoute extends Component {
 
   render() {
     return (
-      <PartyHomeRouteView
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        searchNeedle={this.searchNeedle}
-        closeDeleteModal={this.closeDeleteModal}
-        userManager={this._userManager}
-        showDeleteModal={this.showDeleteModal}
-        deletePartyConfirm={this.deletePartyConfirm}
-        handleModalConfirmation={this.handleModalConfirmation}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <PartyHomeRouteView
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          searchNeedle={this.searchNeedle}
+          closeDeleteModal={this.closeDeleteModal}
+          userManager={this._userManager}
+          showDeleteModal={this.showDeleteModal}
+          deletePartyConfirm={this.deletePartyConfirm}
+          handleModalConfirmation={this.handleModalConfirmation}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

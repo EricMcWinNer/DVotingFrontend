@@ -5,7 +5,6 @@ import PartyHomeRoute from "routes/dashboard-party/dashboard-party-home";
 import RestrictedRoute from "components/routes/restricted-route";
 import PartyCreateRoute from "routes/dashboard-party/dashboard-party-create/CreatePartyRoute";
 import PartyEditRoute from "routes/dashboard-party/dashboard-party-edit/EditPartyRoute";
-import PartyDeleteRoute from "routes/dashboard-party/dashboard-party-delete/DeletePartyRoute";
 import UserManager from "security/UserManager";
 import NotFound from "components/cards/not-found-card";
 
@@ -32,25 +31,37 @@ class PartyRoutes extends Component {
         <Route
           path={`${this.props.match.path}`}
           exact
-          render={props => <PartyHomeRoute user={user} {...props} />}
+          render={props => (
+            <PartyHomeRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           path={`${this.props.match.path}/create`}
           exact
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <PartyCreateRoute user={user} {...props} />}
+          render={props => (
+            <PartyCreateRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           exact
-          render={props => <PartyEditRoute user={user} {...props} />}
+          render={props => (
+            <PartyEditRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
           isAuthorized={UserManager.isOfficial(user)}
           path={`${this.props.match.path}/:id/edit`}
-        />
-        <RestrictedRoute
-          exact
-          path={`${this.props.match.path}/:id/delete`}
-          isAuthorized={UserManager.isOfficial(user)}
-          render={props => <PartyDeleteRoute user={user} {...props} />}
         />
         <Route component={NotFound} />
       </Switch>

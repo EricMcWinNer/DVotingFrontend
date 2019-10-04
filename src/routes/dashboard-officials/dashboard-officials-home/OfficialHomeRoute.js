@@ -4,6 +4,8 @@ import axios from "axios";
 import "./index.sass";
 import OfficialHomeRouteView from "./OfficialHomeRouteView";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class OfficialHomeRoute extends Component {
   constructor(props) {
@@ -24,6 +26,7 @@ class OfficialHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       official: null,
+      ...initialAjaxAlertState
     };
     this.searchNeedle = React.createRef();
     this._userManager = new UserManager(this.props.user);
@@ -44,7 +47,7 @@ class OfficialHomeRoute extends Component {
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState(state => ({
@@ -59,7 +62,8 @@ class OfficialHomeRoute extends Component {
             lgas: table ? state.lgas : res.data.lgas,
           }));
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -75,14 +79,15 @@ class OfficialHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
             official: res.data.official,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -94,10 +99,13 @@ class OfficialHomeRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
       );
       req.then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         }
-      });
+      })
+      .catch(res =>
+        fireAjaxErrorAlert(this, res.request.status, null, false)
+      );
       return req;
     }
   };
@@ -266,7 +274,7 @@ class OfficialHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -278,6 +286,10 @@ class OfficialHomeRoute extends Component {
             totalResults: res.data.officials.total,
           });
         }
+      })
+      .catch(res => {
+        this.state({ tableLoading: false });
+        fireAjaxErrorAlert(this, res.request.status, null, false);
       });
     }
   };
@@ -305,6 +317,7 @@ class OfficialHomeRoute extends Component {
 
   render() {
     return (
+      <>
       <OfficialHomeRouteView
         clearSearch={this.clearSearch}
         changePage={this.changePage}
@@ -321,6 +334,8 @@ class OfficialHomeRoute extends Component {
         {...this.props}
         {...this.state}
       />
+<ErrorAlert state={this.state} />
+      </>
     );
   }
 }

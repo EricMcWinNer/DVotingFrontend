@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import ResultsHomeRouteView from "./ResultsHomeRouteView";
 import UserManager from "security/UserManager";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ResultsHomeRoute extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class ResultsHomeRoute extends Component {
       timeLeft: null,
       duration: null,
       tableTotal: 0,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -62,7 +65,7 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState({
@@ -73,7 +76,10 @@ class ResultsHomeRoute extends Component {
                   res.data.election.status !== "completed"),
             });
           }
-        });
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getElection)
+        );
       return req;
     }
   };
@@ -136,7 +142,7 @@ class ResultsHomeRoute extends Component {
       axios(url, {
         method: "get",
       }).then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.votesData = res.data.parties;
@@ -159,7 +165,7 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results`)
         .then(res => {
-          if (res.data.isSessionValid == "false") {
+          if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
             this.setState(
@@ -198,15 +204,22 @@ class ResultsHomeRoute extends Component {
           `${process.env.REACT_APP_API_PATH}/api/dashboard/results/pie/${number}`
         )
         .then(res => {
-          this.pieData = res.data.parties;
-          this.setState(
-            {
-              pieChartIsLoading: false,
-              noResults: res.data.no_results,
-            },
-            this.getAreaData
-          );
-        });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.pieData = res.data.parties;
+            this.setState(
+              {
+                pieChartIsLoading: false,
+                noResults: res.data.no_results,
+              },
+              this.getAreaData
+            );
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getPieChart)
+        );
       return req;
     }
   };
@@ -217,13 +230,20 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`)
         .then(res => {
-          this.votesData = res.data.parties;
-          this.setState({
-            votesIsLoading: false,
-            noResults: res.data.no_results,
-            tableTotal: res.data.table_total,
-          });
-        });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.votesData = res.data.parties;
+            this.setState({
+              votesIsLoading: false,
+              noResults: res.data.no_results,
+              tableTotal: res.data.table_total,
+            });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getVotesData)
+        );
       return req;
     }
   };
@@ -234,26 +254,36 @@ class ResultsHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/area`)
         .then(res => {
-          this.areaData = res.data.data;
-          this.setState({
-            areaIsLoading: false,
-          });
-        });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.areaData = res.data.data;
+            this.setState({
+              areaIsLoading: false,
+            });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getAreaData)
+        );
       return req;
     }
   };
 
   render() {
     return (
-      <ResultsHomeRouteView
-        userManager={this._userManager}
-        pieData={this.pieData}
-        votesData={this.votesData}
-        areaData={this.areaData}
-        handleFilterSelect={this.handleFilterSelect}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <ResultsHomeRouteView
+          userManager={this._userManager}
+          pieData={this.pieData}
+          votesData={this.votesData}
+          areaData={this.areaData}
+          handleFilterSelect={this.handleFilterSelect}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

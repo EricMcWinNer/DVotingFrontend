@@ -5,7 +5,6 @@ import CandidatesHomeRoute from "./dashboard-candidates-home";
 import RestrictedRoute from "components/routes/restricted-route";
 import SelectNewCandidateRoute from "./dashboard-candidates-select";
 import CreateNewCandidateRoute from "./dashboard-candidates-create";
-import DeleteCandidateRoute from "./dashboard-candidates-delete";
 import EditCandidateRoute from "./dashboard-candidates-edit";
 import UserManager from "security/UserManager";
 import NotFound from "components/cards/not-found-card";
@@ -33,31 +32,49 @@ class CandidatesRoutes extends Component {
         <Route
           exact
           path={this.props.match.path}
-          render={props => <CandidatesHomeRoute user={user} {...props} />}
+          render={props => (
+            <CandidatesHomeRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           exact
           path={`${this.props.match.path}/create`}
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <SelectNewCandidateRoute user={user} {...props} />}
+          render={props => (
+            <SelectNewCandidateRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           exact
           path={`${this.props.match.path}/:id/create`}
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <CreateNewCandidateRoute user={user} {...props} />}
+          render={props => (
+            <CreateNewCandidateRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <RestrictedRoute
           path={`${this.props.match.path}/:id/edit`}
           exact
           isAuthorized={UserManager.isOfficial(user)}
-          render={props => <EditCandidateRoute user={user} {...props} />}
-        />
-        <RestrictedRoute
-          exact
-          path={`${this.props.match.path}/:id/delete`}
-          isAuthorized={UserManager.isOfficial(user)}
-          render={props => <DeleteCandidateRoute user={user} {...props} />}
+          render={props => (
+            <EditCandidateRoute
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route component={NotFound} />
       </Switch>

@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 import OfficialHomeRoute from "./dashboard-officials-home";
 import CreateOfficialRoute from "./dashboard-officials-create";
 import ConfirmOfficialCreateRoute from "./dashboard-officials-create-confirm";
-import DeleteOfficialRoute from "./dashboard-officials-delete";
 import NotFound from "components/cards/not-found-card";
 
 class OfficialRoutes extends Component {
@@ -38,20 +37,25 @@ class OfficialRoutes extends Component {
         <Route
           exact
           path={`${this.props.match.path}/create`}
-          render={props => <CreateOfficialRoute user={user} {...props} />}
+          render={props => (
+            <CreateOfficialRoute
+              updateUser={updateUser}
+              user={user}
+              {...props}
+            />
+          )}
         />
         <Route
           exact
           path={`${this.props.match.path}/:id/create`}
           render={props => (
-            <ConfirmOfficialCreateRoute user={user} {...props} />
+            <ConfirmOfficialCreateRoute
+              updateUser={updateUser}
+              user={user}
+              {...props}
+            />
           )}
         />
-        <Route
-          exact
-          path={`${this.props.match.path}/:id/delete`}
-          render={props => <DeleteOfficialRoute user={user} {...props} />}
-        />+
         <Route component={NotFound} />
       </Switch>
     );

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import UserManager from "security/UserManager";
 import VoteHomeRouteView from "./VoteHomeRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class VoteHomeRoute extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class VoteHomeRoute extends Component {
       alertType: "",
       alertCallBack: null,
       voted: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -35,7 +38,7 @@ class VoteHomeRoute extends Component {
     const req = axios
       .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -43,7 +46,8 @@ class VoteHomeRoute extends Component {
             componentIsLoading: res.data.election !== null,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
     return req;
   };
 
@@ -90,7 +94,7 @@ class VoteHomeRoute extends Component {
     const req = axios
       .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/vote`)
       .then(res => {
-        if (res.data.isSessionValid == "false") {
+        if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
           this.setState({
@@ -99,7 +103,8 @@ class VoteHomeRoute extends Component {
             componentIsLoading: false,
           });
         }
-      });
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
     return req;
   };
 
@@ -117,13 +122,16 @@ class VoteHomeRoute extends Component {
 
   render() {
     return (
-      <VoteHomeRouteView
-        handlePartyCardClick={this.handlePartyCardClick}
-        {...this.state}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        triggerConfirmAlert={this.triggerConfirmAlert}
-      />
+      <>
+        <VoteHomeRouteView
+          handlePartyCardClick={this.handlePartyCardClick}
+          {...this.state}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          triggerConfirmAlert={this.triggerConfirmAlert}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import ConfirmOfficerCreationRouteView from "./ConfirmOfficerCreationRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ConfirmOfficerCreationRoute extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class ConfirmOfficerCreationRoute extends Component {
       componentIsLoading: true,
       creating: false,
       prospectiveOfficer: null,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -21,16 +24,18 @@ class ConfirmOfficerCreationRoute extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          prospectiveOfficer: res.data.user,
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            prospectiveOfficer: res.data.user,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -47,32 +52,39 @@ class ConfirmOfficerCreationRoute extends Component {
         {
           method: "post",
         }
-      ).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            creating: false,
-          });
-          if (res.data.completed) {
-            alert("Polling Officer created successfully");
-            this.props.history.push("/dashboard/officers");
+      )
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
           } else {
-            alert("An error occured");
-            this.props.history.push("/dashboard/officers");
+            this.setState({
+              creating: false,
+            });
+            if (res.data.completed === true) {
+              alert("Polling Officer created successfully");
+              this.props.history.push("/dashboard/officers");
+            } else {
+              alert("An error occured");
+              this.props.history.push("/dashboard/officers");
+            }
           }
-        }
-      });
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
     }
   };
 
   render() {
     return (
-      <ConfirmOfficerCreationRouteView
-        handleCreate={this.handleCreate}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <ConfirmOfficerCreationRouteView
+          handleCreate={this.handleCreate}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

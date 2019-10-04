@@ -8,6 +8,7 @@ import EditVoterInfo from "./dashboard-officer-voter-edit";
 import NotFound from "components/cards/not-found-card";
 
 class OfficersRoutes extends Component {
+  //eslint-disable-next-line
   constructor(props) {
     super(props);
   }
@@ -27,22 +28,46 @@ class OfficersRoutes extends Component {
         <Route
           exact
           path={`${this.props.match.path}/register/voter`}
-          render={props => <RegisterVoter user={user} {...props} />}
+          render={props => (
+            <RegisterVoter
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route
           exact
           path={`${this.props.match.path}/voters`}
-          render={props => <ViewRegisteredVoters user={user} {...props} />}
+          render={props => (
+            <ViewRegisteredVoters
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route
           exact
           path={`${this.props.match.path}/voters/:id`}
-          render={props => <ReadVoterInfo user={user} {...props} />}
+          render={props => (
+            <ReadVoterInfo
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route
           exact
           path={`${this.props.match.path}/voters/:id/edit`}
-          render={props => <EditVoterInfo user={user} {...props} />}
+          render={props => (
+            <EditVoterInfo
+              user={user}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
+          )}
         />
         <Route component={NotFound} />
       </Switch>

@@ -27,7 +27,11 @@ class PinRoutes extends Component {
           exact
           path={`${this.props.match.path}/`}
           render={props => (
-            <PinHomeRoute userManager={this._userManager} {...props} />
+            <PinHomeRoute
+              userManager={this._userManager}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
           )}
         />
         <Route
@@ -37,7 +41,11 @@ class PinRoutes extends Component {
             `${this.props.match.path}/create/:type`,
           ]}
           render={props => (
-            <CreatePinRoute userManager={this._userManager} {...props} />
+            <CreatePinRoute
+              userManager={this._userManager}
+              updateUser={this.props.updateUser}
+              {...props}
+            />
           )}
         />
         <Route component={NotFound} />

@@ -3,6 +3,8 @@ import axios from "axios";
 
 import UserManager from "security/UserManager";
 import EditCandidateFormView from "./EditCandidateFormView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class EditCandidateFormController extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class EditCandidateFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -116,76 +119,85 @@ class EditCandidateFormController extends Component {
             method: "post",
             data: form,
           }
-        ).then(res => {
-          if (res.data.isSessionValid == "false")
-            this.props.history.push("/login");
-          else {
-            this.setState({
-              formIsSubmitting: false,
-            });
-            if (res.data.isValid === false) {
-              if (res.data.field === "candidate_picture")
+        )
+          .then(res => {
+            if (res.data.isSessionValid === false)
+              this.props.history.push("/login");
+            else {
+              this.setState({
+                formIsSubmitting: false,
+              });
+              if (res.data.isValid === false) {
+                if (res.data.field === "candidate_picture")
+                  this.showAlert(
+                    "Invalid Candidate Picture",
+                    "The campaign picture you uploaded is not valid"
+                  );
+                else if (res.data.field === "invalidRole")
+                  this.showAlert(
+                    "Invalid Campaign Position",
+                    "Select a valid campaigning role"
+                  );
+              } else if (res.data.completed === false) {
+                if (res.data.err === "candidateNotExist") {
+                  this.showAlert(
+                    "Candidate does not exist",
+                    "The candidate you are trying to edit does not exist, he/she has possibly already been deleted before",
+                    "error",
+                    this.redirectToCandidates
+                  );
+                  alert(
+                    "The candidate you are trying to update does not exist"
+                  );
+                  this.props.history.push("/dashboard/candidates/create");
+                } else if (res.data.err === "noPendingElection") {
+                  this.showAlert(
+                    "No Pending Election",
+                    "A candidate can only be created or edited when there is a pending election",
+                    "error",
+                    this.redirectToCandidates
+                  );
+                } else if (res.data.err === "partyNotExist")
+                  this.showAlert(
+                    "Party Does Not Exist",
+                    "Please select a valid party"
+                  );
+                else if (res.data.err === "candidateConflictingRole")
+                  this.showAlert(
+                    "Conflicting Candidate Position",
+                    "Two candidates cannot have the same position in the same party in the same election"
+                  );
+              } else if (res.data.completed === true) {
                 this.showAlert(
-                  "Invalid Candidate Picture",
-                  "The campaign picture you uploaded is not valid"
+                  "Success!",
+                  "Candidate edited successfully",
+                  "success"
                 );
-              else if (res.data.field === "invalidRole")
-                this.showAlert(
-                  "Invalid Campaign Position",
-                  "Select a valid campaigning role"
-                );
-            } else if (res.data.completed === false) {
-              if (res.data.err === "candidateNotExist") {
-                this.showAlert(
-                  "Candidate does not exist",
-                  "The candidate you are trying to edit does not exist, he/she has possibly already been deleted before",
-                  "error",
-                  this.redirectToCandidates
-                );
-                alert("The candidate you are trying to update does not exist");
-                this.props.history.push("/dashboard/candidates/create");
-              } else if (res.data.err === "noPendingElection") {
-                this.showAlert(
-                  "No Pending Election",
-                  "A candidate can only be created or edited when there is a pending election",
-                  "error",
-                  this.redirectToCandidates
-                );
-              } else if (res.data.err === "partyNotExist")
-                this.showAlert(
-                  "Party Does Not Exist",
-                  "Please select a valid party"
-                );
-              else if (res.data.err === "candidateConflictingRole")
-                this.showAlert(
-                  "Conflicting Candidate Position",
-                  "Two candidates cannot have the same position in the same party in the same election"
-                );
-            } else if (res.data.completed === true) {
-              this.showAlert(
-                "Success!",
-                "Candidate edited successfully",
-                "success"
-              );
+              }
             }
-          }
-        });
+          })
+          .catch(res =>
+            fireAjaxErrorAlert(this, res.request.status, this.handleSubmit)
+          );
       });
     }
   };
 
   render() {
     return (
-      <EditCandidateFormView
-        handleChange={this.handleChange}
-        handlePartyChange={this.handlePartyChange}
-        updateCampaignPicture={this.updateCampaignPicture}
-        handleSubmit={this.handleSubmit}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <EditCandidateFormView
+          handleChange={this.handleChange}
+          handlePartyChange={this.handlePartyChange}
+          updateCampaignPicture={this.updateCampaignPicture}
+          handleSubmit={this.handleSubmit}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

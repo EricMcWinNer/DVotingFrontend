@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import VoterHomeRouteView from "./VoterHomeRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class VoterHomeRoute extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class VoterHomeRoute extends Component {
       lgas: null,
       selectedState: "",
       selectedLga: "",
+      ...initialAjaxAlertState,
     };
     this.searchNeedle = React.createRef();
   }
@@ -31,22 +34,24 @@ class VoterHomeRoute extends Component {
       {
         method: "get",
       }
-    ).then(res => {
-      if (res.data.isSessionValid == "false") {
-        this.props.history.push("/login");
-      } else {
-        this.setState({
-          componentIsLoading: false,
-          voters: [...res.data.voters.data],
-          currentPage: res.data.voters.current_page,
-          totalPages: res.data.voters.last_page,
-          perPage: res.data.voters.per_page,
-          totalResults: res.data.voters.total,
-          states: res.data.states,
-          lgas: res.data.lgas,
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            componentIsLoading: false,
+            voters: [...res.data.voters.data],
+            currentPage: res.data.voters.current_page,
+            totalPages: res.data.voters.last_page,
+            perPage: res.data.voters.per_page,
+            totalResults: res.data.voters.total,
+            states: res.data.states,
+            lgas: res.data.lgas,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
   componentWillUnmount() {
@@ -176,20 +181,25 @@ class VoterHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid == "false") {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            voters: [...res.data.voters.data],
-            currentPage: res.data.voters.current_page,
-            totalPages: res.data.voters.last_page,
-            perPage: res.data.voters.per_page,
-            totalResults: res.data.voters.total,
-          });
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              voters: [...res.data.voters.data],
+              currentPage: res.data.voters.current_page,
+              totalPages: res.data.voters.last_page,
+              perPage: res.data.voters.per_page,
+              totalResults: res.data.voters.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -216,17 +226,20 @@ class VoterHomeRoute extends Component {
 
   render() {
     return (
-      <VoterHomeRouteView
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        handleChange={this.handleChange}
-        handleFilterSelect={this.handleFilterSelect}
-        searchNeedle={this.searchNeedle}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <VoterHomeRouteView
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          handleChange={this.handleChange}
+          handleFilterSelect={this.handleFilterSelect}
+          searchNeedle={this.searchNeedle}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

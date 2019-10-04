@@ -3,6 +3,8 @@ import axios from "axios";
 
 import RegisterView from "./RegisterView";
 import { validateEmail } from "utils/validate";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class RegisterController extends Component {
   constructor(props) {
@@ -46,6 +48,7 @@ class RegisterController extends Component {
       alertCallBack: null,
       webcamWidth: "",
       forcefullyRemovePreview: false,
+      ...initialAjaxAlertState,
     };
   }
 
@@ -156,9 +159,9 @@ class RegisterController extends Component {
               statesLoading: false,
             });
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.getStates)
+        );
     }
   };
 
@@ -242,9 +245,8 @@ class RegisterController extends Component {
           withCredentials: true,
         })
           .then(res => {
-            console.log(res);
             this.setState({ formIsSubmitting: false }, () => {
-              if (res.data.isValid == false) {
+              if (res.data.isValid === false) {
                 if (res.data.field === "password")
                   this.displayAlert(
                     "Invalid Password",
@@ -297,8 +299,9 @@ class RegisterController extends Component {
               }
             });
           })
-          .catch(err => {
+          .catch(res => {
             this.setState({ formIsSubmitting: false });
+            fireAjaxErrorAlert(this, res.request.status, null);
           });
       });
   };
@@ -314,7 +317,14 @@ class RegisterController extends Component {
             )
             .then(res => {
               this.setState({ lgas: res.data.lgas, lgasLoading: false });
-            });
+            })
+            .catch(res =>
+              fireAjaxErrorAlert(
+                this,
+                res.request.status,
+                this.handlePickedStateOfOrigin
+              )
+            );
         });
   };
 
@@ -322,21 +332,24 @@ class RegisterController extends Component {
 
   render() {
     return (
-      <RegisterView
-        {...this.state}
-        {...this.props}
-        handleSubmit={this.handleSubmit}
-        handleChange={this.handleChange}
-        handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
-        updateCampaignPicture={this.updateCampaignPicture}
-        dismissImageAlert={this.dismissImageAlert}
-        closeAlert={this.closeAlert}
-        changeDob={this.changeDob}
-        udpateProfilePicture={this.udpateProfilePicture}
-        calcWidth={this.calcWidth}
-        pictureContainer={this.pictureContainer}
-        forcefullyShowPreview={this.forcefullyShowPreview}
-      />
+      <>
+        <RegisterView
+          {...this.state}
+          {...this.props}
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+          handlePickedStateOfOrigin={this.handlePickedStateOfOrigin}
+          updateCampaignPicture={this.updateCampaignPicture}
+          dismissImageAlert={this.dismissImageAlert}
+          closeAlert={this.closeAlert}
+          changeDob={this.changeDob}
+          udpateProfilePicture={this.udpateProfilePicture}
+          calcWidth={this.calcWidth}
+          pictureContainer={this.pictureContainer}
+          forcefullyShowPreview={this.forcefullyShowPreview}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

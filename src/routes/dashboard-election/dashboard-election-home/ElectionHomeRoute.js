@@ -3,6 +3,8 @@ import UserManager from "security/UserManager";
 import axios from "axios";
 
 import ElectionHomeRouteView from "routes/dashboard-election/dashboard-election-home/ElectionHomeRouteView";
+import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
+import ErrorAlert from "components/error-alert";
 
 class ElectionHomeRoute extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class ElectionHomeRoute extends Component {
       fireDeleteSuccessModal: false,
       fireFinalizeSuccessModal: false,
       electionIsDeleting: false,
+      ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
@@ -38,16 +41,18 @@ class ElectionHomeRoute extends Component {
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
         .then(res => {
-          if (res.data.isSessionValid == "true") {
+          if (res.data.isSessionValid === false)
+            this.props.history.push("/login");
+          else {
             this.setState({
-              loggedIn: res.data.isSessionValid == "true",
               election: res.data.election,
               created_by: res.data.created_by,
               string_dates: res.data.string_dates,
               componentIsLoading: false,
             });
-          } else this.props.history.push("/login");
-        });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -67,21 +72,25 @@ class ElectionHomeRoute extends Component {
         {
           method: "get",
         }
-      ).then(res => {
-        this.setState({ finalizing: false });
-        if (res.data.isSessionValid != "true") {
-          this.props.history.push("/login");
-        } else {
-          if (res.data.exists === false)
-            this.props.history.push("/dashboard/election");
-          else if (res.data.completed === true) {
-            alert(
-              "Election was finalized successfully. You can start another election after confirming this."
-            );
-            this.props.history.push("/dashboard/election");
+      )
+        .then(res => {
+          this.setState({ finalizing: false });
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            if (res.data.exists === false)
+              this.props.history.push("/dashboard/election");
+            else if (res.data.completed === true) {
+              alert(
+                "Election was finalized successfully. You can start another election after confirming this."
+              );
+              this.props.history.push("/dashboard/election");
+            }
           }
-        }
-      });
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
     }
   };
 
@@ -113,23 +122,27 @@ class ElectionHomeRoute extends Component {
           axios.defaults.withCredentials = true;
           axios(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`, {
             method: "delete",
-          }).then(res => {
-            if (res.data.isSessionValid == "false")
-              this.props.history.push("/login");
-            else {
-              this.setState({
-                fireDeleteModal: false,
-              });
-              if (res.data.exists === false)
-                this.props.history.push("/dashboard/election");
-              else if (res.data.completed === true) {
+          })
+            .then(res => {
+              if (res.data.isSessionValid === false)
+                this.props.history.push("/login");
+              else {
                 this.setState({
                   fireDeleteModal: false,
-                  fireDeleteSuccessModal: true,
                 });
+                if (res.data.exists === true)
+                  this.props.history.push("/dashboard/election");
+                else if (res.data.completed) {
+                  this.setState({
+                    fireDeleteModal: false,
+                    fireDeleteSuccessModal: true,
+                  });
+                }
               }
-            }
-          });
+            })
+            .catch(res =>
+              fireAjaxErrorAlert(this, res.request.status, null, false)
+            );
         }
       );
     }
@@ -143,18 +156,21 @@ class ElectionHomeRoute extends Component {
 
   render() {
     return (
-      <ElectionHomeRouteView
-        componentIsLoading={this.state.componentIsLoading}
-        finalizeElection={this.finalizeElection}
-        userManager={this._userManager}
-        closeDeleteModal={this.closeDeleteModal}
-        showDeleteModal={this.showDeleteModal}
-        showFinalizeModal={this.showFinalizeModal}
-        deleteElection={this.deleteElection}
-        handleModalConfirmation={this.handleModalConfirmation}
-        {...this.props}
-        {...this.state}
-      />
+      <>
+        <ElectionHomeRouteView
+          componentIsLoading={this.state.componentIsLoading}
+          finalizeElection={this.finalizeElection}
+          userManager={this._userManager}
+          closeDeleteModal={this.closeDeleteModal}
+          showDeleteModal={this.showDeleteModal}
+          showFinalizeModal={this.showFinalizeModal}
+          deleteElection={this.deleteElection}
+          handleModalConfirmation={this.handleModalConfirmation}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

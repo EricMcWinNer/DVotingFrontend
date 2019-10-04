@@ -19,7 +19,7 @@ class ResultRoutes extends Component {
         <Route
           exact
           path={`${this.props.match.path}`}
-          render={props => <ResultsHome user={user} {...props} />}
+          render={props => <ResultsHome user={user} updateUser={this.props.udpateUser} {...props} />}
         />
         <Route component={NotFound} />
       </Switch>
