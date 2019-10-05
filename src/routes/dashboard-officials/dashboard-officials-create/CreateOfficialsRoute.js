@@ -13,7 +13,6 @@ class CreateOfficialsRoute extends Component {
     super(props);
     this.state = {
       componentIsLoading: true,
-      users: null,
       currentPage: 0,
       totalPages: 0,
       perPage: 20,
@@ -33,6 +32,8 @@ class CreateOfficialsRoute extends Component {
     this._userManager = new UserManager(this.props.user);
   }
 
+  users = null;
+
   componentDidMount() {
     this._mounted = true;
     this.initializeRoute();
@@ -51,10 +52,10 @@ class CreateOfficialsRoute extends Component {
         if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
+          this.users = res.data.users.data;
           this.setState(state => ({
             componentIsLoading: false,
             tableLoading: false,
-            users: res.data.users.data,
             currentPage: res.data.users.current_page,
             totalPages: res.data.users.last_page,
             perPage: res.data.users.per_page,
@@ -270,9 +271,9 @@ class CreateOfficialsRoute extends Component {
         if (res.data.isSessionValid === false) {
           this.props.history.push("/login");
         } else {
+          this.users = [...res.data.users.data];
           this.setState({
             tableLoading: false,
-            users: [...res.data.users.data],
             currentPage: res.data.users.current_page,
             totalPages: res.data.users.last_page,
             perPage: res.data.users.per_page,
@@ -324,6 +325,7 @@ class CreateOfficialsRoute extends Component {
         closeCreateModal={this.closeCreateModal}
         createOfficialConfirm={this.createOfficialConfirm}
         handleModalConfirmation={this.handleModalConfirmation}
+        users={this.users}
         {...this.props}
         {...this.state}
       />

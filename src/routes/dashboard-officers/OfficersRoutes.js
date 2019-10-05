@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 
 import OfficerHomeRoute from "./dashboard-officers-home";
 import CreateOfficerRoute from "./dashboard-officers-create";
-import ConfirmOfficerCreationRoute from "./dashboard-officers-create-confirm";
 import ViewVotersRegistered from "./dashboard-officers-view-voters";
 import RestrictedRoute from "components/routes/restricted-route";
 import UserManager from "security/UserManager";
@@ -45,18 +44,6 @@ class OfficersRoutes extends Component {
           path={`${this.props.match.path}/create`}
           render={props => (
             <CreateOfficerRoute
-              updateUser={this.props.updateUser}
-              user={user}
-              {...props}
-            />
-          )}
-        />
-        <RestrictedRoute
-          isAuthorized={UserManager.isOfficial(user)}
-          exact
-          path={`${this.props.match.path}/:id/create`}
-          render={props => (
-            <ConfirmOfficerCreationRoute
               updateUser={this.props.updateUser}
               user={user}
               {...props}

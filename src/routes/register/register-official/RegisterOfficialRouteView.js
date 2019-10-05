@@ -9,7 +9,7 @@ import RegisterForm from "components/forms/register/RegisterController";
 
 import "./index.sass";
 
-function RegisterRouteView(props) {
+function RegisterRouteOfficialView(props) {
   return (
     <div
       id={"registerOfficialRoute"}
@@ -38,7 +38,10 @@ function RegisterRouteView(props) {
                 following information, please note that the fields marked with
                 an asterisk (*) are required.
               </p>
-              <RegisterForm signInRedirect={props.signInRedirect} />
+              <RegisterForm
+                url={`${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`}
+                signInRedirect={props.signInRedirect}
+              />
             </div>
           </Col>
         </Row>
@@ -47,4 +50,4 @@ function RegisterRouteView(props) {
   );
 }
 
-export default RegisterRouteView;
+export default RegisterRouteOfficialView;

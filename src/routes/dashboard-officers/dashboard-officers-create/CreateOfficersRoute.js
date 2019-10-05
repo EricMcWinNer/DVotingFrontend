@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import axios from "axios";
 import UserManager from "security/UserManager";
 
-import SelectNewOfficerRouteView from "./SelectNewOfficerRouteView";
+import CreateOfficersRouteView from "./CreateOfficersRouteView";
 import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
 import ErrorAlert from "components/error-alert";
 
-class SelectNewOfficerRoute extends Component {
+class CreateOfficersRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -317,7 +317,7 @@ class SelectNewOfficerRoute extends Component {
   render() {
     return (
       <>
-        <SelectNewOfficerRouteView
+        <CreateOfficersRouteView
           userManager={this._userManager}
           clearSearch={this.clearSearch}
           changePage={this.changePage}
@@ -339,4 +339,4 @@ class SelectNewOfficerRoute extends Component {
   }
 }
 
-export default SelectNewOfficerRoute;
+export default CreateOfficersRoute;

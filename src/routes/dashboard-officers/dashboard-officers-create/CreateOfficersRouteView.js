@@ -12,7 +12,7 @@ import { selectOfficerModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button";
 import SweetAlert from "react-bootstrap-sweetalert";
 
-function SelectNewOfficerRouteView(props) {
+function CreateOfficersRouteView(props) {
   const userManager = props.userManager;
   const selectOfficerColumns = selectOfficerModel(props.showCreateModal);
   let eligibleOfficersData, states, lgas;
@@ -173,7 +173,7 @@ function SelectNewOfficerRouteView(props) {
               cancelBtnBsStyle="default"
               title={`${props.officerIsLoading ? "" : "Are you sure?"}`}
               onCancel={props.closeCreateModal}
-              onConfirm={props.handleModalConfirmation}
+              onConfirm={props.createOfficerConfirm}
             >
               {props.officerIsLoading ? (
                 <SubRouteLoader className={"mt-5 mb-5"} />
@@ -202,4 +202,4 @@ function SelectNewOfficerRouteView(props) {
   );
 }
 
-export default SelectNewOfficerRouteView;
+export default CreateOfficersRouteView;
