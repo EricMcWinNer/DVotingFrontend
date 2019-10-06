@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
-import Immutable from "immutable";
+import _ from "lodash";
 
 class PureTable extends Component {
-  constructor(props) {
-    super(props);
-    this._data = Immutable.List([...this.props.data]);
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return !_.isEqual(this.props.data, nextProps.data);
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return this._data.equals(Immutable.List(nextProps.data));
-  }
-  
   render() {
     return <DataTable {...this.props} />;
   }

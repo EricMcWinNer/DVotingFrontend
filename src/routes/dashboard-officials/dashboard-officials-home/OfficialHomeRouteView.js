@@ -11,6 +11,7 @@ import { officialModel } from "utils/tablemodels";
 import PureTable from "components/dashboard/pure-table";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import SweetAlert from "react-bootstrap-sweetalert";
+import PureSelect from "components/dashboard/pure-alert";
 
 function OfficialHomeRouteView(props) {
   let officialData, states, lgas;
@@ -66,29 +67,29 @@ function OfficialHomeRouteView(props) {
             <ul className={"o-auto fullWidth clearfix"}>
               <li>
                 <label htmlFor={"filterState"}>Filter by state:</label>
-                <select
+                <PureSelect
                   name={"filterState"}
                   id={"filterState"}
                   className={"filterVoters custom-select"}
                   value={props.selectedState}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {states}
-                </select>
+                </PureSelect>
               </li>
               <li>
                 <label htmlFor={"filterLGA"}>Filter by LGA:</label>
-                <select
+                <PureSelect
                   name={"filterLGA"}
                   id={"filterLGA"}
                   className={"filterVoters custom-select"}
                   value={props.selectedLga}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {lgas}
-                </select>
+                </PureSelect>
               </li>
               <li className="float-right">
                 <label htmlFor={"searchNeedle"}>Search:</label>
