@@ -11,7 +11,7 @@ import { officialModel } from "utils/tablemodels";
 import PureTable from "components/dashboard/pure-table";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import SweetAlert from "react-bootstrap-sweetalert";
-import PureSelect from "components/dashboard/pure-alert";
+import PureSelect from "components/dashboard/pure-select";
 
 function OfficialHomeRouteView(props) {
   let officialData, states, lgas;
