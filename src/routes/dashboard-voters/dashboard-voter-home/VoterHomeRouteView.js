@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
-import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
+import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import { votersModel } from "utils/tablemodels";
 import voters from "assets/img/icons/voter.png";
 import PureTable from "components/dashboard/pure-table";
