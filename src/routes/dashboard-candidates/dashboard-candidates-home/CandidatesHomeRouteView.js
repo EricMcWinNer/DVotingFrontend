@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import SweetAlert from "react-bootstrap-sweetalert";
 
 import "./index.sass";
@@ -77,7 +77,7 @@ function CandidatesHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={candidateColumns}

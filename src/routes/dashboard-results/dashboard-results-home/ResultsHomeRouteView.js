@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Helmet from "react-helmet";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
 import statistics from "assets/img/icons/results.png";
@@ -492,7 +492,7 @@ function ResultHomeRouteView(props) {
                     </ul>
                   </div>
                   <div className={"DataTableContainer mt-3"}>
-                    <DataTable
+                    <PureTable
                       noHeader
                       striped
                       columns={

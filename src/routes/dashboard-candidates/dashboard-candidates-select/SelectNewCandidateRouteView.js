@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card";
 import Helmet from "react-helmet";
 import candidates from "assets/img/icons/totalcandidates.png";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import { selectCandidatesModel } from "utils/tablemodels";
 
 function SelectNewCandidateRouteView(props) {
@@ -107,7 +107,7 @@ function SelectNewCandidateRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={selectCandidatesModel}

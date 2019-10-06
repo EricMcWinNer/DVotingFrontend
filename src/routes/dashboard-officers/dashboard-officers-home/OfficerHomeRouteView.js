@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import BaseCard from "components/cards/base-card";
@@ -111,7 +111,7 @@ function OfficerHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={officerColumns}

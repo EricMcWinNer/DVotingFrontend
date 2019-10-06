@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import Helmet from "react-helmet";
 import officials from "assets/img/icons/official.png";
 import { officialModel } from "utils/tablemodels";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import SweetAlert from "react-bootstrap-sweetalert";
 
@@ -111,7 +111,7 @@ function OfficialHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={officialColumns}

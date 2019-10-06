@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import BaseCard from "components/cards/base-card";
 import noResults from "assets/img/icons/db-error.png";
 import LinkButton from "components/buttons/react-router-link-button";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import parties from "assets/img/icons/parties.png";
 import { politicalPartiesModel } from "utils/tablemodels";
 import Helmet from "react-helmet";
@@ -119,7 +119,7 @@ function PartyHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={partiesModel}

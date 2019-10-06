@@ -1,5 +1,4 @@
 import React from "react";
-import DataTable from "react-data-table-component";
 import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -9,6 +8,7 @@ import BaseCard from "components/cards/base-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
 import { votersModel } from "utils/tablemodels";
 import voters from "assets/img/icons/voter.png";
+import PureTable from "components/dashboard/pure-table";
 
 function VoterHomeRouteView(props) {
   const handleKeyUp = e => {
@@ -107,7 +107,7 @@ function VoterHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={votersModel}

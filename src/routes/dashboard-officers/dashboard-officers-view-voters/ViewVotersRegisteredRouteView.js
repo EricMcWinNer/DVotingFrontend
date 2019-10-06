@@ -8,7 +8,7 @@ import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import BrokenLink from "components/cards/broken-link-card";
 import BaseCard from "components/cards/base-card/";
 import voter from "assets/img/icons/voter.png";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import { viewVotersOfficialModel } from "utils/tablemodels";
 
 function ViewVotersRegisteredRouteView(props) {
@@ -78,7 +78,7 @@ function ViewVotersRegisteredRouteView(props) {
               </li>
             </ul>
             <div className={"DataTableContainer mt-3"}>
-              <DataTable
+              <PureTable
                 noHeader
                 striped
                 columns={viewVotersOfficialModel}
