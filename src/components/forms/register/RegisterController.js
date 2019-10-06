@@ -237,10 +237,7 @@ class RegisterController extends Component {
         data.append("picture", this.state.profilePictureFile);
         axios({
           method: "post",
-          url:
-            this.props.url === undefined
-              ? `${process.env.REACT_APP_API_PATH}/api/web/auth/official/register`
-              : this.props.url,
+          url: this.props.url,
           data: data,
           withCredentials: true,
         })
@@ -250,37 +247,43 @@ class RegisterController extends Component {
                 if (res.data.field === "password")
                   this.displayAlert(
                     "Invalid Password",
-                    "The passwords you submitted do not match"
+                    "The passwords you submitted do not match."
                   );
                 else if (res.data.field === "emailExists")
                   this.displayAlert(
                     "Invalid e-mail",
-                    "The email address you submitted has already been used"
+                    "The email address you submitted has already been used."
                   );
                 else if (res.data.field === "confirmationPin")
                   this.displayAlert(
                     "Invalid Registration Pin",
-                    "The confirmation pin you entered is invalid"
+                    "The confirmation pin you entered is invalid."
                   );
                 else if (res.data.field === "confirmationPinUsed")
                   this.displayAlert(
                     "Invalid Registration Pin",
-                    "The confirmation pin you entered has already been used"
+                    "The confirmation pin you entered has already been used."
                   );
                 else if (res.data.field === "tooYoung")
                   this.displayAlert(
                     "Invalid Age",
-                    "You must be at least 18 years old to be an register-official"
+                    "You must be at least 18 years old to be an register-official."
                   );
-                else
+                else if (res.data.field === "ongoingElection") {
+                  this.displayAlert(
+                    "Ongoing Election!",
+                    "Registrations are cancelled during an election. Try again after the current election is completed.",
+                    "error"
+                  );
+                } else
                   this.displayAlert(
                     "Invalid Entry",
-                    `The ${res.data.field} you submitted is not valid`
+                    `The ${res.data.field} you submitted is not valid.`
                   );
               } else if ("exception" in res.data)
                 this.displayAlert(
                   "Error!",
-                  "Something went wrong, please try again later",
+                  "Something went wrong. It's not you, it's us and we're working on it. Please try again later.",
                   "error"
                 );
               else {
@@ -288,7 +291,7 @@ class RegisterController extends Component {
                   "Success!",
                   this.props.editMode === undefined
                     ? "Account registered successfully."
-                    : "Account updated successfully",
+                    : "Account updated successfully.",
                   "success",
                   this.props.stayOnPage === undefined
                     ? this.props.signInRedirect
@@ -318,13 +321,7 @@ class RegisterController extends Component {
             .then(res => {
               this.setState({ lgas: res.data.lgas, lgasLoading: false });
             })
-            .catch(res =>
-              fireAjaxErrorAlert(
-                this,
-                res.request.status,
-                this.handlePickedStateOfOrigin
-              )
-            );
+            .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
         });
   };
 

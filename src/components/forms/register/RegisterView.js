@@ -125,7 +125,7 @@ function RegisterView(props) {
             </Col>
             <Col md={4}>
               <label htmlFor="phoneNumber" className={"required"}>
-                PhoneNumber
+                Phone Number
               </label>
               <input
                 id={"phoneNumber"}

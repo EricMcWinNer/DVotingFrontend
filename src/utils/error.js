@@ -81,8 +81,10 @@ export const fireAjaxErrorAlert = (
         ErrorMessage.zero.title,
         ErrorMessage.zero.message,
         () => {
-          if (callback) callback();
-          else {
+          if (callback) {
+            closeAjaxAlert(that);
+            callback();
+          } else {
             if (reload) window.location.reload();
             else closeAjaxAlert(that);
           }
@@ -98,7 +100,10 @@ export const fireAjaxErrorAlert = (
         ErrorMessage.fourohthree.message,
         () => {
           that.props.updateUser();
-          that.props.history.push("/dashboard");
+          closeAjaxAlert(that);
+          if (that.props.location.pathname === "/dashboard")
+            window.location.reload();
+          else that.props.history.push("/dashboard");
         },
         ErrorMessage.btnText
       );
@@ -112,8 +117,13 @@ export const fireAjaxErrorAlert = (
         () => {
           if (callback) callback();
           else {
-            if (reload) that.props.history.push("/dashboard");
-            else closeAjaxAlert(that);
+            if (reload) {
+              closeAjaxAlert(that);
+              that.props.history.push("/dashboard");
+              if (that.props.location.pathname === "/dashboard")
+                window.location.reload();
+              else that.props.history.push("/dashboard");
+            } else closeAjaxAlert(that);
           }
         },
         ErrorMessage.btnText

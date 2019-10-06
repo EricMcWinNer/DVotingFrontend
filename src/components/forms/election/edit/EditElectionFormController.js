@@ -4,7 +4,7 @@ import UserManager from "security/UserManager";
 
 import EditElectionFormView from "./EditElectionFormView";
 import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
-import SweetAlert from "react-bootstrap-sweetalert";
+import ErrorAlert from "components/error-alert";
 
 class EditElectionFormController extends Component {
   constructor(props) {
@@ -178,16 +178,19 @@ class EditElectionFormController extends Component {
 
   render() {
     return (
-      <EditElectionFormView
-        handleChange={this.handleChange}
-        handleStartDateChange={this.handleStartDateChange}
-        handleEndDateChange={this.handleEndDateChange}
-        handleSubmit={this.handleSubmit}
-        userManager={this._userManager}
-        closeErrorModal={this.closeErrorModal}
-        {...this.state}
-        {...this.props}
-      />
+      <>
+        <EditElectionFormView
+          handleChange={this.handleChange}
+          handleStartDateChange={this.handleStartDateChange}
+          handleEndDateChange={this.handleEndDateChange}
+          handleSubmit={this.handleSubmit}
+          userManager={this._userManager}
+          closeErrorModal={this.closeErrorModal}
+          {...this.state}
+          {...this.props}
+        />
+        <ErrorAlert state={this.state} />
+      </>
     );
   }
 }

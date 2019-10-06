@@ -55,9 +55,10 @@ class LoginController extends Component {
             }
             if (this._mounted) this.setState({ formIsSubmitting: false });
           })
-          .catch(res =>
-            fireAjaxErrorAlert(this, res.request.status, null, false)
-          );
+          .catch(res => {
+            this.setState({ formIsSubmitting: false });
+            fireAjaxErrorAlert(this, res.request.status, null, false);
+          });
       });
     }
   };

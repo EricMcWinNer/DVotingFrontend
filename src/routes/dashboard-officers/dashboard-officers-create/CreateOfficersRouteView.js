@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 
 import "./index.sass";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
@@ -11,8 +11,9 @@ import officer from "assets/img/icons/officer.png";
 import { selectOfficerModel } from "utils/tablemodels";
 import LinkButton from "components/buttons/react-router-link-button";
 import SweetAlert from "react-bootstrap-sweetalert";
+import PureSelect from "components/dashboard/pure-select";
 
-function SelectNewOfficerRouteView(props) {
+function CreateOfficersRouteView(props) {
   const userManager = props.userManager;
   const selectOfficerColumns = selectOfficerModel(props.showCreateModal);
   let eligibleOfficersData, states, lgas;
@@ -68,29 +69,29 @@ function SelectNewOfficerRouteView(props) {
             <ul className={"o-auto fullWidth clearfix"}>
               <li>
                 <label htmlFor={"filterState"}>Filter by state:</label>
-                <select
+                <PureSelect
                   name={"filterState"}
                   id={"filterState"}
                   className={"filterVoters custom-select"}
                   value={props.selectedState}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {states}
-                </select>
+                </PureSelect>
               </li>
               <li>
                 <label htmlFor={"filterLGA"}>Filter by LGA:</label>
-                <select
+                <PureSelect
                   name={"filterLGA"}
                   id={"filterLGA"}
                   className={"filterVoters custom-select"}
                   value={props.selectedLga}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {lgas}
-                </select>
+                </PureSelect>
               </li>
               <li className="float-right">
                 <label htmlFor={"searchNeedle"}>Search:</label>
@@ -113,7 +114,7 @@ function SelectNewOfficerRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={selectOfficerColumns}
@@ -173,7 +174,7 @@ function SelectNewOfficerRouteView(props) {
               cancelBtnBsStyle="default"
               title={`${props.officerIsLoading ? "" : "Are you sure?"}`}
               onCancel={props.closeCreateModal}
-              onConfirm={props.handleModalConfirmation}
+              onConfirm={props.createOfficerConfirm}
             >
               {props.officerIsLoading ? (
                 <SubRouteLoader className={"mt-5 mb-5"} />
@@ -202,4 +203,4 @@ function SelectNewOfficerRouteView(props) {
   );
 }
 
-export default SelectNewOfficerRouteView;
+export default CreateOfficersRouteView;

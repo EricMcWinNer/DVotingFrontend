@@ -27,6 +27,11 @@ function VoterProfile(props) {
       ));
   }
 
+  const goBack = e => {
+    e.preventDefault();
+    props.history.goBack();
+  }
+
   return props.componentIsLoading ? (
     <SubRouteLoader />
   ) : props.voter === null ? (
@@ -53,7 +58,7 @@ function VoterProfile(props) {
             </div>
           </div>
           <p className="subtitle poppins">
-            Below you can see the complete details of {props.voter.name}
+            Below you can see the complete details of {props.voter.name} {props.match.path}
           </p>
           <div className="text">
             <Row>
@@ -214,15 +219,16 @@ function VoterProfile(props) {
                 )}
 
                 <LinkButton
-                  className={`reject-background ml-0`}
+                  className={`confirm-background ml-0`}
                   to={
                     props.officerView === undefined
                       ? "/dashboard/voters"
                       : "dashboard/officer/voters"
                   }
+                  onClick={e => goBack(e)}
                 >
                   <i className="fas fa-chevron-left" />
-                  Back to voters
+                 Go back
                 </LinkButton>
               </Row>
             </div>

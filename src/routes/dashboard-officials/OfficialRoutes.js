@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 
 import OfficialHomeRoute from "./dashboard-officials-home";
 import CreateOfficialRoute from "./dashboard-officials-create";
-import ConfirmOfficialCreateRoute from "./dashboard-officials-create-confirm";
 import NotFound from "components/cards/not-found-card";
 
 class OfficialRoutes extends Component {
@@ -39,17 +38,6 @@ class OfficialRoutes extends Component {
           path={`${this.props.match.path}/create`}
           render={props => (
             <CreateOfficialRoute
-              updateUser={updateUser}
-              user={user}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`${this.props.match.path}/:id/create`}
-          render={props => (
-            <ConfirmOfficialCreateRoute
               updateUser={updateUser}
               user={user}
               {...props}

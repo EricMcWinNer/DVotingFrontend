@@ -53,7 +53,7 @@ export function dateStringParser(string) {
   const date = new Date(epoch);
   const now = new Date();
   const time = now.getTime();
-  const daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const daysOfTheWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const monthsOfTheYr = [
     "Jan",
     "Feb",
@@ -104,14 +104,16 @@ export function dateStringParser(string) {
     );
   else if (date.getFullYear() === now.getFullYear())
     return (
+      daysOfTheWeek[date.getDay()] + ", " +
       appendPositionSuffix(date.getDate()) +
-      ", " +
+      " " +
       monthsOfTheYr[date.getMonth()]
     );
   else
     return (
+      daysOfTheWeek[date.getDay()] + ", " +
       appendPositionSuffix(date.getDate()) +
-      ", " +
+      " " +
       monthsOfTheYr[date.getMonth()] +
       " " +
       date.getFullYear()

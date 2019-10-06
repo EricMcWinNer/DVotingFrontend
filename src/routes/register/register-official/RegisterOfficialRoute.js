@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import RegisterOfficerRouteView from "./RegisterOfficerRouteView";
+import RegisterOfficialRouteView from "./RegisterOfficialRouteView";
 import axios from "axios";
 import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
 import FullScreenLoader from "components/loaders/fullscreen";
 import ErrorAlert from "components/error-alert";
 
-class RegisterOfficerRoute extends Component {
+class RegisterOfficialRoute extends Component {
+  
   constructor(props) {
     super(props);
     this.state = { ...initialAjaxAlertState, componentIsLoading: true };
@@ -25,6 +26,10 @@ class RegisterOfficerRoute extends Component {
       .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }
 
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   signInRedirect = () => {
     this.props.history.push("/login");
   };
@@ -35,7 +40,7 @@ class RegisterOfficerRoute extends Component {
         {this.state.componentIsLoading ? (
           <FullScreenLoader />
         ) : (
-          <RegisterOfficerRouteView signInRedirect={this.signInRedirect} />
+          <RegisterOfficialRouteView signInRedirect={this.signInRedirect} />
         )}
         <ErrorAlert state={this.state} />
       </>
@@ -43,4 +48,4 @@ class RegisterOfficerRoute extends Component {
   }
 }
 
-export default RegisterOfficerRoute;
+export default RegisterOfficialRoute;

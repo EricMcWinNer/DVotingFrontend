@@ -1,5 +1,4 @@
 import React from "react";
-import DataTable from "react-data-table-component";
 import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -9,6 +8,8 @@ import BaseCard from "components/cards/base-card";
 import SubRouteLoader from "components/loaders/dashboard-sub-route/DashboardSubRouteLoader";
 import { votersModel } from "utils/tablemodels";
 import voters from "assets/img/icons/voter.png";
+import PureTable from "components/dashboard/pure-table";
+import PureSelect from "components/dashboard/pure-select";
 
 function VoterHomeRouteView(props) {
   const handleKeyUp = e => {
@@ -62,29 +63,29 @@ function VoterHomeRouteView(props) {
             <ul className={"o-auto clearfix"}>
               <li>
                 <label htmlFor={"filterState"}>Filter by state:</label>
-                <select
+                <PureSelect
                   name={"filterState"}
                   id={"filterState"}
                   className={"filterVoters custom-select"}
                   value={props.selectedState}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {states}
-                </select>
+                </PureSelect>
               </li>
               <li>
                 <label htmlFor={"filterLGA"}>Filter by LGA:</label>
-                <select
+                <PureSelect
                   name={"filterLGA"}
                   id={"filterLGA"}
                   className={"filterVoters custom-select"}
                   value={props.selectedLga}
                   onChange={e => props.handleFilterSelect(e)}
+                  firstOption={<option value={""}>None</option>}
                 >
-                  <option value={""}>None</option>
                   {lgas}
-                </select>
+                </PureSelect>
               </li>
               <li className="float-right">
                 <label htmlFor={"searchNeedle"}>Search:</label>
@@ -107,7 +108,7 @@ function VoterHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={votersModel}

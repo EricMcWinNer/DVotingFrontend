@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import DataTable from "react-data-table-component";
+import PureTable from "components/dashboard/pure-table";
 import SweetAlert from "react-bootstrap-sweetalert";
 
 import "./index.sass";
@@ -77,7 +77,7 @@ function CandidatesHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={candidateColumns}
@@ -98,18 +98,20 @@ function CandidatesHomeRouteView(props) {
             )}
           </div>
           <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
-            {props.user.roles.includes("official") && (
-              <li>
-                <LinkButton
-                  id={"manage-election-button"}
-                  className={"logo-background"}
-                  to={`/dashboard/candidates/create`}
-                >
-                  <i className="far fa-plus-square" />
-                  Create
-                </LinkButton>
-              </li>
-            )}
+            {userManager.isOfficial() &&
+              props.election !== null &&
+              props.election.status === "ongoing" && (
+                <li>
+                  <LinkButton
+                    id={"manage-election-button"}
+                    className={"cool-purple-background"}
+                    to={`/dashboard/candidates/create`}
+                  >
+                    <i className="far fa-plus-square" />
+                    Create New Candidate
+                  </LinkButton>
+                </li>
+              )}
           </ul>
           {!props.componentIsLoading &&
             props.showNoCandidateModal &&

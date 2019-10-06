@@ -9,6 +9,7 @@
     "bootstrap": "^4.3.1",
     "chalk": "^2.4.2",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
     "react-bootstrap-sweetalert": "^4.4.1",

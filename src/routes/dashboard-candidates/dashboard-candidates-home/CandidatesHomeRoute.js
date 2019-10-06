@@ -23,6 +23,7 @@ class CandidatesHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       candidate: null,
+      election: null,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
@@ -55,6 +56,7 @@ class CandidatesHomeRoute extends Component {
               totalPages: res.data.candidates.last_page,
               perPage: res.data.candidates.per_page,
               totalResults: res.data.candidates.total,
+              election: res.data.election,
             });
           }
         })

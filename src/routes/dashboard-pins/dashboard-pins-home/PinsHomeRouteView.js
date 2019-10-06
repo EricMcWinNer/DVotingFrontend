@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import DataTable from "react-data-table-component";
+import PureTable from "react-data-table-component";
 
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
@@ -95,7 +95,7 @@ function PinsHomeRouteView(props) {
             </ul>
           </div>
           <div className={"DataTableContainer"}>
-            <DataTable
+            <PureTable
               noHeader
               striped
               columns={pinModel}
