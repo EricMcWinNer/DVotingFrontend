@@ -49,16 +49,57 @@ class ResultsHomeRoute extends Component {
 
   componentDidMount() {
     this._mounted = true;
-
-    this.getElection()
-      .then(this.initializeRoute)
-      .then(this.getVotesData);
+    this.getElection();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     //DO SOMETHING
   }
 
+  /*
+    Runs all the methods necessary to display the results
+  */
+  getResults = () => {
+    if (this._mounted) this.initializeRoute().then(this.getVotesData);
+  };
+
+  /*
+    Similar to notifications kickstarter this method gets results once and gets it again
+    every 5 seconds to keep the result's values up to date.
+  */
+  resultsKickstarter = () => {
+    if (this._mounted) {
+      this.getResults();
+      this._results = setInterval(() => {
+        this.updateResults();
+      }, 1000 * 15);
+    }
+  };
+
+  updateResults = () => {
+    if (this._mounted) {
+      axios.defaults.withCredentials = true;
+      const req = axios
+        .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
+        .then(res => {
+          if (res.data.isSessionValid === false)
+            this.props.history.push("/login");
+          else {
+            this.setState({ election: res.data.election }, () => {
+              this.initializeRoute().then(this.getVotesData);
+            });
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, this.updateResults)
+        );
+      return req;
+    }
+  };
+
+  /*
+    Gets the current election object
+  */
   getElection = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -68,13 +109,21 @@ class ResultsHomeRoute extends Component {
           if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
-            this.setState({
-              election: res.data.election,
-              componentIsLoading:
-                res.data.election !== null ||
-                (res.data.election.status !== "ongoing" &&
-                  res.data.election.status !== "completed"),
-            });
+            this.setState(
+              {
+                election: res.data.election,
+                componentIsLoading:
+                  res.data.election === null
+                    ? false
+                    : res.data.election.status === "ongoing" ||
+                      res.data.election.status === "completed"
+                    ? true
+                    : false,
+              },
+              () => {
+                if (this.state.election !== null) this.resultsKickstarter();
+              }
+            );
           }
         })
         .catch(res =>
@@ -84,6 +133,9 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  /**
+   * Runs each time the filter select boxes are changed
+   */
   handleFilterSelect = e => {
     if (this._mounted) {
       let { name, value } = e.target;
@@ -109,6 +161,10 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  /**
+   * Handles filtering of the results table by either state or LGA. I hold the selected state
+   * and object in state and decide what URL to show by that
+   */
   filter = () => {
     let url;
     const filterState = this.state.selectedState;
@@ -135,30 +191,41 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  /**
+   * Populates the parties table with results gotten from a URL it's agnostic about. Other methods
+   * decide what that URL would be and feed this method with it to populate the table.
+   */
   getTableResults = url => {
     if (this._mounted) {
       this.setState({ tableLoading: true, lgaIsLoading: true });
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.votesData = res.data.parties;
-          this.setState(state => ({
-            tableLoading: false,
-            lgas: res.data.lgas === undefined ? state.lgas : res.data.lgas,
-            lgaIsLoading: false,
-            selectStateObject: res.data.state_object,
-            selectedLgaObject: res.data.lga_object,
-            tableTotal: res.data.total_votes,
-          }));
-        }
-      });
+      })
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.votesData = res.data.parties;
+            this.setState(state => ({
+              tableLoading: false,
+              lgas: res.data.lgas === undefined ? state.lgas : res.data.lgas,
+              lgaIsLoading: false,
+              selectStateObject: res.data.state_object,
+              selectedLgaObject: res.data.lga_object,
+              tableTotal: res.data.total_votes,
+            }));
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
     }
   };
 
+  /**
+   * Once I'm sure an election exists after running the getElection method, I run this method
+   * to initialize state with the information the other methods need to run. This method also gets
+   * the election highlights data.
+   */
   initializeRoute = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -183,19 +250,25 @@ class ResultsHomeRoute extends Component {
                 timeLeft: res.data.time_left,
               },
               () => {
-                this.getPieChart(this.state.totalParties);
+                if (this.state.totalParties > 0 && this.state.totalVotes > 0)
+                  this.getPieChart(this.state.totalParties);
               }
             );
           }
-        });
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
 
   componentWillUnmount() {
     this._mounted = false;
+    clearInterval(this._results);
   }
 
+  /**
+   * Pretty self-explantory huh :) -- This method gets the piechart data
+   */
   getPieChart = number => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
@@ -213,7 +286,10 @@ class ResultsHomeRoute extends Component {
                 pieChartIsLoading: false,
                 noResults: res.data.no_results,
               },
-              this.getAreaData
+              () => {
+                if (this.state.totalParties > 0 && this.state.totalVotes > 0)
+                  this.getAreaData();
+              }
             );
           }
         })
@@ -224,9 +300,14 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  /**
+   * This method initially populates the votes table with it's data. It is also called whenever
+   * the state filter is set to none.
+   */
   getVotesData = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
+      if (!this.state.votesIsLoading) this.setState({ tableLoading: true });
       const req = axios
         .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`)
         .then(res => {
@@ -238,6 +319,7 @@ class ResultsHomeRoute extends Component {
               votesIsLoading: false,
               noResults: res.data.no_results,
               tableTotal: res.data.table_total,
+              tableLoading: false,
             });
           }
         })
@@ -248,6 +330,11 @@ class ResultsHomeRoute extends Component {
     }
   };
 
+  /**
+   * Forgive the misleading name. This method fetches the bar-chart data. It's called getAreaData
+   * because the bar chart was supposed to be an area chart but after implementing it, it felt lame
+   * so I changed it to a bar chart.
+   */
   getAreaData = () => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;

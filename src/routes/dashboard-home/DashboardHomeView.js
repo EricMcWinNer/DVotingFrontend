@@ -56,15 +56,16 @@ function DashboardHomeView(props) {
             </Col>
           </Row>
           <Row className={"rowMargin"}>
-            {props.election.status === "pending" ||
-              (props.election.status === "ongoing" && (
-                <Col md={6}>
-                  <CountdownTimer
-                    updateDashboard={props.updateDashboard}
-                    election={props.election}
-                  />
-                </Col>
-              ))}
+            {props.election !== null &&
+              (props.election.status === "pending" ||
+                (props.election.status === "ongoing" && (
+                  <Col md={6}>
+                    <CountdownTimer
+                      updateDashboard={props.updateDashboard}
+                      election={props.election}
+                    />
+                  </Col>
+                )))}
             {userManager.isOfficer() && (
               <Col md={3}>
                 <AnalyticCard

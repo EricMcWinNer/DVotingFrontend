@@ -96,7 +96,7 @@ function OfficialLinks(props) {
       <div
         data-tip={"Manage Registration Pins"}
         className={`sidebar-item${
-          contains(props.location, "/dashboard/pins") ? "selected" : ""
+          contains(props.location, "/dashboard/pins") ? " selected" : ""
         }`}
       >
         <Link to={"/dashboard/pins"}>

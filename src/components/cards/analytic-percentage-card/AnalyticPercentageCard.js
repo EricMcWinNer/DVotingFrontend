@@ -30,7 +30,7 @@ function AnalyticPercentageCard({
       </div>
       <div className={"footerContainer"}>
         <p className="text-muted poppins mt-3 mb-0">
-          {!noPercent && <i class="fas fa-percentage" />} {subtitle}
+          {!noPercent && <i className="fas fa-percentage" />} {subtitle}
         </p>
       </div>
     </BaseCard>

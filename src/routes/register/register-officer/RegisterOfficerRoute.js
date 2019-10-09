@@ -21,6 +21,7 @@ class RegisterOfficerRoute extends Component {
       .then(res => {
         if (res.data.isSessionValid === true)
           this.props.history.push("/dashboard");
+        else this.setState({ componentIsLoading: false });
       })
       .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }

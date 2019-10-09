@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
-  BarChart,
   Bar,
   linearGradient,
   XAxis,
@@ -11,6 +10,7 @@ import {
 } from "recharts";
 import Helmet from "react-helmet";
 import PureTable from "components/dashboard/pure-table";
+import PureBarChart from "components/dashboard/pure-bar-chart";
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
 import statistics from "assets/img/icons/results.png";
@@ -40,8 +40,16 @@ import AnalyticPercent from "components/cards/analytic-percentage-card";
 
 function ResultHomeRouteView(props) {
   const [stateRadius, setStateRadius] = useState(0);
+  const userManager = props.userManager;
   let voteTableData, states, lgas;
-  if (!props.componentIsLoading && props.noResults !== true) {
+  if (
+    !props.componentIsLoading &&
+    props.noResults !== true &&
+    props.election !== null &&
+    props.states !== undefined &&
+    props.lgas !== undefined &&
+    props.votesData !== undefined
+  ) {
     if (!props.votesIsLoading) {
       voteTableData = props.votesData.map((party, index) => ({
         serial: index + 1,
@@ -62,7 +70,7 @@ function ResultHomeRouteView(props) {
   return props.componentIsLoading ? (
     <SubRouteLoader />
   ) : props.election === null ? (
-    <NoElectionCard />
+    <NoElectionCard userManager={userManager} />
   ) : props.election.status === "ongoing" ||
     props.election.status === "completed" ? (
     props.noResults !== true ? (
@@ -307,7 +315,7 @@ function ResultHomeRouteView(props) {
                   ) : (
                     <>
                       <ResponsiveContainer width={"92%"} height={"80%"}>
-                        <BarChart
+                        <PureBarChart
                           data={props.areaData}
                           margin={{ top: 15, right: 30, left: 20, bottom: 5 }}
                         >
@@ -352,7 +360,7 @@ function ResultHomeRouteView(props) {
                           <CartesianGrid strokeDasharray="3 3" />
                           <Tooltip />
                           <Bar type="monotone" dataKey="Votes" fill="#279871" />
-                        </BarChart>
+                        </PureBarChart>
                       </ResponsiveContainer>
                       <p className={"sub-title text-muted poppins"}>
                         <i className="fas fa-chart-bar" />
@@ -538,17 +546,20 @@ function ResultHomeRouteView(props) {
           election
         </p>
         <h4 className={"cartogothic mt-3 mb-3"}>
-          There are no results because no one has voted yet. Click the link
-          below to vote
+          {props.election.status === "ongoing"
+            ? "There are no results because no one has voted yet. Click the link below to vote"
+            : "This election has no results because nobody voted."}
         </h4>
-        <LinkButton
-          to={"/dashboard/vote"}
-          medium
-          className={"confirm-background"}
-        >
-          <i className={"fas fa-vote-yea"} />
-          Vote Now
-        </LinkButton>
+        {props.election.status === "ongoing" && (
+          <LinkButton
+            to={"/dashboard/vote"}
+            medium
+            className={"confirm-background"}
+          >
+            <i className={"fas fa-vote-yea"} />
+            Vote Now
+          </LinkButton>
+        )}
       </BaseCard>
     )
   ) : (

@@ -105,7 +105,7 @@ function CreatePartyFormView(props) {
                 </button>
                 <LinkButton
                   className={"float-right cartogothic"}
-                  backgroundColor={"#B5400C"}
+                  backgroundcolor={"#020101"}
                   to={"/dashboard/party"}
                 >
                   <i className="fas fa-chevron-left" />
@@ -126,6 +126,7 @@ function CreatePartyFormView(props) {
                       ? props.alertCallBack
                       : props.closeErrorModal
                   }
+                  cancelBtnBsStyle="default"
                   onCancel={props.closeErrorModal}
                 >
                   <span className="cartogothic">{props.errorMessage}</span>

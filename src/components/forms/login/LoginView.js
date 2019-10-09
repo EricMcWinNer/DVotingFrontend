@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 import "./login.sass";
 
@@ -36,6 +37,23 @@ function LoginView(props) {
           "Sign In"
         )}
       </button>
+      {!props.componentIsLoading && props.showErrorAlert && (
+        <SweetAlert
+          type={props.alertType}
+          allowEscape
+          closeOnClickOutside
+          title={props.errorTitle}
+          onConfirm={
+            (typeof props.alertCallBack).toLowerCase() === "function"
+              ? props.alertCallBack
+              : props.closeErrorModal
+          }
+          cancelBtnBsStyle="default"
+          onCancel={props.closeErrorModal}
+        >
+          <span className="cartogothic">{props.errorMessage}</span>
+        </SweetAlert>
+      )}
     </form>
   );
 }

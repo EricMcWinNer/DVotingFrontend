@@ -146,9 +146,6 @@ class EditCandidateFormController extends Component {
                     "error",
                     this.redirectToCandidates
                   );
-                  alert(
-                    "The candidate you are trying to update does not exist"
-                  );
                   this.props.history.push("/dashboard/candidates/create");
                 } else if (res.data.err === "noPendingElection") {
                   this.showAlert(

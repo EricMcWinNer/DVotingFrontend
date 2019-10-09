@@ -23,6 +23,7 @@ class EditPartyFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      partyLogoURL: null,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);

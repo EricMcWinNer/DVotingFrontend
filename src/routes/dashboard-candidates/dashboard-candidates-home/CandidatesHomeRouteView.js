@@ -100,7 +100,8 @@ function CandidatesHomeRouteView(props) {
           <ul className={"no-style mt-5 mx-0 p-0 h-menu"}>
             {userManager.isOfficial() &&
               props.election !== null &&
-              props.election.status === "ongoing" && (
+              props.election.status !== "ongoing" &&
+              props.election.status !== "completed" && (
                 <li>
                   <LinkButton
                     id={"manage-election-button"}
@@ -126,6 +127,7 @@ function CandidatesHomeRouteView(props) {
                     ? props.redirectToCreate
                     : props.redirectToHome
                 }
+                cancelBtnBsStyle="default"
                 onCancel={props.closeNoCandidatesModal}
               >
                 <span className="cartogothic">
@@ -168,6 +170,7 @@ function CandidatesHomeRouteView(props) {
               allowEscape
               closeOnClickOutside
               title="Success!"
+              cancelBtnBsStyle="default"
               onConfirm={props.handleModalConfirmation}
             >
               <span className="cartogothic">

@@ -219,7 +219,8 @@ function VoterProfile(props) {
                 )}
 
                 <LinkButton
-                  className={`confirm-background ml-0`}
+                  className={`ml-0`}
+                  backgroundcolor={"#020101"}
                   to={
                     props.officerView === undefined
                       ? "/dashboard/voters"

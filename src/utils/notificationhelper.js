@@ -4,6 +4,7 @@ import finish from "assets/img/icons/finished.png";
 import start from "assets/img/icons/started.png";
 import deleted from "assets/img/icons/delete.png";
 import vote from "assets/img/icons/voting.png";
+import createdpins from "assets/img/icons/tablet.png";
 import { dateStringParser } from "utils/helpers";
 
 class NotificationHelper {
@@ -27,6 +28,8 @@ class NotificationHelper {
         return deleted;
       case "voted_successfully":
         return vote;
+      case "pins_created":
+        return createdpins;
       default:
         return `${process.env.REACT_APP_API_PATH}/storage/${this._notification.data.icon}`;
     }
@@ -56,6 +59,8 @@ class NotificationHelper {
         return dateStringParser(this._notification.data.official.updated_at);
       case "voted_successfully":
         return dateStringParser(this._notification.data.voted_at);
+      case "pins_created":
+        return dateStringParser(this._notification.data.generated_at);
       default:
         return "pussy";
     }
@@ -87,6 +92,8 @@ class NotificationHelper {
         return "/dashboard/officials";
       case "voted_successfully":
         return "/dashboard/results";
+      case "pins_created":
+        return "/dashboard/pins";
       default:
         return "#";
     }

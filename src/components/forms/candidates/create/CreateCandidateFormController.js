@@ -4,7 +4,7 @@ import axios from "axios";
 import CreateCandidateFormView from "./CreateCandidateFormView";
 import UserManager from "security/UserManager";
 import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
-import SweetAlert from "react-bootstrap-sweetalert";
+import ErrorAlert from "components/error-alert";
 
 class CreateCandidateFormController extends Component {
   constructor(props) {
@@ -198,25 +198,7 @@ class CreateCandidateFormController extends Component {
           {...this.state}
           {...this.props}
         />
-        {this.state.showAjaxAlert && (
-          <SweetAlert
-            type={this.state.ajaxAlertType}
-            allowEscape
-            closeOnClickOutside
-            title={this.state.ajaxAlertTitle}
-            onConfirm={
-              (typeof this.state.ajaxAlertCallback).toLowerCase() === "function"
-                ? this.state.ajaxAlertCallback
-                : this.state.closeAjaxAlert
-            }
-            onCancel={this.state.closeAjaxAlert}
-            showCancel={this.state.ajaxShowCancel}
-            confirmBtnText={this.state.ajaxConfirmText ? this.state.ajaxConfirmText : "Ok"}
-            cancelBtnText={this.state.ajaxCancelText ? this.state.ajaxCancelText : "Cancel"}
-          >
-            <span className="cartogothic">{this.state.ajaxAlertMessage}</span>
-          </SweetAlert>
-        )}
+        <ErrorAlert state={this.state} />
       </>
     );
   }

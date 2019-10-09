@@ -38,7 +38,7 @@ function BrokenLink(props) {
         <li>
           <LinkButton
             className={"button confirm-background"}
-            backgroundColor={"#279871"}
+            backgroundcolor={"#279871"}
             to={`/dashboard`}
           >
             <i className="fas fa-chevron-left" />

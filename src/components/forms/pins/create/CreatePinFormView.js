@@ -9,6 +9,7 @@ import { capitalize } from "utils/helpers";
 import registrationPin from "assets/img/icons/padlock.png";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
 import SweetAlert from "react-bootstrap-sweetalert";
+import PureSelect from "components/dashboard/pure-select";
 
 function CreatePinRouteView(props) {
   const userManager = props.userManager;
@@ -46,7 +47,7 @@ function CreatePinRouteView(props) {
           >
             <div className="fullWidth inputGroup">
               <label htmlFor="typeOfPins">Type of Pin:</label>
-              <select
+              <PureSelect
                 name={"typeOfPins"}
                 className={"custom-select basecard-select"}
                 onChange={e => props.handleChange(e)}
@@ -57,11 +58,11 @@ function CreatePinRouteView(props) {
                 <option value={""}>Select a pin type</option>
                 <option value={"officials"}>Official pins</option>
                 <option value={"officers"}>Officer pins</option>
-              </select>
+              </PureSelect>
             </div>
             <div className="fullWidth inputGroup">
               <label htmlFor="noOfPins">Number of Pins:</label>
-              <select
+              <PureSelect
                 name={"noOfPins"}
                 className={"custom-select basecard-select"}
                 onChange={e => props.handleChange(e)}
@@ -77,7 +78,13 @@ function CreatePinRouteView(props) {
                 <option value={"50"}>50</option>
                 <option value={"100"}>100</option>
                 <option value={"200"}>200</option>
-              </select>
+                <option value={"500"}>500</option>
+                <option value={"1000"}>1000</option>
+                <option value={"5000"}>5000</option>
+                <option value={"10000"}>10000</option>
+                <option value={"50000"}>50000</option>
+                <option value={"100000"}>100000</option>
+              </PureSelect>
             </div>
             <div className="fullWidth mt-5 clearfix">
               <button type={"submit"} className={"submitForm"}>
@@ -92,7 +99,7 @@ function CreatePinRouteView(props) {
               </button>
               <LinkButton
                 className={"float-right cartogothic"}
-                backgroundcolor={"#B5400C"}
+                backgroundcolor={"#020101"}
                 to={"/dashboard/pins"}
               >
                 <i className="fas fa-chevron-left" />
@@ -111,6 +118,7 @@ function CreatePinRouteView(props) {
                   ? props.alertCallBack
                   : props.closeErrorModal
               }
+              cancelBtnBsStyle="default"
               onCancel={props.closeErrorModal}
             >
               <span className="cartogothic">{props.errorMessage}</span>

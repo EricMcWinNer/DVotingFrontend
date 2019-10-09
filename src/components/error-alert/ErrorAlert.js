@@ -14,6 +14,7 @@ function ErrorAlert({ state, ...props }) {
           : state.closeAjaxAlert
       }
       onCancel={state.closeAjaxAlert}
+      cancelBtnBsStyle="default"
       showCancel={state.ajaxShowCancel}
       confirmBtnText={state.ajaxConfirmText ? state.ajaxConfirmText : "Ok"}
       cancelBtnText={state.ajaxCancelText ? state.ajaxCancelText : "Cancel"}

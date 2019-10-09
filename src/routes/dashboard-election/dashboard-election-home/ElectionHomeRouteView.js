@@ -51,6 +51,7 @@ function ElectionHomeRouteView(props) {
                       id={"create-election-button"}
                       to={`${props.match.path}/create`}
                     >
+                      <i className="far fa-plus-square mr-2" />
                       Create
                     </Link>
                   </li>
@@ -69,6 +70,31 @@ function ElectionHomeRouteView(props) {
               </ul>
             </div>
           </div>
+          {!props.componentIsLoading && props.showNoElectionModal && (
+            <SweetAlert
+              info
+              allowEscape
+              closeOnClickOutside
+              title="No Configured Election!"
+              onConfirm={
+                userManager.isOfficial()
+                  ? props.redirectToCreate
+                  : props.redirectToHome
+              }
+              cancelBtnBsStyle="default"
+              onCancel={props.closeNoElectionModal}
+              confirmBtnText={
+                userManager.isOfficial() ? "Create Election" : "Back to home"
+              }
+            >
+              <span className="cartogothic">
+                No election has been configured.{" "}
+                {userManager.isOfficial()
+                  ? "Click the link below to create and configure one now"
+                  : "You will be notified when one has been configured"}
+              </span>
+            </SweetAlert>
+          )}
         </BaseCard>
       </Col>
     </Row>
@@ -218,7 +244,7 @@ function ElectionHomeRouteView(props) {
               confirmBtnBsStyle="danger"
               cancelBtnBsStyle="default"
               title={`${props.finalizing ? "" : "Are you sure?"}`}
-              onCancel={props.closeDeleteModal}
+              onCancel={props.closeFinalizeModal}
               onConfirm={props.finalizeElection}
             >
               {props.finalizing ? (
@@ -238,6 +264,18 @@ function ElectionHomeRouteView(props) {
               cancelBtnBsStyle="default"
             >
               Election deleted successfully
+            </SweetAlert>
+          )}
+          {userManager.isOfficial() && props.fireFinalizeErrorModal && (
+            <SweetAlert
+              error
+              allowEscape
+              closeOnClickOutside
+              title="Error!"
+              onConfirm={props.closeFinalizeErrorModal}
+              cancelBtnBsStyle="default"
+            >
+              Elections cannot be finalized until 24 hours after the end date.
             </SweetAlert>
           )}
           {userManager.isOfficial() && props.fireFinalizeSuccessModal && (

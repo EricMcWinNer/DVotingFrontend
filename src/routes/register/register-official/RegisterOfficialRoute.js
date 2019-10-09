@@ -6,7 +6,6 @@ import FullScreenLoader from "components/loaders/fullscreen";
 import ErrorAlert from "components/error-alert";
 
 class RegisterOfficialRoute extends Component {
-  
   constructor(props) {
     super(props);
     this.state = { ...initialAjaxAlertState, componentIsLoading: true };
@@ -20,8 +19,9 @@ class RegisterOfficialRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/web/auth/validate-web-app-session`
       )
       .then(res => {
-        if (res.data.isSessionValid === true)
+        if (res.data.isSessionValid === true)  
           this.props.history.push("/dashboard");
+        else this.setState({ componentIsLoading: false });
       })
       .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
   }

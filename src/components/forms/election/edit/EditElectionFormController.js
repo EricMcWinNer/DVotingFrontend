@@ -44,6 +44,7 @@ class EditElectionFormController extends Component {
   handleStartDateChange = startDate => {
     this.setState({ startDate });
   };
+  
   handleEndDateChange = endDate => {
     this.setState({ endDate });
   };
