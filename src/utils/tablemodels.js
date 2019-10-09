@@ -242,11 +242,16 @@ export const candidatesModel = modalCallback => [
     name: "",
     sortable: false,
     cell: row => (
-      <img
-        src={`${process.env.REACT_APP_API_PATH}/storage/${row.candidate_picture}`}
-        alt={row.name}
-        height={"45px"}
-      />
+      <a
+        href={`${process.env.REACT_APP_API_PATH}/storage/${row.candidate_picture}`}
+        target={"__blank"}
+      >
+        <img
+          src={`${process.env.REACT_APP_API_PATH}/storage/${row.candidate_picture}`}
+          alt={row.name}
+          height={"45px"}
+        />
+      </a>
     ),
     maxWidth: "55px",
   },
@@ -1103,7 +1108,10 @@ export const resultsLgaModel = lgaObject => [
     name: `Percentage of votes in ${lgaObject.state.name}`,
     sortable: true,
     cell: row => (
-      <ProgressBar color={"#6F42C1"} progress={row.percentage_of_votes_in_state} />
+      <ProgressBar
+        color={"#6F42C1"}
+        progress={row.percentage_of_votes_in_state}
+      />
     ),
     minWidth: "250px",
   },

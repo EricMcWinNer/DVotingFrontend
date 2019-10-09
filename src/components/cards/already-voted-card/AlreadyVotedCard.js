@@ -40,7 +40,7 @@ function AlreadyVotedCard(props) {
           <LinkButton
             medium
             className={"button cool-purple-background"}
-            backgroundColor={"#279871"}
+            backgroundcolor={"#279871"}
             to={`/dashboard/results`}
           >
             <i className="fas fa-chart-bar" />

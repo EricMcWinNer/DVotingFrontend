@@ -342,6 +342,7 @@ function RegisterView(props) {
               ? props.alertCallBack
               : props.closeAlert
           }
+          cancelBtnBsStyle="default"
           onCancel={props.closeAlert}
         >
           <span className="cartogothic">{props.alertMessage}</span>

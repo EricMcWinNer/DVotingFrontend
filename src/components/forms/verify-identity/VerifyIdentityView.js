@@ -47,6 +47,7 @@ function VerifyIdentityView(props) {
               ? props.alertCallBack
               : props.closeErrorModal
           }
+          cancelBtnBsStyle="default"
           onCancel={props.closeErrorModal}
         >
           <span className="cartogothic">{props.errorMessage}</span>

@@ -166,8 +166,8 @@ function OfficialHomeRouteView(props) {
               ) : (
                 <span className="cartogothic">
                   {props.official.id === userManager.returnUser().id
-                    ? "This action will stop you from being an register-official"
-                    : "This action will delete the selected register-official."}
+                    ? "This action will stop you from being an electoral official."
+                    : "This action will delete the selected electoral official."}
                 </span>
               )}
             </SweetAlert>
@@ -182,8 +182,8 @@ function OfficialHomeRouteView(props) {
             >
               <span className="cartogothic">
                 {props.official.id === userManager.returnUser().id
-                  ? "You have successfully been stopped being an register-official"
-                  : "Official deleted successfully"}
+                  ? "You have successfully been removed from the electoral official list"  
+                  : "The electoral official deleted successfully"}
               </span>
             </SweetAlert>
           )}

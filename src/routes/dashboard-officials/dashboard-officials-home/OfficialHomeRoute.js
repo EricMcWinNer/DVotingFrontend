@@ -26,7 +26,7 @@ class OfficialHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       official: null,
-      ...initialAjaxAlertState
+      ...initialAjaxAlertState,
     };
     this.searchNeedle = React.createRef();
     this._userManager = new UserManager(this.props.user);
@@ -46,24 +46,25 @@ class OfficialHomeRoute extends Component {
           this.state.perPage
         }${table ? `?page=${this.state.currentPage}` : ""}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState(state => ({
-            componentIsLoading: false,
-            tableLoading: false,
-            officials: res.data.officials.data,
-            currentPage: res.data.officials.current_page,
-            totalPages: res.data.officials.last_page,
-            perPage: res.data.officials.per_page,
-            totalResults: res.data.officials.total,
-            states: table ? state.states : res.data.states,
-            lgas: table ? state.lgas : res.data.lgas,
-          }));
-        }
-      })
-      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState(state => ({
+              componentIsLoading: false,
+              tableLoading: false,
+              officials: res.data.officials.data,
+              currentPage: res.data.officials.current_page,
+              totalPages: res.data.officials.last_page,
+              perPage: res.data.officials.per_page,
+              totalResults: res.data.officials.total,
+              states: table ? state.states : res.data.states,
+              lgas: table ? state.lgas : res.data.lgas,
+            }));
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -78,16 +79,17 @@ class OfficialHomeRoute extends Component {
       const req = axios.get(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            official: res.data.official,
-          });
-        }
-      })
-      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              official: res.data.official,
+            });
+          }
+        })
+        .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
       return req;
     }
   };
@@ -98,14 +100,15 @@ class OfficialHomeRoute extends Component {
       const req = axios.delete(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/officials/${id}`
       );
-      req.then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        }
-      })
-      .catch(res =>
-        fireAjaxErrorAlert(this, res.request.status, null, false)
-      );
+      req
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          }
+        })
+        .catch(res =>
+          fireAjaxErrorAlert(this, res.request.status, null, false)
+        );
       return req;
     }
   };
@@ -273,24 +276,25 @@ class OfficialHomeRoute extends Component {
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
-      }).then(res => {
-        if (res.data.isSessionValid === false) {
-          this.props.history.push("/login");
-        } else {
-          this.setState({
-            tableLoading: false,
-            officials: [...res.data.officials.data],
-            currentPage: res.data.officials.current_page,
-            totalPages: res.data.officials.last_page,
-            perPage: res.data.officials.per_page,
-            totalResults: res.data.officials.total,
-          });
-        }
       })
-      .catch(res => {
-        this.state({ tableLoading: false });
-        fireAjaxErrorAlert(this, res.request.status, null, false);
-      });
+        .then(res => {
+          if (res.data.isSessionValid === false) {
+            this.props.history.push("/login");
+          } else {
+            this.setState({
+              tableLoading: false,
+              officials: [...res.data.officials.data],
+              currentPage: res.data.officials.current_page,
+              totalPages: res.data.officials.last_page,
+              perPage: res.data.officials.per_page,
+              totalResults: res.data.officials.total,
+            });
+          }
+        })
+        .catch(res => {
+          this.state({ tableLoading: false });
+          fireAjaxErrorAlert(this, res.request.status, null, false);
+        });
     }
   };
 
@@ -318,23 +322,23 @@ class OfficialHomeRoute extends Component {
   render() {
     return (
       <>
-      <OfficialHomeRouteView
-        clearSearch={this.clearSearch}
-        changePage={this.changePage}
-        changeRowsPerPage={this.changeRowsPerPage}
-        getSearchResults={this.getSearchResults}
-        handleChange={this.handleChange}
-        handleFilterSelect={this.handleFilterSelect}
-        searchNeedle={this.searchNeedle}
-        closeDeleteModal={this.closeDeleteModal}
-        showDeleteModal={this.showDeleteModal}
-        deleteOfficialConfirm={this.deleteOfficialConfirm}
-        handleModalConfirmation={this.handleModalConfirmation}
-        userManager={this._userManager}
-        {...this.props}
-        {...this.state}
-      />
-<ErrorAlert state={this.state} />
+        <OfficialHomeRouteView
+          clearSearch={this.clearSearch}
+          changePage={this.changePage}
+          changeRowsPerPage={this.changeRowsPerPage}
+          getSearchResults={this.getSearchResults}
+          handleChange={this.handleChange}
+          handleFilterSelect={this.handleFilterSelect}
+          searchNeedle={this.searchNeedle}
+          closeDeleteModal={this.closeDeleteModal}
+          showDeleteModal={this.showDeleteModal}
+          deleteOfficialConfirm={this.deleteOfficialConfirm}
+          handleModalConfirmation={this.handleModalConfirmation}
+          userManager={this._userManager}
+          {...this.props}
+          {...this.state}
+        />
+        <ErrorAlert state={this.state} />
       </>
     );
   }

@@ -56,7 +56,8 @@ class DashboardRoute extends Component {
           if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
-            this.setState({ notifications: res.data.notifications });
+            if (this._mounted)
+              this.setState({ notifications: res.data.notifications });
           }
         });
       return req;
@@ -94,7 +95,7 @@ class DashboardRoute extends Component {
       this.getNotifications();
       this._notifications = setInterval(() => {
         this.getNotifications();
-      }, 1000 * 5);
+      }, 1000 * 10);
     }
   };
 

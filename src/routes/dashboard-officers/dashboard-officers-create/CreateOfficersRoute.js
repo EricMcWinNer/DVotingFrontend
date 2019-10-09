@@ -278,7 +278,7 @@ class CreateOfficersRoute extends Component {
           } else {
             this.setState({
               tableLoading: false,
-              users: [...res.data.users.data],
+              eligibleOfficers: [...res.data.users.data],
               currentPage: res.data.users.current_page,
               totalPages: res.data.users.last_page,
               perPage: res.data.users.per_page,

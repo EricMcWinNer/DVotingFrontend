@@ -19,18 +19,36 @@ class ElectionHomeRoute extends Component {
       fireDeleteModal: false,
       fireDeleteSuccessModal: false,
       fireFinalizeSuccessModal: false,
+      fireFinalizeErrorModal: false,
       electionIsDeleting: false,
+      showNoElectionModal: true,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
   }
+
+  closeNoElectionModal = () => {
+    this.setState({ showNoElectionModal: false });
+  };
+
+  closeFinalizeErrorModal = () => {
+    this.setState({ fireFinalizeErrorModal: false });
+  };
+
+  redirectToCreate = () => {
+    this.props.history.push("/dashboard/election/create");
+  };
+
+  redirectToHome = () => {
+    this.props.history.push("/dashboard/");
+  };
 
   componentDidMount() {
     this._mounted = true;
     this.initializeRoute();
     this._updateRoute = setInterval(
       () => this.initializeRoute(false),
-      1000 * 60
+      1000 * 20
     );
   }
 
@@ -62,9 +80,8 @@ class ElectionHomeRoute extends Component {
     clearInterval(this._updateRoute);
   }
 
-  finalizeElection = e => {
+  finalizeElection = () => {
     if (this._mounted) {
-      e.preventDefault();
       this.setState({ finalizing: true });
       axios.defaults.withCredentials = true;
       axios(
@@ -80,11 +97,16 @@ class ElectionHomeRoute extends Component {
           } else {
             if (res.data.exists === false)
               this.props.history.push("/dashboard/election");
+            else if (res.data.error === "tooEarly")
+              this.setState({
+                fireFinalizeErrorModal: true,
+                fireFinalizeModal: false,
+              });
             else if (res.data.completed === true) {
-              alert(
-                "Election was finalized successfully. You can start another election after confirming this."
-              );
-              this.props.history.push("/dashboard/election");
+              this.setState({
+                fireFinalizeModal: false,
+                fireFinalizeSuccessModal: true,
+              });
             }
           }
         })
@@ -111,6 +133,12 @@ class ElectionHomeRoute extends Component {
   closeDeleteModal = () => {
     if (this._mounted) this.setState({ fireDeleteModal: false });
   };
+
+  closeFinalizeModal = () => {
+    if (this._mounted) this.setState({ fireFinalizeModal: false });
+  };
+
+  
 
   deleteElection = () => {
     if (this._mounted) {
@@ -150,7 +178,10 @@ class ElectionHomeRoute extends Component {
 
   handleModalConfirmation = () => {
     if (this._mounted) {
-      this.setState({ fireDeleteSuccessModal: false }, this.initializeRoute);
+      this.setState(
+        { fireDeleteSuccessModal: false, fireFinalizeSuccessModal: false },
+        this.initializeRoute
+      );
     }
   };
 
@@ -162,10 +193,15 @@ class ElectionHomeRoute extends Component {
           finalizeElection={this.finalizeElection}
           userManager={this._userManager}
           closeDeleteModal={this.closeDeleteModal}
+          closeFinalizeModal={this.closeFinalizeModal}
           showDeleteModal={this.showDeleteModal}
           showFinalizeModal={this.showFinalizeModal}
           deleteElection={this.deleteElection}
           handleModalConfirmation={this.handleModalConfirmation}
+          redirectToCreate={this.redirectToCreate}
+          redirectToHome={this.redirectToHome}
+          closeNoElectionModal={this.closeNoElectionModal}
+          closeFinalizeErrorModal={this.closeFinalizeErrorModal}
           {...this.props}
           {...this.state}
         />

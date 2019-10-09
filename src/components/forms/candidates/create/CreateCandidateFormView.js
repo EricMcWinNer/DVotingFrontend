@@ -11,6 +11,7 @@ import LinkButton from "components/buttons/react-router-link-button/ReactRouterL
 import PictureUploadInput from "components/forms/picture-upload-handler";
 import BrokenLinkCard from "components/cards/broken-link-card/BrokenLink";
 import SweetAlert from "react-bootstrap-sweetalert";
+import PureSelect from "components/dashboard/pure-select";
 
 function CreateCandidateFormView(props) {
   const userManager = props.userManager;
@@ -75,7 +76,7 @@ function CreateCandidateFormView(props) {
             </div>
             <div className="fullWidth inputGroup">
               <label htmlFor="startDate">Campaigning Position:</label>
-              <select
+              <PureSelect
                 name={"role"}
                 className={"custom-select basecard-select"}
                 onChange={e => props.handleChange(e)}
@@ -85,22 +86,24 @@ function CreateCandidateFormView(props) {
                 <option value={""}>Select a position</option>
                 <option value={"President"}>President</option>
                 <option value={"Vice-President"}>Vice-president</option>
-              </select>
+              </PureSelect>
             </div>
             <div className="fullWidth inputGroup">
               <label htmlFor="endDate">Political party:</label>
-              <select
+              <PureSelect
                 name={"selectedParty"}
                 id={"selectedParty"}
                 className={"custom-select basecard-select"}
                 value={props.selectedParty}
                 onChange={e => props.handlePartyChange(e)}
+                firstOption={
+                  <option value={""} data-logo={""}>
+                    Select a party
+                  </option>
+                }
               >
-                <option value={""} data-logo={""}>
-                  Select a party
-                </option>
                 {partyOptions}
-              </select>
+              </PureSelect>
               {props.selectedPartyLogo !== "" && (
                 <img
                   alt={"Party logo"}
@@ -125,8 +128,9 @@ function CreateCandidateFormView(props) {
                 )}
               </button>
               <LinkButton
-                className={"float-right cartogothic reject-background"}
+                className={"float-right cartogothic"}
                 to={"/dashboard/candidates"}
+                backgroundcolor={"#020101"}
               >
                 <i className="fas fa-chevron-left" />
                 Back to Candidates
@@ -139,6 +143,7 @@ function CreateCandidateFormView(props) {
               <SweetAlert
                 type={props.alertType}
                 allowEscape
+                cancelBtnBsStyle="default"
                 closeOnClickOutside
                 title={props.errorTitle}
                 onConfirm={

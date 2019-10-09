@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import SubRouteLoader from "components/loaders/dashboard-sub-route";
 import Helmet from "react-helmet";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { sentenceCase } from "utils/helpers";
 
 /* TODO - FIX THE FUCKED UP FLOAT HERE */
 
@@ -101,6 +100,7 @@ function CreateElectionForm(props) {
                         ? props.alertCallBack
                         : props.closeErrorModal
                     }
+                    cancelBtnBsStyle="default"
                     onCancel={props.closeErrorModal}
                   >
                     <span className="cartogothic">{props.errorMessage}</span>
@@ -114,14 +114,14 @@ function CreateElectionForm(props) {
                   {process.env.REACT_APP_NAME} | Election already exists
                 </title>
               </Helmet>
-              <div className="clearfix o-auto">
-                <div className="float-left iconContainer">
+              <div className="d-flex justify-content-between o-auto">
+                <div className="iconContainer">
                   <img
                     src={warningIcon}
                     alt={"Warning: No Election Configured"}
                   />
                 </div>
-                <div className="float-left">
+                <div>
                   <h4 className={"nullCardTitle"}>
                     An election has already been created
                   </h4>
@@ -138,12 +138,31 @@ function CreateElectionForm(props) {
                         id={"manage-election-button"}
                         to={`/dashboard/election`}
                       >
+                        <i className={"fas fa-cogs mr-3"} />
                         Manage
                       </Link>
                     </li>
                   </ul>
                 </div>
               </div>
+              {!props.componentIsLoading &&
+                props.showElectionAlreadyExistsModal && (
+                  <SweetAlert
+                    info
+                    allowEscape
+                    closeOnClickOutside
+                    title="An Election Already Exists!"
+                    onConfirm={props.redirectToManage}
+                    cancelBtnBsStyle="default"
+                    onCancel={props.closeElectionAlreadyExistsModal}
+                    confirmBtnText={"Manage Election"}
+                  >
+                    <span className="cartogothic">
+                      Only one election can exist at a given time. Click the
+                      button below to manage the current election.
+                    </span>
+                  </SweetAlert>
+                )}
             </BaseCard>
           )}
         </Col>

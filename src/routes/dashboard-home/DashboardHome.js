@@ -48,9 +48,9 @@ class DashboardHome extends Component {
             });
           }
         })
-        .catch(res =>
-          fireAjaxErrorAlert(this, res.request.status, this.updateDashboard)
-        );
+        .catch(res => {
+          fireAjaxErrorAlert(this, res.request.status, this.updateDashboard);
+        });
       return req;
     }
   };

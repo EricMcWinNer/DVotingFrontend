@@ -20,6 +20,7 @@ class CreateElectionFormController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      showElectionAlreadyExistsModal: true,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
@@ -158,6 +159,15 @@ class CreateElectionFormController extends Component {
     }
   };
 
+  closeElectionAlreadyExistsModal = () => {
+    this.setState({ showElectionAlreadyExistsModal: false });
+  };
+
+  redirectToManage = () => {
+    this.props.history.push("/dashboard/election");
+  };
+
+
   render() {
     return (
       <>
@@ -169,6 +179,8 @@ class CreateElectionFormController extends Component {
           election={this.props.election}
           userManager={this._userManager}
           closeErrorModal={this.closeErrorModal}
+          closeElectionAlreadyExistsModal={this.closeElectionAlreadyExistsModal}
+          redirectToManage={this.redirectToManage}
           {...this.state}
           {...this.props}
         />

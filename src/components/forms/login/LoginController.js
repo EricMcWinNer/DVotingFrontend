@@ -4,6 +4,7 @@ import axios from "axios";
 import LoginView from "./LoginView";
 import { initialAjaxAlertState, fireAjaxErrorAlert } from "utils/error";
 import ErrorAlert from "components/error-alert";
+import { validateEmail } from "utils/validate";
 
 class LoginController extends Component {
   constructor(props) {
@@ -11,10 +12,38 @@ class LoginController extends Component {
     this.state = {
       email: "",
       password: "",
+      errorTitle: "",
+      errorMessage: "",
+      alertType: "",
+      alertCallBack: null,
       formIsSubmitting: false,
       ...initialAjaxAlertState,
     };
   }
+
+  showAlert = (
+    errorTitle,
+    errorMessage,
+    alertType = "warning",
+    alertCallBack = null
+  ) => {
+    this.setState({
+      showErrorAlert: true,
+      errorTitle,
+      errorMessage,
+      alertType,
+      alertCallBack,
+    });
+  };
+
+  closeErrorModal = () => {
+    this.setState({
+      showErrorAlert: false,
+      errorTitle: "",
+      errorMessage: "",
+      alertCallBack: null,
+    });
+  };
 
   componentDidMount() {
     this._mounted = true;
@@ -37,6 +66,19 @@ class LoginController extends Component {
     if (this._mounted) {
       e.preventDefault();
       this.setState({ formIsSubmitting: true }, () => {
+        if (
+          this.state.email.length < 3 ||
+          this.state.password.length < 1 ||
+          !validateEmail(this.state.email)
+        ) {
+          this.showAlert(
+            "Invalid Credentials!",
+            "The email or password you entered is invalid",
+            "error"
+          );
+          if (this._mounted) this.setState({ formIsSubmitting: false });
+          return;
+        }
         let form = new FormData();
         form.append("email", this.state.email);
         form.append("password", this.state.password);
@@ -47,11 +89,15 @@ class LoginController extends Component {
         })
           .then(res => {
             if (res.data.status === "error") {
-              alert("Your email or password is invalid.");
+              this.showAlert(
+                "Invalid Credentials!",
+                "The email or password you entered is incorrect",
+                "error"
+              );
             } else if (res.data.isValid === true) {
               this.props.redirectSignedInUser();
             } else {
-              //DO NOTHING
+              //DO NOTHING. IT IS IMPOSSIBLE FOR THIS SCENARIO TO OCCUR THOUGH
             }
             if (this._mounted) this.setState({ formIsSubmitting: false });
           })
@@ -72,6 +118,7 @@ class LoginController extends Component {
           {...this.state}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
+          closeErrorModal={this.closeErrorModal}
         />
         <ErrorAlert state={this.state} />
       </>

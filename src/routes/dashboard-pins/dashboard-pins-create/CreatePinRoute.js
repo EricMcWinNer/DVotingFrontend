@@ -33,8 +33,8 @@ class CreatePinRoute extends Component {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
       const req = axios.get(url);
-      req.then(
-        res => {
+      req
+        .then(res => {
           if (res.data.isSessionValid === false) {
             this.props.history.push("/login");
           } else {
@@ -49,10 +49,13 @@ class CreatePinRoute extends Component {
             creating: false,
           });
           fireAjaxErrorAlert(this, res.request.status, null, false);
-        }
-      );
+        });
       return req;
     }
+  };
+
+  redirectToDashboard = () => {
+    this.props.history.push("/dashboard");
   };
 
   handleCreate = e => {
@@ -65,12 +68,23 @@ class CreatePinRoute extends Component {
         `${process.env.REACT_APP_API_PATH}/api/dashboard/pins/${this.state.typeOfPins}/${this.state.noOfPins}/make`
       )
         .then(res => {
-          this.showAlert(
-            "Success!",
-            "Pins generated successfully",
-            "success",
-            this.closeErrorModal
-          );
+          if (res.data.completed === true)
+            this.showAlert(
+              "Success!",
+              "Pins generated successfully",
+              "success",
+              this.closeErrorModal
+            );
+          else if (res.data.backgroundCompleted === true)
+            this.showAlert(
+              "Success!",
+              "The pins are being created in the background. You can continue doing other things, you will be notified when this batch of pins finishes.",
+              "success",
+              () => {
+                this.closeErrorModal();
+                this.redirectToDashboard();
+              }
+            );
         })
         .catch(res => {
           fireAjaxErrorAlert(this, res.request.status, null, false);

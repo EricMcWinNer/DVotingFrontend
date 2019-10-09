@@ -7,7 +7,6 @@ import OfficerLinks from "./OfficerLinks";
 import voting from "assets/img/icons/voting.png";
 import speedometer from "assets/img/icons/speedometer.png";
 import results from "assets/img/icons/results.png";
-import { contains } from "utils/helpers";
 import UserManager from "security/UserManager";
 
 import "./index.sass";

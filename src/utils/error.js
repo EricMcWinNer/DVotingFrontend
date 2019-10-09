@@ -115,8 +115,10 @@ export const fireAjaxErrorAlert = (
         ErrorMessage.thefault.title,
         ErrorMessage.thefault.message,
         () => {
-          if (callback) callback();
-          else {
+          if (callback) {
+            closeAjaxAlert(that);
+            callback();
+          } else {
             if (reload) {
               closeAjaxAlert(that);
               that.props.history.push("/dashboard");

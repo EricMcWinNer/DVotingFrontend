@@ -10,6 +10,7 @@ class LoginRoute extends Component {
     super(props);
     this.state = {
       componentIsLoading: true,
+      showErrorAlert: false,
       ...initialAjaxAlertState,
     };
   }

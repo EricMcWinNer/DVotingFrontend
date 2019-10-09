@@ -2,7 +2,6 @@ import React from "react";
 import "./index.sass";
 import BaseCard from "components/cards/base-card";
 import foreground from "assets/img/icons/foreground-fingerprint.png";
-import Candidates from "./candidate";
 import LinkButton from "components/buttons/react-router-link-button";
 
 function VotePartyCard(props) {
@@ -29,10 +28,6 @@ function VotePartyCard(props) {
           <img src={foreground} alt={props.party.acronym} />
           <p>{props.party.acronym}</p>
         </div>
-        <Candidates
-          className={"candidateOverlay"}
-          candidates={props.party.candidates}
-        />
       </BaseCard>
       {props.selectedParty === props.party.id && (
         <LinkButton

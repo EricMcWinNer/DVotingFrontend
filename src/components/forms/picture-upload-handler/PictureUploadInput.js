@@ -22,7 +22,10 @@ class PictureUploadInput extends Component {
 
   componentDidMount() {
     this._mounted = true;
-    if (this.props.defaultPictureUrl !== undefined)
+    if (
+      this.props.defaultPictureUrl !== undefined &&
+      this.props.defaultPictureUrl !== null
+    )
       this.setState({ pictureUrl: this.props.defaultPictureUrl });
   }
 
@@ -46,8 +49,15 @@ class PictureUploadInput extends Component {
         this.calculateWebCamHeight();
       });
     if (this.props.forcefullyCancel === true) {
-      console.log("forcefullyCancel");
       this.cancelPicture(this.props.removeForcefullyCancel);
+    }
+    if (
+      prevProps.defaultPictureUrl === null &&
+      this.props.defaultPictureUrl !== null
+    ) {
+      this.setState({
+        pictureUrl: this.props.defaultPictureUrl,
+      });
     }
   }
 
@@ -85,7 +95,6 @@ class PictureUploadInput extends Component {
   }
 
   cancelPicture = (callback = null) => {
-    console.log("cancelPicture");
     this.props.updatePictureFile(null);
     this.setState(
       {

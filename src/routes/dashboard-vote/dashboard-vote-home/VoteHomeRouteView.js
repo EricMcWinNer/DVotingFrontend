@@ -61,11 +61,13 @@ function VoteHomeRouteView(props) {
               closeOnClickOutside
               title={props.errorTitle}
               showCancel={true}
+              cancelBtnBsStyle="default"
               onConfirm={
                 (typeof props.alertCallBack).toLowerCase() === "function"
                   ? props.alertCallBack
                   : props.closeErrorModal
               }
+              cancelBtnBs
               onCancel={props.closeErrorModal}
             >
               <span className="cartogothic">{props.errorMessage}</span>
