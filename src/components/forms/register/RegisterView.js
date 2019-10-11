@@ -4,6 +4,9 @@ import Col from "react-bootstrap/Col";
 import DatePicker from "react-date-picker";
 import LinkButton from "components/buttons/react-router-link-button";
 import PictureUploadInput from "components/forms/picture-upload-handler";
+import FingerprintCapture from "components/forms/fingerprint-handler";
+import thumbprint from "assets/img/icons/thumbprint.png";
+import indexprint from "assets/img/icons/indexprint.png";
 
 import "./index.sass";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -282,6 +285,55 @@ function RegisterView(props) {
                 />
               </Col>
             )}
+          </Row>
+          <Row className={"newLine"}>
+            <Col md={12}>
+              <label className="required">Fingerprints</label>
+              <div className={"fingerprintGrid"}>
+                <div className={"grid-item"}>
+                  <div>
+                    <FingerprintCapture
+                      className={"mirrorIcon"}
+                      label={"Left Index"}
+                      icon={indexprint}
+                      onSuccessfulScan={props.updateLeftIndex}
+                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
+                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                    />
+                  </div>
+                  <div>
+                    <FingerprintCapture
+                      label={"Left Thumb"}
+                      icon={thumbprint}
+                      onSuccessfulScan={props.updateLeftThumb}
+                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
+                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                    />
+                  </div>
+                </div>
+                <div className={"grid-item"}>
+                  <div>
+                    <FingerprintCapture
+                      label={"Right Index"}
+                      icon={indexprint}
+                      onSuccessfulScan={props.updateRightIndex}
+                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
+                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                    />
+                  </div>
+                  <div>
+                    <FingerprintCapture
+                      label={"Right Thumb"}
+                      className={"mirrorIcon"}
+                      icon={thumbprint}
+                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
+                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                      onSuccessfulScan={props.updateRightThumb}
+                    />
+                  </div>
+                </div>
+              </div>
+            </Col>
           </Row>
           <Row className={"newLine"}>
             <Col md={4}>

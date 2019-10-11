@@ -11,6 +11,23 @@ $pinIconURL: 'assets/img/icons/number-pad.png'
 $profilePictureURL: 'assets/img/icons/profile.png'
 
 #registerForm
+  .fingerprintGrid
+    display: grid
+    grid-template-columns: repeat(2, minmax(400px, 1fr))
+    grid-column-gap: 30px
+    grid-row-gap: 30px
+    & > div.grid-item
+      display: flex
+      flex-flow: row
+      justify-content: center
+      align-items: center
+      & > div
+        width: 40%
+        min-width: 160px
+        margin: 15px 20px
+    .mirrorIcon
+      img
+        transform: rotateY(180deg)
   label + input, select, input[name=pictureUpload]
     display: block
     width: 90%
@@ -127,6 +144,8 @@ $profilePictureURL: 'assets/img/icons/profile.png'
           border: none !important
           &.react-date-picker__inputGroup__month, &.react-date-picker__inputGroup__day
             width: 18px !important
+
+
 
 #imagePreview
   margin:
