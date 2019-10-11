@@ -34,7 +34,9 @@ function ResponsiveSidebar(props) {
         <div
           data-tip={"Dashboard Home"}
           className={`sidebar-item${
-            props.location === "/dashboard" || props.location === "/dashboard/"
+            props.location === "/dashboard" ||
+            props.location === "/dashboard/" ||
+            props.location === "/"
               ? " selected"
               : ""
           }`}
@@ -101,7 +103,9 @@ function ResponsiveSidebar(props) {
             <OfficerLinks {...props} /> <VoterLinks {...props} />
           </>
         )}
-        {userManager.isOnlyVoter() && <VoterLinks {...props} />}
+        {!userManager.isOfficial() && !userManager.isOfficer() && (
+          <VoterLinks {...props} />
+        )}
       </div>
       <ReactTooltip
         place={"right"}

@@ -11,7 +11,6 @@ import OfficerLinks from "./OfficerLinks";
 import UserManager from "security/UserManager";
 import LinkButton from "components/buttons/react-router-link-button";
 import results from "assets/img/icons/results.png";
-import { contains } from "utils/helpers";
 
 function SideBar(props) {
   const userManager = new UserManager(props.user);
@@ -54,7 +53,8 @@ function SideBar(props) {
             <li
               className={
                 props.location === "/dashboard" ||
-                props.location === "/dashboard/"
+                props.location === "/dashboard/" ||
+                props.location === "/"
                   ? "selected"
                   : ""
               }
@@ -115,7 +115,9 @@ function SideBar(props) {
                 <OfficerLinks {...props} /> <VoterLinks {...props} />
               </>
             )}
-            {userManager.isOnlyVoter() && <VoterLinks {...props} />}
+            {!userManager.isOfficial() && !userManager.isOfficer() && (
+              <VoterLinks {...props} />
+            )}
           </ul>
         </div>
       </div>
