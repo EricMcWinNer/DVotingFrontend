@@ -48,6 +48,11 @@ class RegisterController extends Component {
       alertCallBack: null,
       webcamWidth: "",
       forcefullyRemovePreview: false,
+      forcefullyClearFingerprints: false,
+      leftIndex: null,
+      leftThumb: null,
+      rightIndex: null,
+      rightThumb: null,
       ...initialAjaxAlertState,
     };
   }
@@ -55,6 +60,10 @@ class RegisterController extends Component {
   forcefullyShowPreview = () => {
     this.setState({ forcefullyRemovePreview: false });
   };
+
+  forcefullyShowFingerprints = () => {
+    this.setState({forcefullyClearFingerprints: false});
+  }
 
   initializeRoute = () => {
     this.setState({
@@ -80,6 +89,7 @@ class RegisterController extends Component {
       alertType: "",
       alertCallBack: null,
       forcefullyRemovePreview: true,
+      forcefullyClearFingerprints: true
     });
   };
 
@@ -209,6 +219,14 @@ class RegisterController extends Component {
     }
   };
 
+  updateLeftIndex = template => this.setState({ leftIndex: template });
+
+  updateLeftThumb = template => this.setState({ leftThumb: template });
+
+  updateRightIndex = template => this.setState({ rightIndex: template });
+
+  updateRightThumb = template => this.setState({ rightThumb: template });
+
   handleSubmit = e => {
     e.preventDefault();
     if (this._mounted)
@@ -229,8 +247,25 @@ class RegisterController extends Component {
           password: this.state.password,
           confirmPassword: this.state.confirmPassword,
           confirmationPin: this.state.confirmationPin,
+          leftIndex: this.state.leftIndex,
+          leftThumb: this.state.leftThumb,
+          rightIndex: this.state.rightIndex,
+          rightThumb: this.state.rightThumb,
           ...this.props.customValues,
         };
+        if (
+          this.state.leftIndex === null ||
+          this.state.leftThumb === null ||
+          this.state.rightIndex === null ||
+          this.state.rightThumb === null
+        ) {
+          this.displayAlert(
+            "Invalid Fingerprints!",
+            "Ensure you have properly captured your fingerprints before trying to register"
+          );
+          this.setState({ formIsSubmitting: false });
+          return;
+        }
         const json = JSON.stringify(userInfo);
         const data = new FormData();
         data.append("userInfo", json);
@@ -344,6 +379,11 @@ class RegisterController extends Component {
           calcWidth={this.calcWidth}
           pictureContainer={this.pictureContainer}
           forcefullyShowPreview={this.forcefullyShowPreview}
+          updateLeftIndex={this.updateLeftIndex}
+          updateLeftThumb={this.updateLeftThumb}
+          updateRightIndex={this.updateRightIndex}
+          updateRightThumb={this.updateRightThumb}
+          forcefullyShowFingerprints={this.forcefullyShowFingerprints}
         />
         <ErrorAlert state={this.state} />
       </>

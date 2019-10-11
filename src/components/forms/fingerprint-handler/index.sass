@@ -1,0 +1,38 @@
+@import assets/sass/reusable
+@import assets/sass/fonts
+
+.fingerprintElementContainer
+    display: flex
+    flex-flow: column
+    .image-preview
+        width: 100%
+        margin: 0 auto
+    .fingerprintElement
+        cursor: pointer
+        text-align: center
+        margin: 0 auto
+        padding: 15px 15px
+        min-width: 130px
+        background-color: #F1F1F1
+        border: 1px solid #ddd
+            radius: 9px
+        &.capturing
+            animation: capturing 1s ease-in-out infinite
+        &.captured
+            background-color: rgba(39, 152, 113, 0.75)
+            color: white
+        &.error
+            background-color: #FF0033
+            color: white
+        img
+            width: 45px
+        p
+            @extend .cartogothic
+            margin: 10px 0
+            text-align: center
+
+@keyframes capturing
+    from 
+        background-color: #f1f1f1
+    to
+        background-color: $themeColor
