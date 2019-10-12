@@ -36,6 +36,7 @@ class VoteRoutes extends Component {
             <ForwardVote
               user={user}
               updateUser={this.props.updateUser}
+              logOut={this.props.logOut}
               {...props}
             />
           )}

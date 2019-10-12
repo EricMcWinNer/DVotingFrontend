@@ -13,6 +13,7 @@ class ForwardVoteRoute extends Component {
       componentIsLoading: true,
       party: null,
       voted: false,
+      election: null,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
@@ -21,8 +22,28 @@ class ForwardVoteRoute extends Component {
 
   componentDidMount() {
     this._mounted = true;
-    this.checkVoter();
+    this.getElection().then(() => {
+      if (this.state.election !== null) this.checkVoter();
+    });
   }
+
+  getElection = () => {
+    axios.defaults.withCredentials = true;
+    const req = axios
+      .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/election`)
+      .then(res => {
+        if (res.data.isSessionValid === false) {
+          this.props.history.push("/login");
+        } else {
+          this.setState({
+            election: res.data.election,
+            componentIsLoading: res.data.election !== null,
+          });
+        }
+      })
+      .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
+    return req;
+  };
 
   checkVoter = () => {
     axios.defaults.withCredentials = true;
@@ -42,7 +63,7 @@ class ForwardVoteRoute extends Component {
         }
       })
       .catch(res => fireAjaxErrorAlert(this, res.request.status, null));
-      return req;
+    return req;
   };
 
   componentWillUnmount() {

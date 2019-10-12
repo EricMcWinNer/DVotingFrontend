@@ -32,6 +32,7 @@ function DashBoardRouteView(props) {
   const lastAndFirstName = nameArray[0] + " " + nameArray[1];
   const user = props.componentIsLoading ? null : props.user;
   const updateUser = props.componentIsLoading ? null : props.updateUser;
+  const logOut = props.logOut;
   return props.componentIsLoading ? (
     <FullScreenLoader />
   ) : (
@@ -212,6 +213,7 @@ function DashBoardRouteView(props) {
                     <VoteContainer
                       updateUser={updateUser}
                       user={user}
+                      logOut={logOut}
                       {...props}
                     />
                   )}

@@ -131,7 +131,7 @@ class DashboardRoute extends Component {
   }
 
   logOut = e => {
-    e.preventDefault();
+    if (e !== undefined) e.preventDefault();
     axios.defaults.withCredentials = true;
     axios(`${process.env.REACT_APP_API_PATH}/api/web/auth/logout`, {
       method: "get",

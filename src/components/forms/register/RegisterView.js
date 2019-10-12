@@ -296,18 +296,26 @@ function RegisterView(props) {
                       className={"mirrorIcon"}
                       label={"Left Index"}
                       icon={indexprint}
-                      onSuccessfulScan={props.updateLeftIndex}
-                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
-                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                      callback={props.updateLeftIndex}
+                      forcefullyshowfingerprints={
+                        props.forcefullyShowFingerprints
+                      }
+                      forcefullyclearfingerprints={
+                        props.forcefullyClearFingerprints
+                      }
                     />
                   </div>
                   <div>
                     <FingerprintCapture
                       label={"Left Thumb"}
                       icon={thumbprint}
-                      onSuccessfulScan={props.updateLeftThumb}
-                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
-                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                      callback={props.updateLeftThumb}
+                      forcefullyshowfingerprints={
+                        props.forcefullyShowFingerprints
+                      }
+                      forcefullyclearfingerprints={
+                        props.forcefullyClearFingerprints
+                      }
                     />
                   </div>
                 </div>
@@ -316,9 +324,13 @@ function RegisterView(props) {
                     <FingerprintCapture
                       label={"Right Index"}
                       icon={indexprint}
-                      onSuccessfulScan={props.updateRightIndex}
-                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
-                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
+                      callback={props.updateRightIndex}
+                      forcefullyshowfingerprints={
+                        props.forcefullyShowFingerprints
+                      }
+                      forcefullyclearfingerprints={
+                        props.forcefullyClearFingerprints
+                      }
                     />
                   </div>
                   <div>
@@ -326,9 +338,13 @@ function RegisterView(props) {
                       label={"Right Thumb"}
                       className={"mirrorIcon"}
                       icon={thumbprint}
-                      forcefullyShowFingerprints={props.forcefullyShowFingerprints}
-                      forcefullyClearFingerprints={props.forcefullyClearFingerprints}
-                      onSuccessfulScan={props.updateRightThumb}
+                      forcefullyshowfingerprints={
+                        props.forcefullyShowFingerprints
+                      }
+                      forcefullyclearfingerprints={
+                        props.forcefullyClearFingerprints
+                      }
+                      callback={props.updateRightThumb}
                     />
                   </div>
                 </div>

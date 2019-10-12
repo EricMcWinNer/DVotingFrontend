@@ -2,6 +2,7 @@ import React from "react";
 
 import "./index.sass";
 import SweetAlert from "react-bootstrap-sweetalert";
+import FingerprintMatcher from "components/forms/fingerprint-handler";
 
 function VerifyIdentityView(props) {
   return (
@@ -22,6 +23,19 @@ function VerifyIdentityView(props) {
             className={"basecard-input"}
             onChange={props.handleChange}
           />
+          <div className={"fingerprintContainer mt-4"}>
+            <label htmlFor={"password"}>Scan your fingerprint:</label>
+            <FingerprintMatcher
+              className={"noCenter"}
+              leftindex={props.leftIndex}
+              leftthumb={props.leftThumb}
+              rightindex={props.rightIndex}
+              rightthumb={props.rightThumb}
+              label={"Verify fingerpint"}
+              callback={props.updateTemplate}
+              logOut={props.logOut}
+            />
+          </div>
           <div className="fullWidth mt-3 clearfix">
             <button type={"submit"} className={"submitForm"}>
               {props.formSubmitting ? (

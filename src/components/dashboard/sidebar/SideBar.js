@@ -11,6 +11,7 @@ import OfficerLinks from "./OfficerLinks";
 import UserManager from "security/UserManager";
 import LinkButton from "components/buttons/react-router-link-button";
 import results from "assets/img/icons/results.png";
+import { contains } from "utils/helpers";
 
 function SideBar(props) {
   const userManager = new UserManager(props.user);
@@ -73,7 +74,10 @@ function SideBar(props) {
                 {props.election.status === "ongoing" && (
                   <li
                     className={
-                      props.location === "/dashboard/vote" ? "selected" : ""
+                      props.location === "/dashboard/vote" ||
+                      contains(props.location, "/dashboard/vote/")
+                        ? "selected"
+                        : ""
                     }
                   >
                     <Link to={"/dashboard/vote"}>

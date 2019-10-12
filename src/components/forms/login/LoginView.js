@@ -23,9 +23,6 @@ function LoginView(props) {
         value={props.password}
         onChange={e => props.handleChange(e)}
       />
-      <Link className={"forgotPassword poppins"} to={"/forgot-password"}>
-        Forgot password?
-      </Link>
       <button
         id={"signin-button"}
         onClick={props.handleSubmit}
