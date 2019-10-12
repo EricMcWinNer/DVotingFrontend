@@ -62,8 +62,8 @@ This application also has a feature to allow all users to see the results of the
 * Thanks to all the Open-Source authors and packages on top of which this application was built
 
 ## Disclaimer
-* This is a prototype and there is a lot of room for improvement
-* This is a demo so it doesn't contain "realistic" information, the data on it was only created for testing.
+* This is a prototype and there is a lot of room for improvement.
+* This is a demo so it contains dummy data.
 * A link to an online demo would probably be available sometime in the future upon request, I will update this README when it becomes available.
 * If you want to set it up in your PC and need help you can contact me.
 * With the exception of the open source packages used, the rest of the dashboard UI and application were built ground-up from scratch.
