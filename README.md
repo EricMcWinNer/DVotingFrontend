@@ -67,6 +67,7 @@ This application also has a feature to allow all users to see the results of the
 * A link to an online demo would probably be available sometime in the future upon request, I will update this README when it becomes available.
 * If you want to set it up in your PC and need help you can contact me.
 * With the exception of the open source packages used, the rest of the dashboard UI and application were built ground-up from scratch.
+* Because of the service required to interface with fingerprint readers, this web application only works on Windows 7 OS or later.
 
 
 You can find a link to the API [here](http://github.com/EricMcWinNEr/DVotingAPI)
