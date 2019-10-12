@@ -1,68 +1,77 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ![DVotingApp Logo](http://dneoagency.org/dvotingappassets/logo4.png)  DVotingApp Frontend 
+ 
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/SCREENSHOT1.PNG)
 
-## Available Scripts
+**DvotingApp** is a prototype web application proposal to handle the Nigerian Presidential elections online built by Eric Aprioku as a final year project. The web application consists of a RESTful, stateless API built on Laravel on the server-side and a React application on the front-end. This repository contains the React application that holds the client-side of the application. This web application uses fingerprint verification and a password to verify the identity of users. The fingerprint is done using Secugen's Web API service. This service only works in Windows OS devices of version 7 and later, this service is needed to interface between the browser and the fingerprint reader.
 
-In the project directory, you can run:
+This application allows users to create elections, with a start date-time and an end date-time, as well as create political parties and add candidates to these parties. The application automatically starts and ends the application at the set date and time. It would work in a browser and all activity to be performed by users would done via the browser.
 
-### `npm start`
+The application has four roles a user could adopt. These roles are: **Voter, Candidate, Electoral Official and Polling Officer**. Every user is a voter by default, users are allowed to adopt only one more role to keep things free and fair.  An overview of these roles is given below:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Voter**: All users are voters. Voters are allowed to participate and vote in elections. They are the most basic kind of users.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+1. **Candidate**: Candidates are users who can be voted for in an election. All candidates would be selected by the electoral officials and a new candidate would be notified when he is made a new candidate. All candidates must belong to only one party per election. A candidate could further have two "roles" depending on the position he/she is campaigning for which are: President and Vice-President. All candidates must have only one role.
 
-### `npm test`
+1. **Electoral Official**: Electoral Officials are in charge of managing the entirety of the election. As such, they have access to editing the information of the election, postponing the election, creating new officials, and polling officers, generating registration pins and viewing all the voters registered in the application.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Polling Officer**: Polling officers are responsible for managing polling stations. Their duties are to register new voters as well as supervise voters during an election. **Only polling officers are allowed to register new voters.** The electoral officers can see all the voters a polling officer has registered. 
 
-### `npm run build`
+## Features of DVotingApp
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Automatic Elections
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/SCREENSHOT2.PNG)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Elections as mentioned earlier are created by electoral officials. In this application only one election can exist at a given time. Elections have three defining properties; a **name**, a **start date-time** and an **end date-time** which **must** be defined by an electoral official when creating an election. An election has four states in it's life-cycle: **pending**, **ongoing**, **completed** and **finalized**. 
+A pending election is one that has been created but whose start date-time is still in the future. During this time, candidates, polling officers, electoral officials, voters and parties can be added. This is the time to setup the election. To ensure this is obeyed, an election cannot be created if it's start date-time is less than one hour into the future. The minimum duration an election can run is one hour; meaning the end date-time of an election must be at least one hour greater than the start date-time. 
+Once an election start date-time has been reached but it's end date-time is in the future, it is ongoing. During this time, new users cannot be registered, and candidates cannot be added until the election completes. A completed election is one whose end date-time has been reached. While the election is ongoing and while it is completed, its results are publicly available to all voters. 
+A finalized election is one that has been finished and one can consider as dead. Elections are not finalized automatically, they have to be finalized by an electoral official. They cannot however be finalized until 24 hours after the election has ended. This is to ensure all voters have seen the results of the election. The moment an election is finalized, the results are trashed and become unavailable to all voters, the results remain in the database though.
 
-### `npm run eject`
+### Confirmation/Registration Pins
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/SCREENSHOT3.PNG)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Manually creating electoral officials and polling officers can quickly become a mundane, monotonous and painful task to do on the part of the electoral officials. In the 2019 elections, there were over 119,000 polling units all across the country. If each of these polling units had just three polling officers (which would probably not be the case) we could easily have over 357,000 polling officers to add to the system, minus the electoral officials. To fix this problem, I added the ability for electoral officials to create registration/confirmation pins which can be  given to polling officers who can then register remotely. An electoral official can create up to 100,000 pins at a given time. There are two kinds of registration pins to be used by electoral officials and polling officers.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/SCREENSHOT4.PNG)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Easy Online Registration
 
-## Learn More
+![RegistrationVideo](http://dneoagency.org/dvotingappassets/RegistrationFingeprints.gif)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+As mentioned earlier, polling officers and electoral officials can easily create an account online once they have a registration/confirmation pin as seen in the snapshot above. To prevent the system from being spammed however, voters have to be registered by polling officers. All polling officers have access to a similar page where they can register voters. Users' pictures could either be uploaded to the site or captured there at the time of registration via webcam. Users' fingerprints would also be captured at the time of registration via fingerprints. This application currently supports a handful of Secugen fingeprint readers and works with the Secugen Web API service. Because of this, the fingerprint feature is limited to Windows OS devices and the systems have to install the Secugen service to interface between the hardware and the browser. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Remote Voting
 
-### Code Splitting
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/Voted.gif)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+While registration must be done by polling officers, voting must not. Anybody with an internet connection and a fingerprint reader can stay wherever they are and participate in the elections and if they do not have access to a computer, the internet and a fingerprint reader, then they can go to polling stations and register via Polling Officers. In order to vote, one would need the password to his account and his fingerprint to verify his identity. During registration the prints of the index and thumb of both hands are stored in the database, the matching during voting is systematically done across the four prints before voting is processed.
 
-### Analyzing the Bundle Size
+### Automatic Counting and Real-time Results
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+![DVotingApp Dashboard](http://dneoagency.org/dvotingappassets/DVotingApp_ElectionResults-Googl.gif)
 
-### Making a Progressive Web App
+This application also has a feature to allow all users to see the results of the election in real-time. The results are calculated automatically and displayed even as the election is ongoing. It shows the number of votes and distribution of votes and this can be filtered to show votes from different states and local governments as seen above.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## Resources
 
-### Advanced Configuration
+* All colored icons (including the logo) used in this project were gotten from [FlatIcon](http://flaticon.com)
+* All dark icons were gotten from [FontAwesome](http://fontawesome.com)
+* The sidebar background image and the login page's background image were both gotten from [Unsplash](http://unsplash.com)
+* The 404 error page background image was gotten from [Freepik](http://freepik.com)
+* Thanks to all the Open-Source authors and packages on top of which this application was built
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Disclaimer
+* This is a prototype and there is a lot of room for improvement
+* This is a demo so it doesn't contain "realistic" information, the data on it was only created for testing.
+* A link to an online demo would probably be available sometime in the future upon request, I will update this README when it becomes available.
+* If you want to set it up in your PC and need help you can contact me.
+* With the exception of the open source packages used, the rest of the dashboard and application were built ground-up from scratch.
 
-### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+You can find a link to the API [here](http://github.com/EricMcWinNEr/DVotingAPI)
 
-### `npm run build` fails to minify
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+
