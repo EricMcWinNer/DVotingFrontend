@@ -62,7 +62,7 @@ class NotificationHelper {
       case "pins_created":
         return dateStringParser(this._notification.data.generated_at);
       default:
-        return "pussy";
+        return "";
     }
   }
 
@@ -148,6 +148,11 @@ class NotificationHelper {
       case "official_created":
       case "official_deleted":
         return "";
+      case "voted_successfully":
+        return this._election === null ||
+        this._election.id !== this._notification.data.election.id
+        ? "faded"
+        : "";
       default:
         return "";
     }

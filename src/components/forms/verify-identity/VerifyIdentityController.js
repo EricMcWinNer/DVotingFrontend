@@ -15,13 +15,35 @@ class VerifyIdentityController extends Component {
       errorMessage: "",
       alertType: "",
       alertCallBack: null,
+      leftIndex: null,
+      leftThumb: null,
+      rightIndex: null,
+      rightThumb: null,
+      scannedTemplate: null,
     };
     this._userManager = new UserManager(this.props.user);
   }
 
   componentDidMount() {
     this._mounted = true;
+    this.getPrints();
   }
+
+  updateTemplate = template => this.setState({ scannedTemplate: template });
+
+  getPrints = () => {
+    axios.defaults.withCredentials = true;
+    axios
+      .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/vote/prints`)
+      .then(res => {
+        this.setState({
+          leftIndex: res.data.left_index,
+          leftThumb: res.data.left_thumb,
+          rightIndex: res.data.left_thumb,
+          rightThumb: res.data.right_index,
+        });
+      });
+  };
 
   componentWillUnmount() {
     this._mounted = false;
@@ -76,6 +98,15 @@ class VerifyIdentityController extends Component {
     axios.defaults.withCredentials = true;
     let form = new FormData();
     form.append("password", this.state.password);
+    if (this.state.scannedTemplate === null) {
+      this.showAlert(
+        "No fingerprint scanned",
+        "You have not verified your fingerprint. You will not be allowed to vote without verifying your fingerprints"
+      );
+      this.setState({ formSubmitting: false });
+      return;
+    }
+    form.append("fingerprint", encodeURIComponent(this.state.scannedTemplate));
     const req = axios
       .post(
         `${process.env.REACT_APP_API_PATH}/api/dashboard/vote/${this.props.party.id}`,
@@ -100,6 +131,13 @@ class VerifyIdentityController extends Component {
               "error",
               this.closeErrorModal
             );
+          else if (res.data.fingerprint === "wrong")
+            this.showAlert(
+              "Invalid Fingerprint",
+              "You have entered an invalid fingerprint. Please scan with the fingerprint reader and try again",
+              "error",
+              this.closeErrorModal
+            );
           else if (res.data.completed)
             this.showAlert(
               "Voted Successfully",
@@ -119,6 +157,8 @@ class VerifyIdentityController extends Component {
         handleSubmit={this.handleSubmit}
         userManager={this._userManager}
         closeErrorModal={this.closeErrorModal}
+        updateTemplate={this.updateTemplate}
+        logOut={this.props.logOut}
         {...this.state}
       />
     );

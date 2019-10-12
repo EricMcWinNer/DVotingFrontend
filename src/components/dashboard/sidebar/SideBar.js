@@ -54,7 +54,8 @@ function SideBar(props) {
             <li
               className={
                 props.location === "/dashboard" ||
-                props.location === "/dashboard/"
+                props.location === "/dashboard/" ||
+                props.location === "/"
                   ? "selected"
                   : ""
               }
@@ -73,7 +74,10 @@ function SideBar(props) {
                 {props.election.status === "ongoing" && (
                   <li
                     className={
-                      props.location === "/dashboard/vote" ? "selected" : ""
+                      props.location === "/dashboard/vote" ||
+                      contains(props.location, "/dashboard/vote/")
+                        ? "selected"
+                        : ""
                     }
                   >
                     <Link to={"/dashboard/vote"}>
@@ -115,7 +119,9 @@ function SideBar(props) {
                 <OfficerLinks {...props} /> <VoterLinks {...props} />
               </>
             )}
-            {userManager.isOnlyVoter() && <VoterLinks {...props} />}
+            {!userManager.isOfficial() && !userManager.isOfficer() && (
+              <VoterLinks {...props} />
+            )}
           </ul>
         </div>
       </div>

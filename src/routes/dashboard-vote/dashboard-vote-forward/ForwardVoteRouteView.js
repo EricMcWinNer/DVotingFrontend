@@ -9,10 +9,13 @@ import "./index.sass";
 import fingerpint from "assets/img/icons/fingerprints.png";
 import { sentenceCase } from "utils/helpers";
 import VerifyIdentityForm from "components/forms/verify-identity";
+import BrokenLink from "components/cards/broken-link-card";
 
 function ForwardVoteRouteView(props) {
   return props.componentIsLoading ? (
     <SubRouteLoader />
+  ) : props.election === null || props.election.status !== "ongoing" ? (
+    <BrokenLink />
   ) : props.voted === true ? (
     <AlreadyVoted />
   ) : (

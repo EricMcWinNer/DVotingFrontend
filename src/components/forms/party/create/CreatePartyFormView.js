@@ -8,7 +8,6 @@ import createIcon from "assets/img/icons/create.png";
 import Row from "react-bootstrap/Row";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LinkButton from "components/buttons/react-router-link-button/ReactRouterLinkButton";
-import { capitalizeWords, sentenceCase } from "utils/helpers";
 import Helmet from "react-helmet";
 import PictureUploadInput from "components/forms/picture-upload-handler";
 
