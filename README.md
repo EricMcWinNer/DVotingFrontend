@@ -61,7 +61,7 @@ This application also has a feature to allow all users to see the results of the
 * The 404 error page background image was gotten from [Freepik](http://freepik.com)
 * Thanks to all the Open-Source authors and packages on top of which this application was built
 
-## Disclaimer
+## Additional Notes
 * This is a prototype and there is a lot of room for improvement.
 * This is a demo so it contains dummy data.
 * A link to an online demo would probably be available sometime in the future upon request, I will update this README when it becomes available.
