@@ -9,6 +9,11 @@ $phoneIconURL: 'assets/img/icons/phone.png'
 $streetIconURL: 'assets/img/icons/street.png'
 $pinIconURL: 'assets/img/icons/number-pad.png'
 $profilePictureURL: 'assets/img/icons/profile.png'
+$jobIconURL: 'assets/img/icons/briefcase.png'
+$nameIconURL: 'assets/img/icons/name.png'
+$genderIconURL: 'assets/img/icons/gender.png'
+$maritalStatusIconURL: 'assets/img/icons/maritalstatus.png'
+$keyIconURL: 'assets/img/icons/key.png'
 
 #registerForm
   .fingerprintGrid
@@ -46,7 +51,21 @@ $profilePictureURL: 'assets/img/icons/profile.png'
     height: 48px
     font-size: 0.875rem
     padding:
-      right: 25px
+    right: 25px
+
+    &[name=gender]
+      background:
+        repeat: no-repeat
+        size: 18px 18px
+        position: calc(100% - 12px) 15px
+        image: url('~#{$genderIconURL}')
+
+    &[name=maritalStatus]
+      background:
+        repeat: no-repeat
+        size: 18px 18px
+        position: calc(100% - 12px) 15px
+        image: url('~#{$maritalStatusIconURL}')
 
   input
     background:
@@ -54,7 +73,7 @@ $profilePictureURL: 'assets/img/icons/profile.png'
       size: 18px 18px
       position: calc(100% - 12px) 15px
 
-    &[name=password], &[name=confirmPassword]
+    &[name*="assword"]
       background-image: url('~#{$passwordIconURL}')
 
     &[name=email]
@@ -74,6 +93,15 @@ $profilePictureURL: 'assets/img/icons/profile.png'
 
     &[name=pictureUpload]
       background-image: url('~#{$profilePictureURL}')
+
+    &[name=occupation]
+      background-image: url('~#{$jobIconURL}')
+
+    &[name*="Name"]
+      background-image: url('~#{$nameIconURL}')
+
+    &[name=nin]
+      background-image: url('~#{$keyIconURL}')
 
   #submitButton
     background-color: $themeColor
@@ -145,11 +173,7 @@ $profilePictureURL: 'assets/img/icons/profile.png'
           &.react-date-picker__inputGroup__month, &.react-date-picker__inputGroup__day
             width: 18px !important
 
-
-
 #imagePreview
   margin:
-    top: 25px
-    bottom: 25px
-
-
+  top: 25px
+  bottom: 25px

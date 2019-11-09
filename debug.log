@@ -10,3 +10,6 @@
 [1002/044140.327:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
 [1002/044140.327:ERROR:exception_snapshot_win.cc(98)] thread ID 2468 not found in process
 [1003/105432.668:ERROR:process_info.cc(359)] UncheckedAllocate
+[1018/221758.849:ERROR:process_info.cc(359)] UncheckedAllocate
+[1018/222408.419:ERROR:process_info.cc(359)] UncheckedAllocate
+[1018/222408.935:ERROR:process_info.cc(359)] UncheckedAllocate
