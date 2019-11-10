@@ -39,6 +39,8 @@ class RegisterController extends Component {
       confirmPassword: "",
       confirmationPin: "",
       profilePictureFile: null,
+      nin: "",
+      validNIN: true,
       aspectRatioError: false,
       formIsSubmitting: false,
       showAlert: false,
@@ -62,8 +64,8 @@ class RegisterController extends Component {
   };
 
   forcefullyShowFingerprints = () => {
-    this.setState({forcefullyClearFingerprints: false});
-  }
+    this.setState({ forcefullyClearFingerprints: false });
+  };
 
   initializeRoute = () => {
     this.setState({
@@ -82,6 +84,7 @@ class RegisterController extends Component {
       password: "",
       confirmPassword: "",
       confirmationPin: "",
+      nin: "",
       profilePictureFile: null,
       showAlert: false,
       alertTitle: "",
@@ -89,7 +92,7 @@ class RegisterController extends Component {
       alertType: "",
       alertCallBack: null,
       forcefullyRemovePreview: true,
-      forcefullyClearFingerprints: true
+      forcefullyClearFingerprints: true,
     });
   };
 
@@ -119,6 +122,7 @@ class RegisterController extends Component {
         lgaOfOrigin: voter.lga_id,
         address1: voter.address1,
         address2: voter.address2,
+        nin: voter.nin,
       });
     } else this.getStates();
   }
@@ -182,6 +186,8 @@ class RegisterController extends Component {
   }
 
   handleChange = e => {
+    //NIN HAS 11 DIGITS,
+    //NIN TRACKING ID HAS 15 CHARACTERS
     let { name, value, type, tagName } = e.target;
     if (
       type === "text" ||
@@ -213,6 +219,10 @@ class RegisterController extends Component {
               if (this.state.password !== this.state.confirmPassword) {
                 this.setState({ validPassword: false });
               } else this.setState({ validPassword: true });
+            } else if (name === "nin") {
+              if (!/^([0-9]{11,11})$/.test(value))
+                this.setState({ validNIN: false });
+              else this.setState({ validNIN: true });
             }
           }
         );
@@ -229,7 +239,21 @@ class RegisterController extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this._mounted)
+    if (this._mounted) {
+      if (
+        !this.state.validEmail ||
+        !this.state.validLastName ||
+        !this.state.validOtherNames ||
+        !this.state.validPhoneNumber ||
+        !this.state.validPassword
+        // !this.state.validNIN
+      ) {
+        this.displayAlert(
+          "Invalid Fields",
+          "Some of the fields you have entered are invalid. Check them and try again"
+        );
+        return;
+      }
       this.setState({ formIsSubmitting: true }, () => {
         let userInfo = {
           lastName: this.state.lastName,
@@ -251,6 +275,7 @@ class RegisterController extends Component {
           leftThumb: this.state.leftThumb,
           rightIndex: this.state.rightIndex,
           rightThumb: this.state.rightThumb,
+          nin: this.state.nin,
           ...this.props.customValues,
         };
         if (
@@ -304,6 +329,11 @@ class RegisterController extends Component {
                     "Invalid Age",
                     "You must be at least 18 years old to be an register-official."
                   );
+                else if (res.data.field === "invalidNIN")
+                  this.displayAlert(
+                    "Invalid NIN",
+                    "The NIN you entered is invalid."
+                  );
                 else if (res.data.field === "ongoingElection") {
                   this.displayAlert(
                     "Ongoing Election!",
@@ -342,6 +372,7 @@ class RegisterController extends Component {
             fireAjaxErrorAlert(this, res.request.status, null);
           });
       });
+    }
   };
 
   handlePickedStateOfOrigin = e => {

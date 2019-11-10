@@ -36,6 +36,8 @@ class ResultsHomeRoute extends Component {
       timeLeft: null,
       duration: null,
       tableTotal: 0,
+      tableURL: `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`,
+      filtered: false,
       ...initialAjaxAlertState,
     };
     this._userManager = new UserManager(this.props.user);
@@ -86,7 +88,11 @@ class ResultsHomeRoute extends Component {
             this.props.history.push("/login");
           else {
             this.setState({ election: res.data.election }, () => {
-              this.initializeRoute().then(this.getVotesData);
+              this.initializeRoute().then(() =>
+                this.state.filtered
+                  ? this.getTableResults(this.state.tableURL, false)
+                  : this.getVotesData(false)
+              );
             });
           }
         })
@@ -166,16 +172,25 @@ class ResultsHomeRoute extends Component {
    * and object in state and decide what URL to show by that
    */
   filter = () => {
-    let url;
     const filterState = this.state.selectedState;
     const filterLGA = this.state.selectedLga;
     if (filterState !== "") {
       if (filterLGA === "") {
-        url = `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes/bystate/${filterState}`;
-        this.getTableResults(url);
+        this.setState(
+          {
+            tableURL: `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes/bystate/${filterState}`,
+            filtered: true,
+          },
+          () => this.getTableResults(this.state.tableURL)
+        );
       } else {
-        url = `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes/bylga/${filterLGA}`;
-        this.getTableResults(url);
+        this.setState(
+          {
+            tableURL: `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes/bylga/${filterLGA}`,
+            filtered: true,
+          },
+          () => this.getTableResults(this.state.tableURL)
+        );
       }
     } else {
       this.setState(
@@ -186,7 +201,13 @@ class ResultsHomeRoute extends Component {
           selectStateObject: null,
           selectedLgaObject: null,
         },
-        this.getVotesData
+        this.setState(
+          {
+            tableURL: `${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`,
+            filtered: false,
+          },
+          this.getVotesData
+        )
       );
     }
   };
@@ -195,9 +216,9 @@ class ResultsHomeRoute extends Component {
    * Populates the parties table with results gotten from a URL it's agnostic about. Other methods
    * decide what that URL would be and feed this method with it to populate the table.
    */
-  getTableResults = url => {
+  getTableResults = (url, loader = true) => {
     if (this._mounted) {
-      this.setState({ tableLoading: true, lgaIsLoading: true });
+      this.setState({ tableLoading: loader, lgaIsLoading: loader });
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "get",
@@ -304,12 +325,13 @@ class ResultsHomeRoute extends Component {
    * This method initially populates the votes table with it's data. It is also called whenever
    * the state filter is set to none.
    */
-  getVotesData = () => {
+  getVotesData = (loader = true) => {
     if (this._mounted) {
       axios.defaults.withCredentials = true;
-      if (!this.state.votesIsLoading) this.setState({ tableLoading: true });
+      if (!this.state.votesIsLoading && loader === true)
+        this.setState({ tableLoading: true });
       const req = axios
-        .get(`${process.env.REACT_APP_API_PATH}/api/dashboard/results/getvotes`)
+        .get(this.state.tableURL)
         .then(res => {
           if (res.data.isSessionValid === false) {
             this.props.history.push("/login");

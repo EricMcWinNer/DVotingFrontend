@@ -163,6 +163,24 @@ function RegisterView(props) {
               />
             </Col>
             <Col md={4}>
+              <label htmlFor="occupation" className="required">
+                NIMC Number (NIN)
+              </label>
+              <input
+                id={"nin"}
+                type={"text"}
+                name={"nin"}
+                placeholder={"National Identity Number"}
+                className={`${props.validNIN ? "" : "error"} normal`}
+                onChange={e => props.handleChange(e)}
+                maxlength={11}
+                minlength={11}
+                value={props.nin}
+              />
+            </Col>
+          </Row>
+          <Row className={"newLine"}>
+            <Col md={4}>
               <label htmlFor="stateOfOrigin" className="required">
                 State of origin
               </label>
@@ -185,8 +203,6 @@ function RegisterView(props) {
                 {states}
               </select>
             </Col>
-          </Row>
-          <Row className={"newLine"}>
             <Col md={4}>
               <label htmlFor="lgaOfOrigin" className={"required"}>
                 LGA
@@ -224,6 +240,8 @@ function RegisterView(props) {
                 value={props.address1}
               />
             </Col>
+          </Row>
+          <Row className={"newLine"}>
             <Col md={4}>
               <label htmlFor="address2">Address 2</label>
               <input
@@ -236,8 +254,6 @@ function RegisterView(props) {
                 value={props.address2}
               />
             </Col>
-          </Row>
-          <Row className={"newLine"}>
             {props.editMode === undefined && (
               <>
                 <Col md={4}>
@@ -270,6 +286,8 @@ function RegisterView(props) {
                 </Col>
               </>
             )}
+          </Row>
+          <Row className={"newLine"}>
             {props.officerMode === undefined && (
               <Col md={4}>
                 <label htmlFor="confirmationPin" className="required">

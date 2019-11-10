@@ -101,7 +101,7 @@ function CreateOfficialsRouteView(props) {
                   ref={props.searchNeedle}
                   className={"searchCandidate"}
                   onKeyUp={e => handleKeyUp(e)}
-                  placeholder={"Search for a candidate"}
+                  placeholder={"Search for a voter"}
                 />
                 <button
                   className="closeSearch"
